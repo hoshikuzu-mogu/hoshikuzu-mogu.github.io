@@ -134,7 +134,7 @@
   .sec__ja { font-family: var(--maru); font-weight: 500; font-size: 13px; letter-spacing: .14em; color: var(--ink-sub); }
 
   /* SCHEDULE */
-  .sched { display: grid; grid-template-columns: auto 1fr; gap: 6px 24px; align-items: baseline; }
+  
   .sched__time { font-family: var(--en); font-weight: 500; font-size: clamp(30px, 7vw, 40px); letter-spacing: .04em; color: var(--ink); }
   .sched__note { font-size: 15px; letter-spacing: .06em; }
   .sched__note a { font-family: var(--maru); font-weight: 700; border-bottom: 1.5px solid var(--peri); transition: color .2s; }
@@ -142,7 +142,7 @@
 
   /* PROFILE */
   .prof__name { font-family: var(--maru); font-weight: 700; font-size: 24px; letter-spacing: .08em; }
-  .prof__bd { font-family: var(--en); font-weight: 500; font-size: 18px; letter-spacing: .14em; margin-left: 14px; color: var(--ink-sub); }
+  .prof__bd { font-family: var(--maru); font-weight: 500; font-size: 14px; letter-spacing: .1em; margin-left: 14px; color: var(--ink-sub); }
   .prof__text { margin-top: 14px; font-size: 16px; letter-spacing: .05em; }
   .prof__word { margin-top: 22px; display: flex; align-items: baseline; gap: 16px; font-size: 13px; letter-spacing: .14em; color: var(--ink-sub); }
   .prof__word strong { font-family: var(--maru); font-weight: 700; font-size: 26px; letter-spacing: .1em; color: var(--white); text-shadow: 0 1px 14px rgba(80,90,190,.35); }
@@ -156,6 +156,29 @@
   details a { border-bottom: 1.5px solid var(--peri); }
   details a:hover { color: var(--white); }
 
+  .sched { display: flex; flex-wrap: wrap; gap: 4px 36px; }
+  .sched__genre { margin-top: 18px; font-family: var(--maru); font-weight: 700; font-size: 17px; letter-spacing: .08em; }
+  .sched__note { margin-top: 8px; font-size: 14px; line-height: 2; letter-spacing: .05em; color: var(--ink); }
+  .prof__kana { margin-top: 4px; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); }
+  .prof__meta { margin-top: 20px; display: grid; gap: 6px; font-size: 14px; }
+  .prof__meta div { display: flex; gap: 16px; align-items: baseline; }
+  .prof__meta dt { width: 5em; font-size: 12px; letter-spacing: .12em; color: var(--ink-sub); }
+  .prof__meta dd { margin: 0; font-family: var(--maru); font-weight: 700; letter-spacing: .06em; }
+  .msg { max-width: 36em; display: grid; gap: 14px; font-size: 15px; line-height: 2; letter-spacing: .05em; }
+  .msg__lead { font-family: var(--maru); font-weight: 700; font-size: clamp(18px, 4.6vw, 22px); line-height: 1.7; color: var(--white); text-shadow: 0 1px 14px rgba(80,90,190,.3); }
+  .msg__small { font-size: 13px; color: var(--ink-sub); }
+  .hist { list-style: none; }
+  .hist li { display: grid; grid-template-columns: 6.5em 1fr; gap: 12px; padding-block: 11px; border-bottom: 1px solid var(--rule); font-size: 14px; letter-spacing: .04em; }
+  .hist li:first-child { border-top: 1px solid var(--rule); }
+  .hist time { font-family: var(--en); font-weight: 500; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); }
+  .hist b { font-family: var(--maru); font-weight: 700; color: var(--white); margin-left: .3em; }
+  .goal { display: grid; gap: 32px; }
+  .goal__h { font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .14em; color: var(--ink-sub); margin-bottom: 10px; }
+  .goal ul { list-style: none; display: grid; gap: 8px; }
+  .goal li { position: relative; padding-left: 22px; font-size: 16px; letter-spacing: .05em; }
+  .goal li::before { content: ""; position: absolute; left: 0; top: .55em; width: 10px; height: 10px; background: var(--white); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
+  @media (min-width: 768px) { .goal { grid-template-columns: 1fr 1fr; gap: 64px; } }
+
   /* LINK：一覧 */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -163,6 +186,9 @@
   .links__name { font-family: var(--en); font-weight: 500; font-size: 20px; letter-spacing: .06em; }
   .links__name.ja { font-family: var(--maru); font-weight: 700; font-size: 18px; letter-spacing: .08em; }
   .links__sub { display: block; font-family: var(--maru); font-weight: 500; font-size: 12px; letter-spacing: .08em; color: var(--ink-sub); margin-top: 2px; }
+  .links__main { display: flex; align-items: center; gap: 18px; }
+  .links__icon { flex: none; width: 26px; height: 26px; color: var(--white); transition: transform .2s; }
+  .links a:hover .links__icon { transform: scale(1.08); }
   .links__go { font-family: var(--en); font-size: 14px; color: var(--ink-sub); }
   .links a:hover { color: var(--white); padding-left: 8px; }
   .links a:hover .links__sub, .links a:hover .links__go { color: var(--white); }
@@ -185,6 +211,11 @@
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <symbol id="star" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16.5V11a6 6 0 0 1 12 0v5.5l1.5 1.5h-15z"/><path d="M10 20.5a2 2 0 0 0 4 0"/></g></symbol>
+  <symbol id="i-camera" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 8.5h4l1.5-2.5h7L17 8.5h4V19H3z"/><circle cx="12" cy="13.5" r="3.4"/></g></symbol>
+  <symbol id="i-notes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.8" cy="17.5" r="2.2"/><circle cx="16.8" cy="15.5" r="2.2"/><path d="M9 9.5l10-2"/></g></symbol>
+  <symbol id="i-talk" viewBox="0 0 24 24"><path d="M4 5.5h16v10.5h-9l-4.5 3.5V16H4z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></symbol>
 </svg>
 
 <header class="header">
@@ -192,8 +223,8 @@
     <a class="logo" href="#top">星屑もぐ<svg class="star" aria-hidden="true"><use href="#star"/></svg></a>
     <div class="header__right">
       <nav class="nav" aria-label="メイン">
-        <a href="#schedule">SCHEDULE</a>
         <a href="#profile">PROFILE</a>
+        <a href="#schedule">SCHEDULE</a>
         <a href="#link">LINK</a>
       </nav>
       <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
@@ -205,8 +236,11 @@
   <div class="menu__in">
     <ul class="menu__main">
       <li><a href="#top"><span class="en">Top</span><span class="ja">トップ</span></a></li>
-      <li><a href="#schedule"><span class="en">Schedule</span><span class="ja">配信</span></a></li>
       <li><a href="#profile"><span class="en">Profile</span><span class="ja">プロフィール</span></a></li>
+      <li><a href="#schedule"><span class="en">Schedule</span><span class="ja">配信</span></a></li>
+      <li><a href="#message"><span class="en">Message</span><span class="ja">配信のこと</span></a></li>
+      <li><a href="#history"><span class="en">History</span><span class="ja">これまで</span></a></li>
+      <li><a href="#goal"><span class="en">Goal</span><span class="ja">目標</span></a></li>
       <li><a href="#link"><span class="en">Link</span><span class="ja">リンク</span></a></li>
     </ul>
     <ul class="menu__sns">
@@ -226,18 +260,10 @@
       <div class="hero__text">
         <p class="hero__en">HOSHIKUZU MOGU</p>
         <h1 class="hero__name">星屑もぐ<svg class="star" aria-hidden="true"><use href="#star"/></svg></h1>
-        <p class="hero__catch">はやくみつけてね</p>
-        <p class="hero__talk"><b>みなみなさま。</b><br>見つけてくれてありがとう。</p>
+        <p class="hero__catch">フォローして待っててね</p>
+        <p class="hero__talk"><b>取扱い注意⁉️記憶力5%のぽんこつバブニート</b><br>あなたも波乱万丈な枠に巻き込まれにおいで💞</p>
         <a class="btn" href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener">配信を見る</a>
       </div>
-    </div>
-  </section>
-
-  <section class="sec" id="schedule">
-    <div class="sec__head"><h2 class="sec__en">Schedule</h2><span class="sec__ja">配信</span></div>
-    <div class="sched">
-      <span class="sched__time">0:00〜</span>
-      <p class="sched__note">Mirrativで予定。ゲリラ配信は<a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener">X</a>でお知らせ。</p>
     </div>
   </section>
 
@@ -245,15 +271,78 @@
     <div class="sec__head"><h2 class="sec__en">Profile</h2><span class="sec__ja">プロフィール</span></div>
     <div class="prof">
       <div>
-        <p><span class="prof__name">星屑もぐ</span><span class="prof__bd">11.25</span></p>
-        <p class="prof__text">ゲームと歌が好きです。水色が好きです。</p>
+        <p><span class="prof__name">星屑もぐ</span><span class="prof__bd">11月25日うまれ</span></p>
+        <p class="prof__kana">ほしくずって読みます。</p>
+        <p class="prof__text">ゲームと歌、たべること、アニメと漫画、お酒とたばこ。水色とサブカルとゲテモノが好きです。</p>
       </div>
       <div>
-        <p class="prof__word">合言葉 <strong>げてもぐ</strong></p>
+        <p class="prof__word">あいことばは <strong>げてもぐ</strong></p>
+        <dl class="prof__meta">
+          <div><dt>推しマ</dt><dd>💍⛓</dd></div>
+          <div><dt>Xのタグ</dt><dd>#もぐもぐくずもち</dd></div>
+        </dl>
         <details>
           <summary>もうちょっと知る</summary>
-          <p>22歳・大学生。狩猟免許。</p>
+          <p>22歳・大学生。狩猟免許。<br>ほにゃららLIVERS。</p>
         </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec" id="schedule">
+    <div class="sec__head"><h2 class="sec__en">Schedule</h2><span class="sec__ja">配信</span></div>
+    <div class="sched">
+      <span class="sched__time">6:00〜</span>
+      <span class="sched__time">22:00〜</span>
+    </div>
+    <p class="sched__genre">ゲームと雑談をしています。</p>
+    <p class="sched__note">この時間以外もゲリラでやることがあります。<a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener">X</a>で告知するので、フォローして待っててね。<br>寝落ち配信は地声です。</p>
+  </section>
+
+  <section class="sec" id="message">
+    <div class="sec__head"><h2 class="sec__en">Message</h2><span class="sec__ja">配信のこと</span></div>
+    <div class="msg">
+      <p class="msg__lead">みんなでわいわい楽しくできたらいいなって思ってます。</p>
+      <p>基本的にNGはなしです。入退室のときにコメントくれたら喜びます。<br>喋ってることは9割適当です。<br>枠の雰囲気壊さないために無言落ちすることあります(* .ᴗ.)⁾⁾</p>
+      <p class="msg__small">チアリ取り返し目的の人はごめんなさい。</p>
+    </div>
+  </section>
+
+  <section class="sec" id="history">
+    <div class="sec__head"><h2 class="sec__en">History</h2><span class="sec__ja">これまで</span></div>
+    <ol class="hist">
+      <li><time>2025.10.05</time><span>デビュー</span></li>
+      <li><time></time><span>デビュラン一週間編 Aグル 7位</span></li>
+      <li><time></time><span>プチランハスボ Fグル <b>1位</b></span></li>
+      <li><time></time><span>スターズ限定1DRK <b>2位</b></span></li>
+      <li><time></time><span>デビュラン1ヶ月編 Aグル 4位</span></li>
+      <li><time></time><span>プチランメロ Dグル <b>2位</b></span></li>
+      <li><time></time><span>イケボ Aグル <b>2位</b></span></li>
+      <li><time></time><span>ドリステ アピ杯 Bグル <b>1位</b></span></li>
+      <li><time></time><span>スラコロ配信者rk Bグル <b>1位</b></span></li>
+      <li><time>3.21</time><span>Bタッチ thx</span></li>
+      <li><time>3.27</time><span>Aタッチ thx</span></li>
+      <li><time></time><span>スタダム Cグル <b>1位</b></span></li>
+    </ol>
+  </section>
+
+  <section class="sec" id="goal">
+    <div class="sec__head"><h2 class="sec__en">Goal</h2><span class="sec__ja">目標</span></div>
+    <div class="goal">
+      <div>
+        <h3 class="goal__h">いつか</h3>
+        <ul>
+          <li>東京でオフ会をする</li>
+          <li>フォロワーさん1000人</li>
+          <li>スタークラスAを維持できるようになる</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="goal__h">まずは</h3>
+        <ul>
+          <li>チアリ40人</li>
+          <li>スタークラスB</li>
+        </ul>
       </div>
     </div>
   </section>
@@ -261,11 +350,11 @@
   <section class="sec link-sec" id="link">
     <div class="sec__head"><h2 class="sec__en">Link</h2><span class="sec__ja">リンク</span></div>
     <ul class="links">
-      <li><a href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener"><span><span class="links__name">X</span><span class="links__sub">配信のお知らせ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://www.instagram.com/Oo_mgmg_oO/" target="_blank" rel="noopener"><span><span class="links__name">Instagram</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://www.tiktok.com/@hoshkzmogu" target="_blank" rel="noopener"><span><span class="links__name">TikTok</span><span class="links__sub">ダンスしてるよ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://marshmallow-qa.com/6wih0j99br01900" target="_blank" rel="noopener"><span><span class="links__name ja">マシュマロ</span><span class="links__sub">要望、企画、愛コメください</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-play"/></svg><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-bell"/></svg><span><span class="links__name">X</span><span class="links__sub">配信のお知らせ</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.instagram.com/Oo_mgmg_oO/" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-camera"/></svg><span><span class="links__name">Instagram</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.tiktok.com/@hoshkzmogu" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-notes"/></svg><span><span class="links__name">TikTok</span><span class="links__sub">ダンスしてるよ</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://marshmallow-qa.com/6wih0j99br01900" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-talk"/></svg><span><span class="links__name ja">マシュマロ</span><span class="links__sub">要望、企画、愛コメください</span></span><span class="links__go">↗</span></a></li>
     </ul>
     <a class="wish" href="https://www.amazon.jp/hz/wishlist/ls/22LWDGI431OWW?ref_=wl_share" target="_blank" rel="noopener">ほしい物リスト ↗</a>
   </section>
