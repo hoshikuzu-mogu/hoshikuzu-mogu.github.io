@@ -165,13 +165,13 @@
   .prof__meta dt { width: 5em; font-size: 12px; letter-spacing: .12em; color: var(--ink-sub); }
   .prof__meta dd { margin: 0; font-family: var(--maru); font-weight: 700; letter-spacing: .06em; }
   .msg { max-width: 36em; display: grid; gap: 14px; font-size: 15px; line-height: 2; letter-spacing: .05em; }
-  .msg__lead { font-family: var(--maru); font-weight: 700; font-size: clamp(18px, 4.6vw, 22px); line-height: 1.7; color: var(--white); text-shadow: 0 1px 14px rgba(80,90,190,.3); }
+  .msg__lead { font-family: var(--maru); font-weight: 700; font-size: clamp(18px, 4.6vw, 22px); line-height: 1.7; color: var(--ink); }
   .msg__small { font-size: 13px; color: var(--ink-sub); }
   .hist { list-style: none; }
   .hist li { display: grid; grid-template-columns: 6.5em 1fr; gap: 12px; padding-block: 11px; border-bottom: 1px solid var(--rule); font-size: 14px; letter-spacing: .04em; }
   .hist li:first-child { border-top: 1px solid var(--rule); }
   .hist time { font-family: var(--en); font-weight: 500; font-size: 13px; letter-spacing: .08em; color: var(--ink-sub); }
-  .hist b { font-family: var(--maru); font-weight: 700; color: var(--white); margin-left: .3em; }
+  .hist b { font-family: var(--maru); font-weight: 700; color: var(--ink); margin-left: .4em; padding: 0 .35em; border-radius: 4px; background: rgba(255,255,255,.55); }
   .goal { display: grid; gap: 32px; }
   .goal__h { font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .14em; color: var(--ink-sub); margin-bottom: 10px; }
   .goal ul { list-style: none; display: grid; gap: 8px; }
@@ -179,6 +179,12 @@
   .goal li::before { content: ""; position: absolute; left: 0; top: .55em; width: 10px; height: 10px; background: var(--white); clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%); }
   @media (min-width: 768px) { .goal { grid-template-columns: 1fr 1fr; gap: 64px; } }
 
+  .xfeed { margin-top: 36px; max-width: 560px; }
+  .xfeed__label { font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .1em; margin-bottom: 12px; }
+  .xfeed__box { background: rgba(255,255,255,.45); border-radius: 12px; padding: 8px; min-height: 120px; overflow: hidden; }
+  .xfeed__box > a.twitter-timeline { display: block; padding: 40px 16px; text-align: center; font-size: 14px; color: var(--ink); }
+  .xfeed__more { display: inline-block; margin-top: 12px; font-size: 12px; letter-spacing: .06em; color: var(--ink-sub); transition: color .2s; }
+  .xfeed__more:hover { color: var(--white); }
   /* LINK：一覧 */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -297,6 +303,13 @@
     </div>
     <p class="sched__genre">ゲームと雑談をしています。</p>
     <p class="sched__note">この時間以外もゲリラでやることがあります。<a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener">X</a>で告知するので、フォローして待っててね。<br>寝落ち配信は地声です。</p>
+    <div class="xfeed">
+      <p class="xfeed__label">X の最新ポスト</p>
+      <div class="xfeed__box">
+        <a class="twitter-timeline" data-height="560" data-theme="light" data-lang="ja" data-dnt="true" data-chrome="noheader nofooter noborders transparent" href="https://twitter.com/Oo_mgmg_oO">@Oo_mgmg_oO のポストを見る</a>
+      </div>
+      <a class="xfeed__more" href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener">表示されないときは X で見る ↗</a>
+    </div>
   </section>
 
   <section class="sec" id="message">
@@ -350,11 +363,11 @@
   <section class="sec link-sec" id="link">
     <div class="sec__head"><h2 class="sec__en">Link</h2><span class="sec__ja">リンク</span></div>
     <ul class="links">
-      <li><a href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-play"/></svg><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-bell"/></svg><span><span class="links__name">X</span><span class="links__sub">配信のお知らせ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://www.instagram.com/Oo_mgmg_oO/" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-camera"/></svg><span><span class="links__name">Instagram</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://www.tiktok.com/@hoshkzmogu" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-notes"/></svg><span><span class="links__name">TikTok</span><span class="links__sub">ダンスしてるよ</span></span><span class="links__go">↗</span></a></li>
-      <li><a href="https://marshmallow-qa.com/6wih0j99br01900" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-talk"/></svg><span><span class="links__name ja">マシュマロ</span><span class="links__sub">要望、企画、愛コメください</span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-play"/></svg><span><span class="links__name">Mirrativ</span><span class="links__sub">配信はここ</span></span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-bell"/></svg><span><span class="links__name">X</span><span class="links__sub">配信のお知らせ</span></span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.instagram.com/Oo_mgmg_oO/" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-camera"/></svg><span><span class="links__name">Instagram</span></span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://www.tiktok.com/@hoshkzmogu" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-notes"/></svg><span><span class="links__name">TikTok</span><span class="links__sub">ダンスしてるよ</span></span></span><span class="links__go">↗</span></a></li>
+      <li><a href="https://marshmallow-qa.com/6wih0j99br01900" target="_blank" rel="noopener"><span class="links__main"><svg class="links__icon" aria-hidden="true"><use href="#i-talk"/></svg><span><span class="links__name ja">マシュマロ</span><span class="links__sub">要望、企画、愛コメください</span></span></span><span class="links__go">↗</span></a></li>
     </ul>
     <a class="wish" href="https://www.amazon.jp/hz/wishlist/ls/22LWDGI431OWW?ref_=wl_share" target="_blank" rel="noopener">ほしい物リスト ↗</a>
   </section>
@@ -378,5 +391,6 @@
   document.addEventListener('keydown', function(e){ if(e.key==='Escape') set(false); });
 })();
 </script>
+<script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
 </body>
 </html>
