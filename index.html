@@ -127,6 +127,10 @@
   }
   .btn:hover { transform: translate(3px,3px); box-shadow: 2px 2px 0 var(--peri); background: var(--peri); color: var(--white); }
 
+  .hero__btns { display: flex; flex-wrap: wrap; gap: 0 20px; }
+  .btn--req { background: var(--peri); color: var(--white); border-color: var(--white); box-shadow: 5px 5px 0 var(--white); }
+  .btn--req:hover { background: var(--white); color: var(--ink); box-shadow: 2px 2px 0 var(--white); }
+
   /* セクション共通：英字見出し */
   .sec { width: var(--wrap); margin-inline: auto; padding-block: 72px; border-top: 1px solid var(--rule); }
   .sec__head { display: flex; align-items: baseline; gap: 14px; margin-bottom: 32px; }
@@ -301,7 +305,10 @@
         <h1 class="hero__name">星屑もぐ<svg class="star" aria-hidden="true"><use href="#star"/></svg></h1>
         <p class="hero__catch">フォローして待っててね</p>
         <p class="hero__talk"><b>取扱い注意⁉️記憶力5%のぽんこつバブニート</b><br>あなたも波乱万丈な枠に巻き込まれにおいで💞</p>
-        <a class="btn" href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener">配信を見る</a>
+        <div class="hero__btns">
+          <a class="btn" href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener">配信を見る</a>
+          <a class="btn btn--req" href="#request">🎤 歌をリクエスト</a>
+        </div>
       </div>
     </div>
   </section>
