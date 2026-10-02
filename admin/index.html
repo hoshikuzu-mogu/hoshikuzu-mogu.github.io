@@ -46,12 +46,33 @@
   .empty{padding:14px 0;font-size:14px;color:var(--sub)}
   .foot{margin-top:40px;display:flex;justify-content:space-between;font-size:12px}
   .foot a,.foot button{color:var(--sub);background:none;border:0;height:auto;font:inherit;letter-spacing:.06em;text-decoration:underline;cursor:pointer}
+  .tabs{display:flex;gap:8px;margin-top:24px}
+  .tab{flex:1;height:44px;background:rgba(255,255,255,.35);color:var(--ink);font-size:14px;border-color:var(--rule)}
+  .tab[aria-selected="true"]{background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
+  .tab b{font-family:var(--sans);font-size:12px;margin-left:4px;color:var(--peri)}
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;padding:14px 16px;border-radius:8px;background:rgba(255,255,255,.4);border:1.5px solid var(--rule);font-family:var(--maru);font-weight:700;font-size:14px;letter-spacing:.06em}
+  .switch small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub);letter-spacing:.02em}
+  .toggle{position:relative;flex:none;width:56px;height:32px;border-radius:16px;padding:0;background:rgba(31,36,86,.18);border:0;transition:background .15s}
+  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(31,36,86,.3);transition:transform .15s}
+  .toggle[aria-checked="true"]{background:var(--peri)}
+  .toggle[aria-checked="true"]::after{transform:translateX(24px)}
+  .toggle:disabled{opacity:.5}
+  .rq{align-items:flex-start}
+  .rq .t{font-family:var(--maru);font-weight:700;font-size:16px;letter-spacing:.04em;word-break:break-word}
+  .rq .a{font-size:13px;color:var(--sub);margin-top:1px;word-break:break-word}
+  .rq .c{margin-top:6px;font-size:13px;line-height:1.7;word-break:break-word}
+  .rq .m{display:block;margin-top:6px;color:var(--sub);font-size:12px}
+  .rq .acts{display:flex;flex-direction:column;gap:6px;flex:none}
+  .rq .sung{height:36px;padding:0 12px;font-size:13px;background:var(--white);color:var(--ink)}
+  .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.5}
+  .rq.is-done .sung{background:transparent}
+  .reload{margin-top:14px;height:auto;padding:0;border:0;background:none;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline;cursor:pointer}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-  <h1>もぐ管理<small>サイトにXのポストを載せる</small></h1>
+  <h1>もぐ管理<small>歌のリクエストと X のポスト</small></h1>
 
   <section id="keyView" class="card" hidden>
     <label for="key">はじめに鍵を貼ってください</label>
@@ -61,6 +82,31 @@
   </section>
 
   <section id="mainView" hidden>
+    <div class="tabs" role="tablist">
+      <button class="tab" id="tabReq" role="tab" aria-selected="true" type="button">リクエスト<b id="reqCount"></b></button>
+      <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
+    </div>
+
+    <div id="reqView">
+      <div class="card" id="passBox" hidden>
+        <label for="pass">リクエストの合言葉を入れてください</label>
+        <input id="pass" type="password" autocomplete="off" placeholder="xxxx-xxxx-xxxx-xxxx">
+        <div class="row"><button class="primary" id="savePass" type="button">この合言葉で見る</button></div>
+        <p class="msg" id="passMsg"></p>
+      </div>
+      <div id="reqBody">
+      <div class="switch">
+        <div>リクエスト受付<small id="openText">読み込み中…</small></div>
+        <button class="toggle" id="openToggle" role="switch" aria-checked="true" aria-label="リクエスト受付" type="button" disabled></button>
+      </div>
+      <p class="msg" id="reqMsg"></p>
+      <h2 style="margin-top:20px">届いたリクエスト（新しい順）</h2>
+      <ul id="reqList"><li class="empty">読み込み中…</li></ul>
+      <button class="reload" id="reqReload" type="button">最新にする</button>
+      </div>
+    </div>
+
+    <div id="postView" hidden>
     <div class="card">
       <label for="url">載せたいポストのリンク</label>
       <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="https://x.com/…/status/…">
@@ -73,6 +119,7 @@
 
     <h2>いま載っているポスト（上から表示・最大5件）</h2>
     <ul id="list"><li class="empty">読み込み中…</li></ul>
+    </div>
 
     <div class="foot">
       <a href="../" target="_blank" rel="noopener">サイトを見る</a>
@@ -85,6 +132,8 @@
   var OWNER='hoshikuzu-mogu', REPO='hoshikuzu-mogu.github.io', PATH='posts.json', BRANCH='main';
   var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
   var KEY='mogu_admin_key';
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/mogu_req_admin', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC'; // 歌のリクエスト（Supabase）
+  var PASS='mogu_req_pass';
   var $=function(id){return document.getElementById(id);};
   var state={posts:[],sha:null};
 
@@ -143,14 +192,91 @@
     });
   }
 
+  // ---- 歌のリクエスト ----
+  var req={items:[],open:true};
+  function getPass(){ try{return localStorage.getItem(PASS)||'';}catch(e){return '';} }
+  function setPass(v){ try{ v?localStorage.setItem(PASS,v):localStorage.removeItem(PASS);}catch(e){} }
+  function rcall(payload){
+    var act=payload.action==='setOpen'?'open':payload.action;
+    var body={p_pass:getPass(), p_action:act, p_id:payload.id||null,
+      p_value:act==='open'?!!payload.open:act==='done'?!!payload.done:null};
+    if(!body.p_pass) return Promise.reject(new Error('pass'));
+    return fetch(SB,{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
+        if(!r.ok) throw new Error(d&&d.message==='auth'?'pass':'net');
+        return {ok:true, open:d.open, items:d.items};
+      }); });
+  }
+  function rErr(e){ return errText(e); }
+  function passFail(){ setPass(''); askPass('合言葉がちがうみたい。もう一度入れてね'); }
+  function askPass(t){ $('passBox').hidden=false; $('reqBody').hidden=true; say($('passMsg'),t||'',!!t); }
+  $('savePass').onclick=function(){ var v=$('pass').value.trim(); if(!v){ say($('passMsg'),'合言葉が空っぽです',true); return; }
+    setPass(v); $('pass').value=''; $('passBox').hidden=true; $('reqBody').hidden=false; loadReq(); };
+  function fmt(iso){ var d=new Date(iso); if(isNaN(d))return ''; return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
+  function renderOpen(){
+    var t=$('openToggle'); t.disabled=false; t.setAttribute('aria-checked',req.open?'true':'false');
+    $('openText').textContent=req.open?'受付中（サイトから送れます）':'お休み中（サイトに「お休み中」と出ます）';
+  }
+  function renderReq(){
+    var ul=$('reqList'); ul.innerHTML='';
+    var rest=req.items.filter(function(x){return !x.done;}).length;
+    $('reqCount').textContent=rest?String(rest):'';
+    if(!req.items.length){ ul.innerHTML='<li class="empty">まだリクエストはありません</li>'; return; }
+    var sorted=req.items.filter(function(x){return !x.done;}).concat(req.items.filter(function(x){return x.done;}));
+    sorted.forEach(function(it){
+      var li=document.createElement('li'); li.className='rq'+(it.done?' is-done':'');
+      var left=document.createElement('div');
+      var t=document.createElement('div'); t.className='t'; t.textContent=it.song; left.appendChild(t);
+      if(it.artist){ var a=document.createElement('div'); a.className='a'; a.textContent=it.artist; left.appendChild(a); }
+      if(it.comment){ var c=document.createElement('div'); c.className='c'; c.textContent=it.comment; left.appendChild(c); }
+      var m=document.createElement('small'); m.className='m'; m.textContent=(it.name||'なまえなし')+'・'+fmt(it.at); left.appendChild(m);
+      var acts=document.createElement('div'); acts.className='acts';
+      var s=document.createElement('button'); s.className='sung'; s.type='button'; s.textContent=it.done?'もどす':'歌った✓';
+      s.onclick=function(){ s.disabled=true;
+        rcall({action:'done',id:it.id,done:!it.done}).then(function(){ it.done=!it.done; renderReq(); })
+          .catch(function(e){ s.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+      };
+      var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
+      d.onclick=function(){ if(!confirm('「'+it.song+'」のリクエストを消す？'))return; d.disabled=true;
+        rcall({action:'delete',id:it.id}).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
+          .catch(function(e){ d.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+      };
+      acts.appendChild(s); acts.appendChild(d);
+      li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+    });
+  }
+  function loadReq(){
+    say($('reqMsg'),'');
+    if(!getPass()){ askPass(''); return Promise.resolve(); }
+    return rcall({action:'list'}).then(function(d){ req.items=d.items||[]; req.open=d.open!==false; renderOpen(); renderReq(); })
+      .catch(function(e){
+        if(e.message==='pass'){ passFail(); return; }
+        $('reqList').innerHTML='<li class="empty">読み込めませんでした</li>'; $('openText').textContent=''; say($('reqMsg'),rErr(e),true);
+      });
+  }
+  $('openToggle').onclick=function(){
+    var t=$('openToggle'), next=!req.open; t.disabled=true;
+    rcall({action:'setOpen',open:next}).then(function(d){ req.open=d.open; renderOpen(); say($('reqMsg'),next?'受付を再開しました':'受付をお休みにしました'); })
+      .catch(function(e){ t.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+  };
+  $('reqReload').onclick=loadReq;
+  function showTab(name){
+    var r=name==='req';
+    $('tabReq').setAttribute('aria-selected',r?'true':'false'); $('tabPost').setAttribute('aria-selected',r?'false':'true');
+    $('reqView').hidden=!r; $('postView').hidden=r;
+  }
+  $('tabReq').onclick=function(){ showTab('req'); };
+  $('tabPost').onclick=function(){ showTab('post'); };
+
   function start(){
     $('keyView').hidden=true; $('mainView').hidden=false;
+    showTab('req'); loadReq();
     load().then(render).catch(function(e){ if(e.message==='key'){ showKey('鍵が使えないみたい。もう一度貼ってね'); } else { $('list').innerHTML='<li class="empty">読み込めませんでした</li>'; say($('msg'),errText(e),true); } });
   }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
 
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){say($('keyMsg'),'鍵が空っぽです',true);return;} setKey(v); $('key').value=''; start(); };
-  $('resetKey').onclick=function(){ setKey(''); showKey(''); };
+  $('resetKey').onclick=function(){ setKey(''); setPass(''); showKey(''); };
   $('paste').onclick=function(){
     if(navigator.clipboard&&navigator.clipboard.readText){ navigator.clipboard.readText().then(function(t){ $('url').value=t.trim(); }).catch(function(){ say($('msg'),'長押しで貼り付けてね',true); }); }
     else say($('msg'),'長押しで貼り付けてね',true);
