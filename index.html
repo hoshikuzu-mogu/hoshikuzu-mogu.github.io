@@ -186,6 +186,36 @@
   .xfeed__item { min-height: 40px; }
   .xfeed__more { display: inline-block; margin-top: 12px; font-size: 12px; letter-spacing: .06em; color: var(--ink-sub); transition: color .2s; }
   .xfeed__more:hover { color: var(--white); }
+
+  /* REQUEST：歌のリクエスト */
+  .req { max-width: 560px; }
+  .req__lead { font-size: 15px; line-height: 2; letter-spacing: .05em; }
+  .req__form { margin-top: 26px; display: grid; gap: 18px; }
+  .req__row { display: grid; gap: 18px; }
+  .req__f label { display: block; font-family: var(--maru); font-weight: 700; font-size: 13px; letter-spacing: .1em; margin-bottom: 6px; }
+  .req__f label small { font-family: var(--sans); font-weight: 400; font-size: 11px; color: var(--ink-sub); margin-left: 6px; letter-spacing: .06em; }
+  .req__f input, .req__f textarea {
+    display: block; width: 100%; padding: 12px 14px;
+    border: 1.5px solid var(--rule); border-radius: 8px; background: rgba(255,255,255,.66);
+    font: inherit; font-size: 16px; line-height: 1.6; color: var(--ink); -webkit-appearance: none; appearance: none;
+    transition: border-color .15s, background-color .15s;
+  }
+  .req__f textarea { min-height: 92px; resize: vertical; }
+  .req__f input::placeholder, .req__f textarea::placeholder { color: rgba(63,72,128,.55); }
+  .req__f input:focus, .req__f textarea:focus { outline: none; border-color: var(--peri); background: var(--white); }
+  .req__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .req .btn { margin-top: 6px; cursor: pointer; justify-self: start; }
+  .req .btn:disabled { opacity: .55; cursor: default; transform: none; box-shadow: 5px 5px 0 var(--peri); background: var(--white); color: var(--ink); }
+  .req__msg { min-height: 1.8em; font-family: var(--maru); font-weight: 700; font-size: 14px; letter-spacing: .06em; }
+  .req__msg.err { color: #B3264A; }
+  .req__done, .req__closed { margin-top: 26px; padding: 26px 24px; border-radius: 12px; background: var(--glass); border: 1px solid var(--rule); }
+  .req__done p:first-child, .req__closed p:first-child { font-family: var(--maru); font-weight: 700; font-size: 18px; letter-spacing: .08em; }
+  .req__done p + p, .req__closed p + p { margin-top: 6px; font-size: 14px; color: var(--ink-sub); }
+  .req__again { margin-top: 14px; background: none; border: 0; padding: 0; font: inherit; font-size: 13px; letter-spacing: .08em; color: var(--ink); border-bottom: 1.5px solid var(--peri); cursor: pointer; }
+  .req__again:hover { color: var(--white); }
+  .req [hidden] { display: none !important; }
+  @media (min-width: 768px) { .req__row { grid-template-columns: 1fr 1fr; } }
+
   /* LINK：一覧 */
   .links { list-style: none; }
   .links li + li { border-top: 1px solid var(--rule); }
@@ -232,6 +262,7 @@
       <nav class="nav" aria-label="メイン">
         <a href="#profile">PROFILE</a>
         <a href="#schedule">SCHEDULE</a>
+        <a href="#request">REQUEST</a>
         <a href="#link">LINK</a>
       </nav>
       <button class="menu-btn" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="menu"><span></span><span></span></button>
@@ -245,6 +276,7 @@
       <li><a href="#top"><span class="en">Top</span><span class="ja">トップ</span></a></li>
       <li><a href="#profile"><span class="en">Profile</span><span class="ja">プロフィール</span></a></li>
       <li><a href="#schedule"><span class="en">Schedule</span><span class="ja">配信</span></a></li>
+      <li><a href="#request"><span class="en">Request</span><span class="ja">歌のリクエスト</span></a></li>
       <li><a href="#message"><span class="en">Message</span><span class="ja">配信のこと</span></a></li>
       <li><a href="#history"><span class="en">History</span><span class="ja">これまで</span></a></li>
       <li><a href="#goal"><span class="en">Goal</span><span class="ja">目標</span></a></li>
@@ -308,6 +340,34 @@
       <p class="xfeed__label">X のピックアップ</p>
       <div class="xfeed__list" id="xfeed-list"></div>
       <a class="xfeed__more" href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener">ほかのポストも X で見る ↗</a>
+    </div>
+  </section>
+
+
+  <section class="sec" id="request">
+    <div class="sec__head"><h2 class="sec__en">Request</h2><span class="sec__ja">歌のリクエスト</span></div>
+    <div class="req">
+      <p class="req__lead">歌ってほしい曲を送ってね。全部は歌えないかもだけど、ちゃんと見てます🎤</p>
+      <form class="req__form" id="req-form" novalidate>
+        <div class="req__row">
+          <div class="req__f"><label for="req-song">曲名</label><input id="req-song" name="song" type="text" maxlength="80" autocomplete="off" required></div>
+          <div class="req__f"><label for="req-artist">歌ってる人<small>わかれば</small></label><input id="req-artist" name="artist" type="text" maxlength="60" autocomplete="off"></div>
+        </div>
+        <div class="req__f"><label for="req-name">なまえ<small>なしでもOK</small></label><input id="req-name" name="name" type="text" maxlength="24" autocomplete="nickname"></div>
+        <div class="req__f"><label for="req-comment">ひとこと<small>なしでもOK</small></label><textarea id="req-comment" name="comment" maxlength="140" placeholder="この曲の好きなところ、聴きたい理由など"></textarea></div>
+        <div class="req__hp" aria-hidden="true"><label for="req-web">website</label><input id="req-web" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+        <button class="btn" type="submit">リクエストを送る</button>
+        <p class="req__msg" id="req-msg" role="status" aria-live="polite"></p>
+      </form>
+      <div class="req__done" id="req-done" hidden>
+        <p>リクエスト届いたよ！ありがとう🎤</p>
+        <p>歌枠のときにチェックするね。</p>
+        <button class="req__again" id="req-again" type="button">もう1曲送る</button>
+      </div>
+      <div class="req__closed" id="req-closed" hidden>
+        <p>いまリクエストはお休み中です</p>
+        <p>再開したら X でお知らせするね。</p>
+      </div>
     </div>
   </section>
 
@@ -407,6 +467,45 @@
     };
     document.body.appendChild(sc);
   }).catch(function(){});
+})();
+</script>
+<script>
+(function(){
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC'; // 歌のリクエスト受付（Supabase）
+  function rpc(fn,body){
+    return fetch(SB+fn,{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:JSON.stringify(body||{})})
+      .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
+        if(!r.ok) throw new Error((d&&d.message)||'server'); return d; }); });
+  }
+  var $=function(id){return document.getElementById(id);};
+  var form=$('req-form'), msg=$('req-msg'), btn=form.querySelector('button[type=submit]');
+  var LAST='mogu_req_last', WAIT=60000;
+  function say(t,err){ msg.textContent=t; msg.classList.toggle('err',!!err); }
+  function last(){ try{return +localStorage.getItem(LAST)||0;}catch(e){return 0;} }
+  function mark(){ try{localStorage.setItem(LAST,String(Date.now()));}catch(e){} }
+  function closed(){ form.hidden=true; $('req-done').hidden=true; $('req-closed').hidden=false; }
+
+  rpc('mogu_req_status').then(function(open){ if(open===false) closed(); }).catch(function(){});
+
+  form.addEventListener('submit',function(e){
+    e.preventDefault();
+    var f=form.elements, song=f.song.value.trim();
+    if(!song){ say('曲名を入れてね',true); f.song.focus(); return; }
+    var left=WAIT-(Date.now()-last());
+    if(left>0){ say('続けて送るときは少しあけてね（あと'+Math.ceil(left/1000)+'秒）',true); return; }
+    btn.disabled=true; say('送っています…');
+    if(f.website.value){ form.reset(); form.hidden=true; $('req-done').hidden=false; btn.disabled=false; return; }
+    rpc('mogu_req_submit',{p_song:song, p_artist:f.artist.value.trim(), p_name:f.name.value.trim(), p_comment:f.comment.value.trim()})
+    .then(function(){
+      mark(); form.reset(); say(''); form.hidden=true; $('req-done').hidden=false;
+    }).catch(function(err){
+      if(err.message==='closed'){ closed(); return; }
+      say(err.message==='busy'?'いま混み合っています。少し待ってからもう一度送ってね'
+        :err.message==='empty'?'曲名を入れてね'
+        :'送れませんでした。電波を確認してもう一度送ってね',true);
+    }).then(function(){ btn.disabled=false; });
+  });
+  $('req-again').addEventListener('click',function(){ $('req-done').hidden=true; form.hidden=false; $('req-song').focus(); });
 })();
 </script>
 </body>
