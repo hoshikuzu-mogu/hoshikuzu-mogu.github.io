@@ -75,9 +75,9 @@
   <h1>もぐ管理<small>歌のリクエストと X のポスト</small></h1>
 
   <section id="keyView" class="card" hidden>
-    <label for="key">はじめに鍵を貼ってください</label>
-    <input id="key" type="password" autocomplete="off" placeholder="github_pat_…">
-    <div class="row"><button class="primary" id="saveKey">この鍵で始める</button></div>
+    <label for="key">合言葉を入れてください</label>
+    <input id="key" type="password" autocomplete="current-password" placeholder="xxxx-xxxx-xxxx-xxxx">
+    <div class="row"><button class="primary" id="saveKey">はじめる</button></div>
     <p class="msg" id="keyMsg"></p>
   </section>
 
@@ -88,12 +88,6 @@
     </div>
 
     <div id="reqView">
-      <div class="card" id="passBox" hidden>
-        <label for="pass">リクエストの合言葉を入れてください</label>
-        <input id="pass" type="password" autocomplete="off" placeholder="xxxx-xxxx-xxxx-xxxx">
-        <div class="row"><button class="primary" id="savePass" type="button">この合言葉で見る</button></div>
-        <p class="msg" id="passMsg"></p>
-      </div>
       <div id="reqBody">
       <div class="switch">
         <div>リクエスト受付<small id="openText">読み込み中…</small></div>
@@ -123,59 +117,40 @@
 
     <div class="foot">
       <a href="../" target="_blank" rel="noopener">サイトを見る</a>
-      <button id="resetKey" type="button">鍵を入れ直す</button>
+      <button id="resetKey" type="button">合言葉を入れ直す</button>
     </div>
   </section>
 </main>
 <script>
 (function(){
-  var OWNER='hoshikuzu-mogu', REPO='hoshikuzu-mogu.github.io', PATH='posts.json', BRANCH='main';
-  var API='https://api.github.com/repos/'+OWNER+'/'+REPO+'/contents/'+PATH;
-  var KEY='mogu_admin_key';
-  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/mogu_req_admin', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC'; // 歌のリクエスト（Supabase）
+  var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var PASS='mogu_req_pass';
   var $=function(id){return document.getElementById(id);};
-  var state={posts:[],sha:null};
+  var posts=[], req={items:[],open:true};
 
-  function getKey(){ try{return localStorage.getItem(KEY)||'';}catch(e){return '';} }
-  function setKey(v){ try{ v?localStorage.setItem(KEY,v):localStorage.removeItem(KEY);}catch(e){} }
-  function headers(){ return {'Authorization':'Bearer '+getKey(),'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'}; }
-  function b64decode(b){ var bin=atob(b.replace(/\n/g,'')); var u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i); return new TextDecoder().decode(u); }
-  function b64encode(str){ var u=new TextEncoder().encode(str), bin=''; for(var i=0;i<u.length;i++)bin+=String.fromCharCode(u[i]); return btoa(bin); }
+  function getPass(){ try{return localStorage.getItem(PASS)||'';}catch(e){return '';} }
+  function setPass(v){ try{ v?localStorage.setItem(PASS,v):localStorage.removeItem(PASS); localStorage.removeItem('mogu_admin_key'); }catch(e){} }
   function say(el,text,err){ el.textContent=text; el.classList.toggle('err',!!err); }
+  function errText(e){ return e.message==='dup'?'そのポストはもう載っています':'通信できなかったみたい。電波を確認してもう一度押してね'; }
+  function call(fn,body){
+    body.p_pass=getPass();
+    return fetch(SB+fn,{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
+      .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
+        if(!r.ok) throw new Error(d&&(d.message==='auth'||d.message==='dup')?d.message:'net');
+        return d; }); });
+  }
+  function fail(e,el){ if(e.message==='auth'){ setPass(''); showKey('合言葉がちがうみたい。もう一度入れてね'); return; } say(el,errText(e),true); }
   function normalize(u){
     var m=String(u).trim().match(/^https?:\/\/(?:www\.|mobile\.)?(?:x|twitter)\.com\/([A-Za-z0-9_]+)\/status(?:es)?\/(\d+)/);
     return m ? 'https://x.com/'+m[1]+'/status/'+m[2] : null;
   }
+  function fmt(iso){ var d=new Date(iso); if(isNaN(d))return ''; return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
 
-  function load(){
-    return fetch(API+'?ref='+BRANCH+'&t='+Date.now(),{headers:headers(),cache:'no-store'}).then(function(r){
-      if(r.status===401||r.status===403) throw new Error('key');
-      if(r.status===404){ state={posts:[],sha:null}; return; }
-      if(!r.ok) throw new Error('net');
-      return r.json().then(function(d){ var j={}; try{j=JSON.parse(b64decode(d.content));}catch(e){} state={posts:j.posts||[],sha:d.sha}; });
-    });
-  }
-  function save(posts,message){
-    var body={message:message,content:b64encode(JSON.stringify({posts:posts},null,2)+'\n'),branch:BRANCH};
-    if(state.sha) body.sha=state.sha;
-    return fetch(API,{method:'PUT',headers:headers(),body:JSON.stringify(body)}).then(function(r){
-      if(r.status===409||r.status===422) throw new Error('conflict');
-      if(r.status===401||r.status===403) throw new Error('key');
-      if(!r.ok) throw new Error('net');
-      return r.json().then(function(d){ state={posts:posts,sha:d.content.sha}; });
-    });
-  }
-  function errText(e){
-    return e.message==='key' ? '鍵が使えないみたい。「鍵を入れ直す」から貼り直してね'
-         : e.message==='conflict' ? 'ほかの変更とぶつかったので、もう一度押してね'
-         : '通信できなかったみたい。電波を確認してもう一度押してね';
-  }
-
+  // ---- X のポスト ----
   function render(){
     var ul=$('list'); ul.innerHTML='';
-    if(!state.posts.length){ ul.innerHTML='<li class="empty">まだ何も載っていません</li>'; return; }
-    state.posts.forEach(function(p,i){
+    if(!posts.length){ ul.innerHTML='<li class="empty">まだ何も載っていません</li>'; return; }
+    posts.forEach(function(p,i){
       var li=document.createElement('li');
       var d=p.added?new Date(p.added):null;
       var left=document.createElement('div');
@@ -184,35 +159,31 @@
       left.appendChild(a); left.appendChild(sm);
       var b=document.createElement('button'); b.className='del'; b.textContent='消す';
       b.onclick=function(){ if(!confirm('このポストをサイトから外す？'))return; b.disabled=true;
-        load().then(function(){ var next=state.posts.filter(function(x){return x.url!==p.url;}); return save(next,'ポストを外す'); })
-          .then(function(){ render(); say($('msg'),'外しました。1分ほどでサイトに反映されます'); })
-          .catch(function(e){ b.disabled=false; say($('msg'),errText(e),true); });
+        call('mogu_post_admin',{p_action:'delete',p_url:p.url}).then(function(d){ posts=d||[]; render(); say($('msg'),'外しました'); })
+          .catch(function(e){ b.disabled=false; fail(e,$('msg')); });
       };
       li.appendChild(left); li.appendChild(b); ul.appendChild(li);
     });
   }
+  function loadPosts(){
+    return call('mogu_post_admin',{p_action:'list'}).then(function(d){ posts=d||[]; render(); })
+      .catch(function(e){ $('list').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('msg')); });
+  }
+  $('paste').onclick=function(){
+    if(navigator.clipboard&&navigator.clipboard.readText){ navigator.clipboard.readText().then(function(t){ $('url').value=t.trim(); }).catch(function(){ say($('msg'),'長押しで貼り付けてね',true); }); }
+    else say($('msg'),'長押しで貼り付けてね',true);
+  };
+  $('add').onclick=function(){
+    var url=normalize($('url').value);
+    if(!url){ say($('msg'),'Xのポストのリンクを貼ってね（…/status/… の形）',true); return; }
+    var btn=$('add'); btn.disabled=true; say($('msg'),'載せています…');
+    call('mogu_post_admin',{p_action:'add',p_url:url}).then(function(d){ posts=d||[]; $('url').value=''; render(); say($('msg'),'載せました！サイトにすぐ出ます'); })
+      .catch(function(e){ fail(e,$('msg')); })
+      .then(function(){ btn.disabled=false; });
+  };
 
   // ---- 歌のリクエスト ----
-  var req={items:[],open:true};
-  function getPass(){ try{return localStorage.getItem(PASS)||'';}catch(e){return '';} }
-  function setPass(v){ try{ v?localStorage.setItem(PASS,v):localStorage.removeItem(PASS);}catch(e){} }
-  function rcall(payload){
-    var act=payload.action==='setOpen'?'open':payload.action;
-    var body={p_pass:getPass(), p_action:act, p_id:payload.id||null,
-      p_value:act==='open'?!!payload.open:act==='done'?!!payload.done:null};
-    if(!body.p_pass) return Promise.reject(new Error('pass'));
-    return fetch(SB,{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
-      .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
-        if(!r.ok) throw new Error(d&&d.message==='auth'?'pass':'net');
-        return {ok:true, open:d.open, items:d.items};
-      }); });
-  }
-  function rErr(e){ return errText(e); }
-  function passFail(){ setPass(''); askPass('合言葉がちがうみたい。もう一度入れてね'); }
-  function askPass(t){ $('passBox').hidden=false; $('reqBody').hidden=true; say($('passMsg'),t||'',!!t); }
-  $('savePass').onclick=function(){ var v=$('pass').value.trim(); if(!v){ say($('passMsg'),'合言葉が空っぽです',true); return; }
-    setPass(v); $('pass').value=''; $('passBox').hidden=true; $('reqBody').hidden=false; loadReq(); };
-  function fmt(iso){ var d=new Date(iso); if(isNaN(d))return ''; return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
+  function rcall(act,id,val){ return call('mogu_req_admin',{p_action:act,p_id:id||null,p_value:(val===undefined?null:val)}); }
   function renderOpen(){
     var t=$('openToggle'); t.disabled=false; t.setAttribute('aria-checked',req.open?'true':'false');
     $('openText').textContent=req.open?'受付中（サイトから送れます）':'お休み中（サイトに「お休み中」と出ます）';
@@ -233,13 +204,13 @@
       var acts=document.createElement('div'); acts.className='acts';
       var s=document.createElement('button'); s.className='sung'; s.type='button'; s.textContent=it.done?'もどす':'歌った✓';
       s.onclick=function(){ s.disabled=true;
-        rcall({action:'done',id:it.id,done:!it.done}).then(function(){ it.done=!it.done; renderReq(); })
-          .catch(function(e){ s.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+        rcall('done',it.id,!it.done).then(function(){ it.done=!it.done; renderReq(); })
+          .catch(function(e){ s.disabled=false; fail(e,$('reqMsg')); });
       };
       var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
       d.onclick=function(){ if(!confirm('「'+it.song+'」のリクエストを消す？'))return; d.disabled=true;
-        rcall({action:'delete',id:it.id}).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
-          .catch(function(e){ d.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+        rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
+          .catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); });
       };
       acts.appendChild(s); acts.appendChild(d);
       li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
@@ -247,19 +218,16 @@
   }
   function loadReq(){
     say($('reqMsg'),'');
-    if(!getPass()){ askPass(''); return Promise.resolve(); }
-    return rcall({action:'list'}).then(function(d){ req.items=d.items||[]; req.open=d.open!==false; renderOpen(); renderReq(); })
-      .catch(function(e){
-        if(e.message==='pass'){ passFail(); return; }
-        $('reqList').innerHTML='<li class="empty">読み込めませんでした</li>'; $('openText').textContent=''; say($('reqMsg'),rErr(e),true);
-      });
+    return rcall('list').then(function(d){ req.items=d.items||[]; req.open=d.open!==false; renderOpen(); renderReq(); })
+      .catch(function(e){ $('reqList').innerHTML='<li class="empty">読み込めませんでした</li>'; $('openText').textContent=''; fail(e,$('reqMsg')); });
   }
   $('openToggle').onclick=function(){
     var t=$('openToggle'), next=!req.open; t.disabled=true;
-    rcall({action:'setOpen',open:next}).then(function(d){ req.open=d.open; renderOpen(); say($('reqMsg'),next?'受付を再開しました':'受付をお休みにしました'); })
-      .catch(function(e){ t.disabled=false; if(e.message==='pass'){ passFail(); return; } say($('reqMsg'),rErr(e),true); });
+    rcall('open',null,next).then(function(d){ req.open=d.open; renderOpen(); say($('reqMsg'),next?'受付を再開しました':'受付をお休みにしました'); })
+      .catch(function(e){ t.disabled=false; fail(e,$('reqMsg')); });
   };
   $('reqReload').onclick=loadReq;
+
   function showTab(name){
     var r=name==='req';
     $('tabReq').setAttribute('aria-selected',r?'true':'false'); $('tabPost').setAttribute('aria-selected',r?'false':'true');
@@ -268,33 +236,13 @@
   $('tabReq').onclick=function(){ showTab('req'); };
   $('tabPost').onclick=function(){ showTab('post'); };
 
-  function start(){
-    $('keyView').hidden=true; $('mainView').hidden=false;
-    showTab('req'); loadReq();
-    load().then(render).catch(function(e){ if(e.message==='key'){ showKey('鍵が使えないみたい。もう一度貼ってね'); } else { $('list').innerHTML='<li class="empty">読み込めませんでした</li>'; say($('msg'),errText(e),true); } });
-  }
+  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadPosts(); }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
+  $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
+  $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
+  $('resetKey').onclick=function(){ setPass(''); showKey(''); };
 
-  $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){say($('keyMsg'),'鍵が空っぽです',true);return;} setKey(v); $('key').value=''; start(); };
-  $('resetKey').onclick=function(){ setKey(''); setPass(''); showKey(''); };
-  $('paste').onclick=function(){
-    if(navigator.clipboard&&navigator.clipboard.readText){ navigator.clipboard.readText().then(function(t){ $('url').value=t.trim(); }).catch(function(){ say($('msg'),'長押しで貼り付けてね',true); }); }
-    else say($('msg'),'長押しで貼り付けてね',true);
-  };
-  $('add').onclick=function(){
-    var url=normalize($('url').value);
-    if(!url){ say($('msg'),'Xのポストのリンクを貼ってね（…/status/… の形）',true); return; }
-    var btn=$('add'); btn.disabled=true; say($('msg'),'載せています…');
-    load().then(function(){
-      if(state.posts.some(function(p){return p.url===url;})) throw new Error('dup');
-      var next=[{url:url,added:new Date().toISOString()}].concat(state.posts).slice(0,20);
-      return save(next,'ポストを載せる');
-    }).then(function(){ $('url').value=''; render(); say($('msg'),'載せました！1分ほどでサイトに出ます'); })
-      .catch(function(e){ say($('msg'), e.message==='dup'?'そのポストはもう載っています':errText(e), true); })
-      .then(function(){ btn.disabled=false; });
-  };
-
-  getKey() ? start() : showKey('');
+  getPass() ? start() : showKey('');
 })();
 </script>
 </body>
