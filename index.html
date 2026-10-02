@@ -468,8 +468,8 @@
 (function(){
   var box=document.getElementById('xfeed'), list=document.getElementById('xfeed-list');
   function idOf(u){ var m=String(u).match(/status(?:es)?\/(\d+)/); return m?m[1]:null; }
-  fetch('posts.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():{posts:[]};}).then(function(d){
-    var ids=(d.posts||[]).map(function(p){return idOf(p.url);}).filter(Boolean).slice(0,5);
+  fetch('https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/mogu_posts',{method:'POST',headers:{'apikey':'sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC','Content-Type':'application/json'},body:'{}'}).then(function(r){return r.ok?r.json():[];}).then(function(d){
+    var ids=(d||[]).map(function(p){return idOf(p.url);}).filter(Boolean).slice(0,5);
     if(!ids.length) return;
     box.hidden=false;
     var sc=document.createElement('script'); sc.src='https://platform.twitter.com/widgets.js'; sc.async=true; sc.charset='utf-8';
