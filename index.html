@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261010234500">
+<meta name="build" content="20261010235500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -93,8 +93,9 @@
   /* 見出しの輪っかと羽 */
   .sec__head h2{position:relative;display:inline-block}
   .sh-halo{position:absolute;z-index:3;left:-6px;top:-22px;width:58px;height:19px;transform:rotate(-10deg);animation:float 3.8s ease-in-out infinite}
-  .sh-wing{position:absolute;z-index:-1;top:-14px;width:46px;height:46px;opacity:.95}
-  .sh-wing--r{right:-34px}
+  .sh-wing{position:absolute;z-index:3;top:-20px;width:52px;height:auto;transform:rotate(14deg);filter:drop-shadow(0 0 2px rgba(78,127,207,.8));pointer-events:none;animation:flutter 2.6s ease-in-out infinite;transform-origin:20% 80%}
+  @keyframes flutter{50%{rotate:-10deg}}
+  .sh-wing--r{right:-40px}
   /* ティッカー */
   .ticker{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--hh));z-index:18;height:24px;overflow:hidden;
     background:linear-gradient(90deg,var(--pink2),#fff,var(--lav2));border-bottom:1.5px solid var(--frame);font-family:var(--px);font-size:18px;line-height:24px;color:#B4437A;white-space:nowrap}
@@ -1002,7 +1003,7 @@
   // ---- 見出しに輪っかと羽 ----
   document.querySelectorAll('.sec__head h2').forEach(function(h,i){
     h.insertAdjacentHTML('afterbegin','<img class="sh-drip" src="img/'+(i%2?'halo-drip-lav':'halo-drip')+'.webp" alt="" width="454" height="334" aria-hidden="true">');
-    var hl=h.querySelector('.ghost'); if(hl) hl.insertAdjacentHTML('beforeend','<svg class="sh-wing sh-wing--r" viewBox="0 0 120 120" aria-hidden="true" style="transform:scaleX(-1)"><use href="#wing"/></svg>');
+    var hl=h.querySelector('.ghost'); if(hl) hl.insertAdjacentHTML('beforeend','<img class="sh-wing sh-wing--r" src="img/wing-glow.webp" alt="" width="365" height="320" aria-hidden="true">');
   });
 
   // ---- タップしたところに羽とハート ----
