@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011032500">
+<meta name="build" content="20261011044000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -50,6 +50,8 @@
     --hh:52px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  img,svg,canvas{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;-webkit-user-drag:none}
+  .rw__img{-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}
   html{overflow-x:hidden;overflow-x:clip;scroll-padding-top:calc(env(safe-area-inset-top,0px) + var(--hh) + 36px);-webkit-text-size-adjust:100%}
   body{
     color:var(--ink); font-family:var(--jp); font-weight:500; line-height:1.85; letter-spacing:.03em;
@@ -1066,6 +1068,9 @@
   window.MOGU.pop=pop;
   var lastTap=0;
   // リンクやボタンは押した瞬間に演出を出すと iPhone がタップを取り消すので、click のあとに出す
+  // 画像の長押し保存・右クリック保存・ドラッグを止める（ごほうび壁紙だけはOK）
+  function noSave(e){ var t=e.target; if(t&&t.tagName==='IMG'&&!t.classList.contains('rw__img')) e.preventDefault(); }
+  document.addEventListener('contextmenu',noSave); document.addEventListener('dragstart',noSave);
   var TAPPABLE='a,button,summary,label,[role=button]';
   document.addEventListener('pointerdown',function(e){ if(e.target.closest&&e.target.closest(TAPPABLE)) return; fx(e); },{passive:true});
   document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest(TAPPABLE)) setTimeout(function(){ fx(e); },0); });
