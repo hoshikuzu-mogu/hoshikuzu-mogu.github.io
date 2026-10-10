@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011031500">
+<meta name="build" content="20261011032000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -305,7 +305,7 @@
   }
 
   /* ===== デスクトップ（クイックメニュー） ===== */
-  .desk{position:relative;z-index:2;width:var(--wrap);margin:6px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px}
+  .desk{position:relative;z-index:6;width:var(--wrap);margin:6px auto 0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px 8px}
   .desk a{display:grid;justify-items:center;gap:4px;padding:6px 2px;text-align:center;font-family:var(--dot);font-size:12px;line-height:1.3}
   .desk a:hover span,.desk a:focus-visible span{background:var(--blue);color:#fff}
   .desk .icn{position:relative;width:58px;height:58px;display:grid;place-items:center;background:var(--white);border:1.5px solid var(--frame);box-shadow:3px 3px 0 rgba(78,127,207,.18)}
@@ -582,7 +582,7 @@
   <symbol id="sun" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="4.2" fill="currentColor"/><path d="M12 2.5v2.4M12 19.1v2.4M2.5 12h2.4M19.1 12h2.4M5.3 5.3l1.7 1.7M17 17l1.7 1.7M5.3 18.7 7 17M17 7l1.7-1.7"/></g></symbol>
   <symbol id="mic" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="8.5" y="2.5" width="7" height="12" rx="3.5"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3.5"/></g></symbol>
   <symbol id="notes" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 17.5V6l10-2v11.5"/><circle cx="6.8" cy="17.5" r="2.2"/><circle cx="16.8" cy="15.5" r="2.2"/><path d="M9 9.5l10-2"/></g></symbol>
-  <symbol id="letter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 6h17v12h-17z"/><path d="m3.5 6.5 8.5 7 8.5-7"/></g></symbol>
+  <symbol id="i-letter" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M3.5 6h17v12h-17z"/><path d="m3.5 6.5 8.5 7 8.5-7"/></g></symbol>
   <symbol id="cal" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15" rx="1"/><path d="M3.5 10h17M8 3v4M16 3v4" stroke-linecap="round"/></g></symbol>
   <symbol id="search" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></g></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
@@ -717,8 +717,8 @@
   <nav class="desk" aria-label="メニュー">
     <a href="#schedule"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#cal"/></svg></span><span>schedule</span></a>
     <a href="#request" data-open="req"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#mic"/></svg></span><span>request</span></a>
-    <a href="#songs"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#notes"/></svg></span><span>songs.m3u</span></a>
-    <a href="#letter" data-open="msg"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#letter"/></svg></span><span>letter.txt</span></a>
+    <a href="#songs" id="desk-songs"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#notes"/></svg></span><span>songs.m3u</span></a>
+    <a href="#letter" data-open="msg"><span class="icn"><svg viewBox="0 0 24 24" style="color:var(--blue)"><use href="#i-letter"/></svg></span><span>letter.txt</span></a>
     <a href="#omikuji"><span class="icn"><svg viewBox="0 0 40 40"><use href="#egg"/></svg></span><span>omikuji.exe</span></a>
     <a href="#stamp"><span class="icn"><svg viewBox="0 0 64 56" style="width:46px"><use href="#atanu"/></svg></span><span>stamp.dat</span></a>
   </nav>
@@ -1152,6 +1152,21 @@
     return set;
   }
   var openReq=acc('req-acc'), openMsg=acc('msg-acc');
+  // ページ内リンクは自分でスクロール（iPhoneで飛ばないことがあるため）
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]'); if(!a) return;
+    var id=a.getAttribute('href').slice(1); if(!id) return;
+    var el=document.querySelector('section#'+CSS.escape(id))||document.getElementById(id);
+    if(!el||el.tagName==='symbol') return;
+    if(el.hidden){ el=document.getElementById('request'); if(!el) return; }
+    e.preventDefault();
+    var off=parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop)||90;
+    var y=el.getBoundingClientRect().top+window.pageYOffset-off;
+    var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({top:Math.max(0,y),behavior:reduce?'auto':'smooth'});
+    try{ history.replaceState(null,'','#'+el.id); }catch(_){}
+  });
+
   document.querySelectorAll('[data-open]').forEach(function(a){
     a.addEventListener('click',function(){ if(a.dataset.open==='req') openReq(true); else openMsg(true); });
   });
