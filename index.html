@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011031000">
+<meta name="build" content="20261011031500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -332,8 +332,8 @@
   .prof__vis .win__body{position:relative}
   .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
   .slides::-webkit-scrollbar{display:none}
-  .slide{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;display:grid;place-items:end center;overflow:hidden}
-  .slide img{width:100%;height:100%;object-fit:contain;object-position:50% 100%}
+  .slide{flex:0 0 100%;aspect-ratio:3/4;scroll-snap-align:center;position:relative;overflow:hidden;margin:0}
+  .slide img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 0}
   .slide--photo img{object-fit:cover;object-position:50% 20%}
   .dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;pointer-events:none}
   .dots i{width:8px;height:8px;border:1.5px solid #fff;background:rgba(255,255,255,.4);box-shadow:0 0 0 1px rgba(78,127,207,.35);transition:background .2s,transform .2s}
