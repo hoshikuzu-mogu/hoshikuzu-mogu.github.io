@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011011500">
+<meta name="build" content="20261010232000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -653,7 +653,7 @@
     <div class="win__bar"><span class="t">present.exe</span><span class="win__btns"><i>×</i></span></div>
     <div class="win__body">
       <p class="rw__ttl">CONGRATULATIONS!</p>
-      <p class="rw__sub">スタンプ10個たまったよ！<br>いつも来てくれてありがと♡</p>
+      <p class="rw__sub">スタンプ20個たまったよ！<br>いつも来てくれてありがと♡</p>
       <img class="rw__img" id="rw-img" alt="もぐの特別壁紙">
       <div class="btns" style="justify-content:center;margin-top:14px">
         <button class="btn btn--main" id="rw-save" type="button"><span class="ja">壁紙を保存する</span></button>
@@ -889,7 +889,7 @@
 
   <section class="sec" id="stamp">
     <div class="sec__head"><h2><span class="ghost sec__en" data-t="STAMP"><span class="hl">STAMP</span></span><span class="sec__ja">てんしすたんぷ</span></h2></div>
-    <p class="lead">見にきてくれた日は、スタンプが自動でたまるよ。10個たまると、もぐの特別な壁紙がもらえます🎁 サイトで遊ぶとポイントもたまって、天使のランクが上がります。</p>
+    <p class="lead">見にきてくれた日は、スタンプが自動でたまるよ。20個たまると、もぐの特別な壁紙がもらえます🎁 サイトで遊ぶとポイントもたまって、天使のランクが上がります。</p>
     <div class="win win--pink lace" style="margin-top:16px">
       <div class="win__bar"><span class="t">stamp.dat</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
       <div class="win__body">
@@ -1336,7 +1336,8 @@
   }
   M.gain=gain;
 
-  // ---- スタンプカード（10こで1枚） ----
+  // ---- スタンプカード（20こで1枚） ----
+  var N=20;
   var KINDS=['kira','egg','atanu','paw','pxheart'];
   var C=ls('mogu_stamp')||{days:[],cards:0,last:''};
   function stampSvg(i){ var k=KINDS[i%5];
@@ -1347,19 +1348,19 @@
     return '<svg viewBox="0 0 40 40"><use href="#egg"/></svg>'; }
   function renderCard(fresh){
     var g=$('st-grid'); g.innerHTML='';
-    for(var i=0;i<10;i++){ var li=document.createElement('li'); var on=i<C.days.length;
+    for(var i=0;i<N;i++){ var li=document.createElement('li'); var on=i<C.days.length;
       if(on){ li.className='on'+(fresh&&i===C.days.length-1?' new':''); li.innerHTML=stampSvg(i+C.cards); } else li.textContent=i+1;
       g.appendChild(li); }
     $('st-no').textContent='No.'+(C.cards+1);
-    $('st-foot').textContent=C.days.length>=10?'カードいっぱい！ありがとう。次に来た日に新しいカードになるよ':'あと '+(10-C.days.length)+' 日でいっぱい'+(C.cards?'・これまで '+C.cards+' 枚':'');
+    $('st-foot').textContent=C.days.length>=N?'カードいっぱい！ありがとう。次に来た日に新しいカードになるよ':'あと '+(N-C.days.length)+' 日でいっぱい'+(C.cards?'・これまで '+C.cards+' 枚':'');
   }
   function visit(){
     var t=M.today(); if(C.last===t){ renderCard(false); return; }
-    if(C.days.length>=10){ C.days=[]; C.cards++; }
-    C.days.push(t); C.last=t; if(C.days.length===10) C.reward=true; ls('mogu_stamp',C); renderCard(true);
-    M.toast('今日のスタンプ押したよ<small>'+C.days.length+' / 10</small>');
+    if(C.days.length>=N){ C.days=[]; C.cards++; }
+    C.days.push(t); C.last=t; if(C.days.length===N) C.reward=true; ls('mogu_stamp',C); renderCard(true);
+    M.toast('今日のスタンプ押したよ<small>'+C.days.length+' / '+N+'</small>');
     gain('visit',{silent:true});
-    if(C.days.length===10){ gain('card'); setTimeout(openReward,1600); }
+    if(C.days.length===N){ gain('card'); setTimeout(openReward,1600); }
   }
 
   // ---- ごほうび壁紙（もぐ管理で設定したもの。なければ標準の壁紙をつくる） ----
@@ -1501,7 +1502,7 @@
   var standalone=matchMedia('(display-mode: standalone)').matches||navigator.standalone;
   if(standalone) return;
   var touch=('ontouchstart' in window)||navigator.maxTouchPoints>0; if(!touch) return;
-  var st=M.ls('mogu_a2hs')||{}, now=Date.now(), sc=M.ls('mogu_stamp')||{}, days=(sc.days||[]).length+(sc.cards||0)*10;
+  var st=M.ls('mogu_a2hs')||{}, now=Date.now(), sc=M.ls('mogu_stamp')||{}, days=(sc.days||[]).length+(sc.cards||0)*20;
   if(days<3||(st.n||0)>=3||(st.next&&now<st.next)) return;
   st.n=(st.n||0)+1; st.next=now+7*864e5; M.ls('mogu_a2hs',st);
   var ios=/iP(hone|ad|od)/.test(navigator.userAgent);
