@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011032000">
+<meta name="build" content="20261011032500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -1065,7 +1065,11 @@
   function anim(el,c){ if(!el||reduce) return; el.classList.remove(c); void el.offsetWidth; el.classList.add(c); setTimeout(function(){ el.classList.remove(c); },900); }
   window.MOGU.pop=pop;
   var lastTap=0;
-  document.addEventListener('pointerdown',function(e){
+  // リンクやボタンは押した瞬間に演出を出すと iPhone がタップを取り消すので、click のあとに出す
+  var TAPPABLE='a,button,summary,label,[role=button]';
+  document.addEventListener('pointerdown',function(e){ if(e.target.closest&&e.target.closest(TAPPABLE)) return; fx(e); },{passive:true});
+  document.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest(TAPPABLE)) setTimeout(function(){ fx(e); },0); });
+  function fx(e){
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
     var t=e.target, x=e.clientX, y=e.clientY;
     if(t.closest('input,textarea,.menu,.omi__stage,.love')) return;
@@ -1080,7 +1084,7 @@
     var btn=t.closest('.btn,a,button,summary'); if(btn){ anim(btn,'poke'); pop(x,y,['kira','pink'],16); return; }
     if(t.closest('.win')){ pop(x,y,['heart','kira']); return; }
     pop(x,y,['wingl','pink','kira','heart'].slice(0,3+Math.floor(Math.random()*2)));
-  },{passive:true});
+  }
   // スタンプ欄などのクリック可能でない要素もタップできるように
   document.querySelectorAll('.stk,.net').forEach(function(el){ el.style.pointerEvents='auto'; });
 

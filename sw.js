@@ -1,5 +1,5 @@
 // 星屑もぐ：オフラインでも開けるようにするキャッシュ
-const CACHE = 'mogu-20261011032000';
+const CACHE = 'mogu-20261011032500';
 const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/hero.webp', './img/chibi.webp'];
 
 self.addEventListener('install', e => {
