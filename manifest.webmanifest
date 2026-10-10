@@ -1,0 +1,17 @@
+{
+  "name": "星屑もぐ 公式サイト",
+  "short_name": "もぐ",
+  "description": "Mirrativ配信者・星屑もぐの公式アプリ",
+  "lang": "ja",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#090C26",
+  "theme_color": "#0B0F2E",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
