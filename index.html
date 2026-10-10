@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011005500">
+<meta name="build" content="20261011011500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -127,6 +127,13 @@
   @keyframes swapB{0%{opacity:0}72%{opacity:1}}
   .net{position:relative;z-index:2;width:170px;margin:12px 0 0 auto;transform:rotate(-7deg)}
   .err-mini{width:150px;margin:12px auto 0}
+  /* ごほうび壁紙 */
+  .rw-open{margin-top:12px;width:100%}
+  .rw{position:fixed;inset:0;z-index:120;display:grid;place-items:center;padding:20px;background:rgba(40,52,82,.45);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
+  .rw__in{width:min(360px,100%);max-height:100%;overflow:auto;animation:lovePop .45s cubic-bezier(.3,1.6,.5,1)}
+  .rw__ttl{text-align:center;font-family:var(--wide);font-weight:700;font-size:17px;letter-spacing:.06em;background:linear-gradient(90deg,#4E7FCF,#E77FAA,#9E8BE3);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .rw__sub{margin-top:4px;text-align:center;font-weight:700;font-size:14px;line-height:1.7}
+  .rw__img{display:block;width:62%;margin:12px auto 0;border:1.5px solid var(--frame);box-shadow:4px 4px 0 rgba(78,127,207,.2);background:var(--ice);aspect-ratio:1170/2532;object-fit:cover;-webkit-touch-callout:default}
   /* Do you love me? */
   .love{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:55;width:min(300px,82vw);transform:translateX(-50%);filter:drop-shadow(4px 6px 0 rgba(78,127,207,.22))}
   .love.is-in{animation:lovePop .45s cubic-bezier(.3,1.6,.5,1)}
@@ -641,6 +648,21 @@
 
 <button class="upd win" id="upd" type="button" hidden><span class="win__body"><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></span></button>
 <button class="totop" id="totop" type="button" aria-label="いちばん上へ">▲<br>TOP</button>
+<div class="rw" id="rw" hidden role="dialog" aria-modal="true" aria-label="ごほうび壁紙">
+  <div class="rw__in win win--pink">
+    <div class="win__bar"><span class="t">present.exe</span><span class="win__btns"><i>×</i></span></div>
+    <div class="win__body">
+      <p class="rw__ttl">CONGRATULATIONS!</p>
+      <p class="rw__sub">スタンプ10個たまったよ！<br>いつも来てくれてありがと♡</p>
+      <img class="rw__img" id="rw-img" alt="もぐの特別壁紙">
+      <div class="btns" style="justify-content:center;margin-top:14px">
+        <button class="btn btn--main" id="rw-save" type="button"><span class="ja">壁紙を保存する</span></button>
+        <button class="btn btn--sub" id="rw-close" type="button"><span class="ja">とじる</span></button>
+      </div>
+      <p class="note" style="margin-top:8px;text-align:center">画像を長押ししても保存できます</p>
+    </div>
+  </div>
+</div>
 <div class="love" id="love" hidden role="dialog" aria-label="Do you love me?">
   <div class="love__in"><img id="love-img" src="img/love-1.webp" alt="Do you love me?" width="476" height="291"><button class="love__yes" id="love-yes" type="button" aria-label="YES"></button><button class="love__x" id="love-x" type="button" aria-label="閉じる"></button></div>
 </div>
@@ -867,7 +889,7 @@
 
   <section class="sec" id="stamp">
     <div class="sec__head"><h2><span class="ghost sec__en" data-t="STAMP"><span class="hl">STAMP</span></span><span class="sec__ja">てんしすたんぷ</span></h2></div>
-    <p class="lead">見にきてくれた日は、スタンプが自動でたまるよ。サイトで遊ぶとポイントもたまって、天使のランクが上がります。</p>
+    <p class="lead">見にきてくれた日は、スタンプが自動でたまるよ。10個たまると、もぐの特別な壁紙がもらえます🎁 サイトで遊ぶとポイントもたまって、天使のランクが上がります。</p>
     <div class="win win--pink lace" style="margin-top:16px">
       <div class="win__bar"><span class="t">stamp.dat</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
       <div class="win__body">
@@ -883,6 +905,7 @@
           <p class="stamp__head"><span>スタンプカード</span><small id="st-no"></small></p>
           <ol class="stamp__grid" id="st-grid" aria-label="スタンプ"></ol>
           <p class="stamp__foot" id="st-foot"></p>
+          <button class="btn btn--sub rw-open" id="rw-open" type="button" hidden><span class="ja">🎁 ごほうび壁紙を見る</span></button>
         </div>
         <details class="how"><summary>ポイントのもらいかた</summary><ul id="r-how"></ul></details>
         <details class="how"><summary>ランクいちらん</summary><ul class="tiers" id="r-tiers"></ul></details>
@@ -1333,11 +1356,54 @@
   function visit(){
     var t=M.today(); if(C.last===t){ renderCard(false); return; }
     if(C.days.length>=10){ C.days=[]; C.cards++; }
-    C.days.push(t); C.last=t; ls('mogu_stamp',C); renderCard(true);
+    C.days.push(t); C.last=t; if(C.days.length===10) C.reward=true; ls('mogu_stamp',C); renderCard(true);
     M.toast('今日のスタンプ押したよ<small>'+C.days.length+' / 10</small>');
     gain('visit',{silent:true});
-    if(C.days.length===10) gain('card');
+    if(C.days.length===10){ gain('card'); setTimeout(openReward,1600); }
   }
+
+  // ---- ごほうび壁紙（もぐ管理で設定したもの。なければ標準の壁紙をつくる） ----
+  var wallURL=null, wallBlob=null;
+  function li(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+  function customWall(){
+    return M.rpc('mogu_wallpaper_get').then(function(d){ if(!d||!d.image) return null; return fetch(d.image).then(function(r){ return r.blob(); }); }).catch(function(){ return null; });
+  }
+  function defaultWall(){
+    return Promise.all(['hero','halo-drip','wing-glow','wing-glow-l','paw-tile','pxheart'].map(function(n){ return li('img/'+n+'.webp'); })).then(function(im){
+      var W=1170,H=2532,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#E8F1FA'); g.addColorStop(.55,'#D6E4F1'); g.addColorStop(1,'#C7D9EC'); x.fillStyle=g; x.fillRect(0,0,W,H);
+      if(im[4]) for(var py=0;py<H;py+=585) for(var px=0;px<W;px+=585) x.drawImage(im[4],px,py,585,585);
+      var rg=x.createRadialGradient(W,0,0,W,0,W*1.1); rg.addColorStop(0,'rgba(245,198,218,.55)'); rg.addColorStop(1,'rgba(245,198,218,0)'); x.fillStyle=rg; x.fillRect(0,0,W,H);
+      x.save(); x.globalAlpha=.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,H*.56,W*.45,0,7); x.fill(); x.restore();
+      x.strokeStyle='rgba(255,255,255,.9)'; x.lineWidth=6; x.setLineDash([22,16]); x.beginPath(); x.arc(W/2,H*.56,W*.45+26,0,7); x.stroke(); x.setLineDash([]);
+      function put(i,cx,cy,w,r){ if(!i) return; var h=i.height*w/i.width; x.save(); x.translate(cx,cy); x.rotate(r||0); x.drawImage(i,-w/2,-h/2,w,h); x.restore(); }
+      put(im[3],W*.2,H*.47,W*.46,-.12); put(im[2],W*.8,H*.47,W*.46,.12);
+      if(im[0]){ var hh=H*.52, ww=im[0].width*hh/im[0].height; if(ww>W*.95){ ww=W*.95; hh=im[0].height*ww/im[0].width; } x.drawImage(im[0],(W-ww)/2,H*.3,ww,hh); }
+      put(im[1],W*.44,H*.3,W*.5,-.08);
+      [[150,620,70],[1020,560,56],[120,1560,50],[1060,1420,66],[200,2200,58],[980,2140,46]].forEach(function(p){ if(im[5]){ x.save(); x.shadowColor='#4E7FCF'; x.shadowBlur=4; put(im[5],p[0],p[1],p[2]); x.restore(); } });
+      // 名前（青い帯）
+      x.font='900 120px "Zen Kaku Gothic New","Hiragino Sans",sans-serif'; var t='星屑もぐ', tw=x.measureText(t).width, pad=30, X=W/2-tw/2-pad, Y=H*.13;
+      x.fillStyle='rgba(78,127,207,.45)'; x.fillRect(X+26,Y-118,tw+pad*2,150); x.fillStyle='#4E7FCF'; x.fillRect(X,Y-75,tw+pad*2,150); x.fillStyle='#fff'; x.textBaseline='middle'; x.fillText(t,X+pad,Y+4);
+      x.textAlign='center'; x.fillStyle='#33599B'; x.font='64px "VT323",monospace'; x.fillText('ANGEL STAMP COMPLETE',W/2,H*.93);
+      x.fillStyle='#B4437A'; x.font='700 44px "Zen Kaku Gothic New","Hiragino Sans",sans-serif'; x.fillText('いつも見にきてくれてありがと♡',W/2,H*.96);
+      return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
+    });
+  }
+  function makeWall(){ if(wallURL) return Promise.resolve(wallURL); return customWall().then(function(b){ if(b){ wallBlob=b; wallURL=URL.createObjectURL(b); return wallURL; } return defaultWall(); }); }
+  function openReward(){ var m=$('rw'); m.hidden=false; document.body.classList.add('menu-open'); makeWall().then(function(u){ $('rw-img').src=u; }); $('rw-open').hidden=false; }
+  function closeReward(){ $('rw').hidden=true; document.body.classList.remove('menu-open'); }
+  $('rw-open').hidden=!C.reward;
+  $('rw-open').addEventListener('click',openReward);
+  $('rw-close').addEventListener('click',closeReward);
+  document.querySelector('#rw .win__btns').addEventListener('click',closeReward);
+  $('rw').addEventListener('click',function(e){ if(e.target.id==='rw') closeReward(); });
+  $('rw-save').addEventListener('click',function(){
+    makeWall().then(function(u){
+      var file=wallBlob&&new File([wallBlob],'mogu-wallpaper.'+(wallBlob.type==='image/jpeg'?'jpg':'png'),{type:wallBlob.type||'image/png'});
+      if(file&&navigator.canShare&&navigator.canShare({files:[file]})){ navigator.share({files:[file]}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=u; a.download='mogu-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove();
+    });
+  });
   render(); renderCard(false);
   window.addEventListener('mogu:ready',function(){ setTimeout(visit,500); });
   if(!document.getElementById('op')) setTimeout(visit,500);
