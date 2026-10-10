@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261010231500">
+<meta name="build" content="20261010234500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -56,10 +56,10 @@
     -webkit-font-smoothing:antialiased; overflow-x:hidden; -webkit-tap-highlight-color:transparent;
     background-color:var(--sky);
     background-image:
-      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cpath d='M18 18l12 12M30 18L18 30' stroke='%23fff' stroke-width='3' stroke-linecap='square' opacity='.85'/%3E%3C/svg%3E"),
+      url("img/paw-tile.webp"),
       linear-gradient(rgba(255,255,255,.55) 1px, transparent 1px),
       linear-gradient(90deg, rgba(255,255,255,.55) 1px, transparent 1px);
-    background-size:48px 48px, 64px 64px, 64px 64px;
+    background-size:420px 420px, 64px 64px, 64px 64px;
   }
   a{color:inherit;text-decoration:none}
   button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
@@ -105,6 +105,36 @@
   .wheart{display:inline-block;width:1.8em;height:1.1em;vertical-align:-.2em}
   /* ゆめかわ英字 */
   .dream{font-family:var(--dream);font-style:italic;font-weight:600;color:var(--blue-d)}
+  /* もらった素材 */
+  .drip{position:absolute;z-index:3;pointer-events:none;filter:drop-shadow(0 0 6px rgba(255,255,255,.8))}
+  .hero__drip{left:6%;top:-9%;width:58%;transform:rotate(-6deg);animation:float 4.5s ease-in-out infinite}
+  .twings{position:absolute;z-index:3;left:-7%;right:-13%;top:30%;pointer-events:none;filter:drop-shadow(0 0 2px rgba(78,127,207,.9)) drop-shadow(0 0 6px rgba(78,127,207,.4))}
+  .hero__title{display:inline-block}
+  .sh-drip{position:absolute;z-index:3;left:-10px;top:-26px;width:64px;transform:rotate(-8deg);pointer-events:none;animation:float 3.8s ease-in-out infinite}
+  .puffy{position:absolute;z-index:-1;pointer-events:none}
+  .op .op__body{background:transparent}
+  .op{background-image:url("img/err-bg.webp"),linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)!important;background-size:cover,32px 32px,32px 32px!important;background-position:center}
+  /* 2コマで動くステッカー */
+  .flip{display:block}
+  .flip img{display:block;width:100%;height:auto}
+  .flip img+img{position:absolute;inset:0}
+  .flip--blink img+img{animation:blink2 1.4s steps(1) infinite}
+  @keyframes blink2{0%{opacity:0}50%{opacity:1}}
+  .flip--swap img:first-child{animation:swapA 4.5s steps(1) infinite}
+  .flip--swap img+img{animation:swapB 4.5s steps(1) infinite}
+  @keyframes swapA{0%{opacity:1}72%{opacity:0}}
+  @keyframes swapB{0%{opacity:0}72%{opacity:1}}
+  .net{position:relative;z-index:2;width:170px;margin:12px 0 0 auto;transform:rotate(-7deg)}
+  .err-mini{width:150px;margin:12px auto 0}
+  /* Do you love me? */
+  .love{position:fixed;left:50%;bottom:calc(86px + env(safe-area-inset-bottom,0px));z-index:55;width:min(300px,82vw);transform:translateX(-50%);filter:drop-shadow(4px 6px 0 rgba(78,127,207,.22))}
+  .love.is-in{animation:lovePop .45s cubic-bezier(.3,1.6,.5,1)}
+  @keyframes lovePop{from{transform:translateX(-50%) scale(.3);opacity:0}}
+  .love.is-out{transition:opacity .4s,transform .4s;opacity:0;transform:translateX(-50%) scale(.6) rotate(-20deg)}
+  .love__in{position:relative}
+  .love__in img{width:100%;height:auto;display:block}
+  .love__yes{position:absolute;left:34%;top:66%;width:31%;height:24%}
+  .love__x{position:absolute;right:2%;top:-4%;width:16%;height:22%}
   .tap-fx{position:fixed;z-index:61;pointer-events:none;width:18px;height:18px;animation:tapfx 1.1s ease-out forwards}
   .tap-fx svg{width:100%;height:100%}
   @keyframes tapfx{0%{opacity:0;transform:translate(-50%,-50%) scale(.4)}20%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% - 60px)) scale(1) rotate(var(--rt))}}
@@ -138,10 +168,10 @@
   .op.is-out{opacity:0;visibility:hidden}
   .op .win{width:min(320px,86vw)}
   .op__body{padding:18px 18px 16px;text-align:center}
-  .op__chibi{position:relative;width:132px;margin:0 auto}
+  .op__chibi{position:relative;width:132px;margin:0 auto;isolation:isolate}
   .op__halo{position:absolute;left:50%;top:-22px;width:86px;height:28px;transform:translate(-50%,-60px);opacity:0;animation:haloDrop .7s 1.3s cubic-bezier(.3,1.5,.5,1) forwards}
   @keyframes haloDrop{to{transform:translate(-50%,0);opacity:1}}
-  .op__chibi img{position:relative;opacity:0;animation:fadeUp .5s .3s forwards}
+  .op__chibi img:not(.puffy){position:relative;opacity:0;animation:fadeUp .5s .3s forwards}
   .op__wing{position:absolute;top:8%;width:84px;height:84px;opacity:0;animation:wingOpen .6s 1.8s cubic-bezier(.3,1.5,.5,1) forwards}
   .op__wing--l{right:58%;transform-origin:100% 60%}.op__wing--r{left:58%;transform-origin:0 60%}
   @keyframes wingOpen{from{opacity:0;scale:.2}to{opacity:1;scale:1}}
@@ -205,7 +235,7 @@
   main{padding-top:calc(env(safe-area-inset-top,0px) + var(--hh) + 24px)}
   .band{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--hh) + 144px);height:110px;background:rgba(255,255,255,.85);z-index:0}
   .hero{position:relative;width:var(--wrap);margin-inline:auto;padding-block:22px 30px;display:grid;gap:22px}
-  .hero__title{position:relative;z-index:2;font-weight:900;font-size:clamp(40px,12vw,76px);line-height:1.15;letter-spacing:.06em}
+  .hero__title{position:relative;z-index:2;isolation:isolate;font-weight:900;font-size:clamp(40px,12vw,76px);line-height:1.15;letter-spacing:.06em}
   .hero__title .ghost::before{font-weight:900}
   .hero__lines{position:relative;z-index:2;margin-top:14px;display:grid;gap:8px;justify-items:start;font-weight:700;font-size:14px}
   .hero__lines .hl{font-size:14px}
@@ -372,7 +402,7 @@
 
   /* もぐみくじ */
   .omi .win__body{display:grid;justify-items:center;text-align:center}
-  .omi__stage{position:relative;width:190px;height:190px;cursor:pointer}
+  .omi__stage{position:relative;width:190px;height:190px;cursor:pointer;isolation:isolate}
   .omi__egg{position:absolute;inset:0;display:grid;place-items:center;transition:opacity .3s}
   .omi__egg svg{width:120px;height:150px;filter:drop-shadow(3px 4px 0 rgba(78,127,207,.2));transform-origin:50% 90%}
   .omi__egg .halo{position:absolute;top:2px;left:50%;width:70px;height:24px;transform:translateX(-50%);animation:float 3s ease-in-out infinite}
@@ -427,6 +457,8 @@
   .stamp__grid li{aspect-ratio:1;border:1.5px dashed var(--frame);background:rgba(255,255,255,.7);display:grid;place-items:center;font-family:var(--px);font-size:18px;color:var(--dim)}
   .stamp__grid li.on{border-style:solid;background:#fff}
   .stamp__grid li.on svg{width:78%;height:78%}
+  .stamp__grid li.on img{width:76%;height:auto}
+  .stamp__grid li.new img{animation:stampIn .6s cubic-bezier(.3,1.6,.5,1)}
   .stamp__grid li.new svg{animation:stampIn .6s cubic-bezier(.3,1.6,.5,1)}
   @keyframes stampIn{from{transform:scale(2.4) rotate(-30deg);opacity:0}}
   .stamp__foot{margin-top:8px;font-size:12px;color:var(--sub)}
@@ -473,7 +505,7 @@
 
   /* フッター */
   .footer{margin-top:80px;padding-bottom:calc(36px + env(safe-area-inset-bottom,0px));text-align:center}
-  .footer__peek{position:relative;width:150px;margin:0 auto -4px;cursor:pointer}
+  .footer__peek{position:relative;width:150px;margin:0 auto -4px;cursor:pointer;isolation:isolate}
   .footer__wings{position:absolute;top:10%;width:110px;height:110px;z-index:-1}
   .footer__wings--l{right:78%}.footer__wings--r{left:78%;transform:scaleX(-1)}
   .footer__peek .halo{position:absolute;left:50%;top:-8px;width:76px;height:26px;transform:translateX(-50%);animation:float 3.6s ease-in-out infinite}
@@ -542,7 +574,7 @@
   <div class="win">
     <div class="win__bar"><span class="t">mogu.exe</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
     <div class="op__body">
-      <div class="op__chibi"><svg class="op__wing op__wing--l" viewBox="0 0 120 120"><use href="#wing"/></svg><svg class="op__wing op__wing--r" viewBox="0 0 120 120"><use href="#wing"/></svg><svg class="op__halo" viewBox="0 0 100 32"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493"></div>
+      <div class="op__chibi"><img class="puffy" src="img/puffy-glow.webp" alt="" style="left:-14%;top:-6%;width:128%"><svg class="op__wing op__wing--l" viewBox="0 0 120 120"><use href="#wing"/></svg><svg class="op__wing op__wing--r" viewBox="0 0 120 120"><use href="#wing"/></svg><svg class="op__halo" viewBox="0 0 100 32"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493"></div>
       <p class="op__txt" id="op-txt">booting heaven.sys</p>
       <div class="op__bar"><i></i></div>
       <p class="op__ok">みつけてくれた？</p>
@@ -593,6 +625,9 @@
 
 <button class="upd win" id="upd" type="button" hidden><span class="win__body"><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></span></button>
 <button class="totop" id="totop" type="button" aria-label="いちばん上へ">▲<br>TOP</button>
+<div class="love" id="love" hidden role="dialog" aria-label="Do you love me?">
+  <div class="love__in"><img id="love-img" src="img/love-1.webp" alt="Do you love me?" width="476" height="291"><button class="love__yes" id="love-yes" type="button" aria-label="YES"></button><button class="love__x" id="love-x" type="button" aria-label="閉じる"></button></div>
+</div>
 <div class="toast win" id="toast" role="status" aria-live="polite"><div class="win__body"><img src="img/chibi.webp" alt=""><span id="toast-t"></span></div></div>
 
 <div class="ticker" aria-hidden="true"><div class="ticker__in"><span>✝ welcome to heaven.exe ✝</span><span>♡ 星屑もぐ ♡</span><span>✝ 朝6:00 / 夜22:00 on mirrativ ✝</span><span>♡ あいことば：げてもぐ ♡</span><span>✝ #もぐもぐくずもち ✝</span><span>♡ angel mode : ON ♡</span></div></div>
@@ -600,12 +635,13 @@
 <main id="top">
   <section class="hero" aria-label="星屑もぐ">
     <div>
-      <h1 class="hero__title"><span class="ghost" data-t="星屑もぐ"><span class="hl">星屑もぐ</span></span></h1>
+      <h1 class="hero__title"><span class="twings flip flip--swap" aria-hidden="true"><img src="img/wings-1.webp" alt="" width="480" height="76"><img src="img/wings-2.webp" alt="" width="480" height="76"></span><span class="ghost" data-t="星屑もぐ"><span class="hl">星屑もぐ</span></span></h1>
       <div class="hero__lines">
         <span class="hl">取扱い注意⁉️記憶力5%のぽんこつバブニート</span>
         <span class="hl s">あなたも波乱万丈な枠に巻き込まれにおいで💞</span>
       </div>
       <p class="stair" aria-hidden="true"><span>mirrativ liver</span><span>mirrativ liver</span><span>mirrativ liver</span><span>mirrativ liver</span><b>mogu</b></p>
+      <span class="net flip flip--swap" aria-hidden="true"><img src="img/net-1.webp" alt="" width="363" height="130"><img src="img/net-2.webp" alt="" width="363" height="130"></span>
       <p class="angel-line" aria-hidden="true"><svg class="wheart" viewBox="0 0 60 36"><use href="#wheart"/></svg><span class="dream">little angel of the night</span><span class="px">✝ angel mode : ON</span></p>
     </div>
 
@@ -617,10 +653,11 @@
         <div class="win__body"><img class="hero__img" src="img/hero.webp" alt="星屑もぐのイラスト" width="960" height="1333" fetchpriority="high"></div>
         <button class="hero__tap" type="button" aria-label="もぐをタップ" id="hero-tap"></button>
       </div>
-      <svg class="hero__halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg>
+      <img class="drip hero__drip" src="img/halo-drip.webp" alt="" width="454" height="334" aria-hidden="true">
       <span class="stk" style="left:-12px;bottom:-14px;width:54px;height:54px;transform:rotate(-12deg)"><svg viewBox="0 0 40 40"><use href="#egg"/></svg></span>
       <span class="stk" style="right:16%;top:-18px;width:46px;height:30px;transform:rotate(8deg)"><svg viewBox="0 0 48 32"><use href="#ribbon"/></svg></span>
       <span class="stk" style="left:-6px;top:30%;width:22px;height:30px;color:#fff"><svg viewBox="0 0 20 28"><use href="#cross"/></svg></span>
+      <span class="stk flip flip--blink" style="left:-24%;top:-12%;width:58%;filter:drop-shadow(0 0 2px rgba(78,127,207,.6))"><img src="img/hearts-1.webp" alt="" width="464" height="413"><img src="img/hearts-2.webp" alt="" width="464" height="413"></span>
       <span class="stk" style="right:-14px;top:24%;width:64px;height:38px;transform:rotate(12deg)"><svg viewBox="0 0 60 36"><use href="#wheart"/></svg></span>
       <span class="stk" style="left:8%;top:44%;width:14px;height:28px;transform:rotate(-30deg)"><svg viewBox="0 0 20 40"><use href="#feather"/></svg></span>
       <div class="dlg win tilt-l" id="bubble" role="button" tabindex="0" aria-label="もぐのひとこと">
@@ -664,9 +701,11 @@
         </div>
         <span class="stk" style="right:-14px;top:-20px;width:62px;height:54px;transform:rotate(10deg)"><svg viewBox="0 0 64 56"><use href="#atanu"/></svg></span>
         <span class="stk" style="left:-10px;bottom:16px;width:20px;height:28px;color:var(--blue)"><svg viewBox="0 0 20 28"><use href="#cross"/></svg></span>
+        <span class="stk flip flip--blink" style="right:-18px;bottom:-14px;width:76px;transform:rotate(14deg)"><img src="img/paw-1.webp" alt="" width="326" height="284"><img src="img/paw-2.webp" alt="" width="326" height="284"></span>
       </div>
       <div class="win lace">
         <div class="win__bar"><span class="t">profile.txt</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
+        <img class="stk" src="img/wing-glow.webp" alt="" width="365" height="320" style="right:-22px;top:-34px;width:86px;transform:rotate(10deg);filter:drop-shadow(0 0 4px rgba(78,127,207,.5))">
         <div class="win__body">
           <p class="prof__name">星屑もぐ<small>ほしくずって読みます</small></p>
           <dl class="prof__dl">
@@ -730,7 +769,7 @@
     </div>
     <div class="done win" id="req-closed" hidden>
       <div class="win__bar"><span class="t">closed</span><span class="win__btns"><i>×</i></span></div>
-      <div class="win__body"><p>いまリクエストはお休み中です</p><p>再開したら X でお知らせするね。</p></div>
+      <div class="win__body"><span class="err-mini flip flip--blink" aria-hidden="true" style="position:relative"><img src="img/err-1.webp" alt="" width="500" height="327"><img src="img/err-2.webp" alt="" width="500" height="327"></span><p>いまリクエストはお休み中です</p><p>再開したら X でお知らせするね。</p></div>
     </div>
   </section>
 
@@ -749,6 +788,7 @@
   </section>
 
   <section class="sec" id="letter">
+    <span class="stk flip flip--blink" style="right:0;top:34px;width:128px;transform:rotate(6deg)"><img src="img/errs-1.webp" alt="" width="500" height="340"><img src="img/errs-2.webp" alt="" width="500" height="340"></span>
     <div class="sec__head"><h2><span class="ghost sec__en" data-t="LETTER"><span class="hl">LETTER</span></span><span class="sec__ja">とくめいのおてがみ</span></h2></div>
     <p class="lead">感想、相談、配信でやってほしいこと、なんでもどうぞ。名前は送られないので、もぐにも誰からかはわかりません💌</p>
     <div class="acc win win--pink" id="msg-acc">
@@ -769,7 +809,7 @@
     </div>
     <div class="done win" id="msg-closed" hidden>
       <div class="win__bar"><span class="t">closed</span><span class="win__btns"><i>×</i></span></div>
-      <div class="win__body"><p>いまおてがみはお休み中です</p><p>マシュマロもあるので、そっちも使ってね。</p></div>
+      <div class="win__body"><span class="err-mini flip flip--blink" aria-hidden="true" style="position:relative"><img src="img/err-1.webp" alt="" width="500" height="327"><img src="img/err-2.webp" alt="" width="500" height="327"></span><p>いまおてがみはお休み中です</p><p>マシュマロもあるので、そっちも使ってね。</p></div>
     </div>
   </section>
 
@@ -779,7 +819,7 @@
       <div class="win__bar"><span class="t">omikuji.exe</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
       <div class="win__body">
         <p class="lead">天使のたまごを割って、今日の運勢をうらなってね。1日1回だよ。</p>
-        <div class="omi__stage" id="omi-stage" role="button" tabindex="0" aria-label="たまごを割る">
+        <div class="omi__stage" id="omi-stage" role="button" tabindex="0" aria-label="たまごを割る"><img class="puffy" src="img/puffy-line.webp" alt="" style="inset:6%;width:88%;opacity:.9">
           <div class="omi__egg"><svg class="halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg><svg viewBox="0 0 130 160" aria-hidden="true"><defs><radialGradient id="eg" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".7" stop-color="#F2F5FB"/><stop offset="1" stop-color="#C9D8EE"/></radialGradient></defs>
             <path d="M65 16C34 16 10 64 10 100c0 32 25 54 55 54s55-22 55-54C120 64 96 16 65 16z" fill="url(#eg)" stroke="#9DB8DD" stroke-width="2"/>
             <ellipse cx="44" cy="60" rx="10" ry="16" fill="#fff" opacity=".8" transform="rotate(20 44 60)"/>
@@ -887,7 +927,7 @@
 
 <footer class="footer">
   <div class="pearls" aria-hidden="true" style="margin-bottom:26px"></div>
-  <div class="footer__peek" id="peek"><svg class="footer__wings footer__wings--l" viewBox="0 0 120 120" aria-hidden="true"><use href="#wing"/></svg><svg class="footer__wings footer__wings--r" viewBox="0 0 120 120" aria-hidden="true"><use href="#wing"/></svg><svg class="halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493" loading="lazy"></div>
+  <div class="footer__peek" id="peek"><img class="puffy" src="img/puffy-glow.webp" alt="" style="left:-22%;top:-12%;width:144%"><span class="flip flip--swap" aria-hidden="true" style="position:absolute;left:-60%;right:-60%;top:40%;z-index:-1;filter:drop-shadow(0 0 2px rgba(78,127,207,.9))"><img src="img/wings-1.webp" alt="" width="480" height="76"><img src="img/wings-2.webp" alt="" width="480" height="76"></span><svg class="halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493" loading="lazy"></div>
   <div class="footer__in">
     <p class="bye"><span class="hl">BYE BYE!</span></p>
     <p class="dream" style="margin-top:6px;font-size:20px">see you in heaven ♡</p>
@@ -961,7 +1001,7 @@
 
   // ---- 見出しに輪っかと羽 ----
   document.querySelectorAll('.sec__head h2').forEach(function(h,i){
-    h.insertAdjacentHTML('afterbegin','<svg class="sh-halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg>');
+    h.insertAdjacentHTML('afterbegin','<img class="sh-drip" src="img/'+(i%2?'halo-drip-lav':'halo-drip')+'.webp" alt="" width="454" height="334" aria-hidden="true">');
     var hl=h.querySelector('.ghost'); if(hl) hl.insertAdjacentHTML('beforeend','<svg class="sh-wing sh-wing--r" viewBox="0 0 120 120" aria-hidden="true" style="transform:scaleX(-1)"><use href="#wing"/></svg>');
   });
 
@@ -1196,7 +1236,7 @@
   var M=window.MOGU, $=M.$, ls=M.ls;
   function need(lv){ return lv<=1?0:Math.round(12*Math.pow(lv-1,1.55)); }
   var TIERS=[[1,'迷子の星くず'],[4,'ひよこ天使'],[8,'わたあめ天使'],[13,'ねむねむ天使'],[19,'きらきら天使'],[26,'大天使'],[34,'星屑の守護天使'],[43,'熾天使'],[50,'でんせつのたぬき天使']];
-  var GAIN={ visit:[10,'見にきた（1日1回）'], live:[5,'配信を見にいく（1日1回）'], omikuji:[5,'もぐみくじを引く（1日1回）'], request:[15,'歌のリクエストを送る（1日1回）'], letter:[15,'おてがみを送る（1日1回）'], share:[5,'みくじをXでシェア（1日1回）'], tap:[2,'もぐのmessage.txtをタップ（1日1回）'], card:[30,'スタンプカードをいっぱいにする'] };
+  var GAIN={ visit:[10,'見にきた（1日1回）'], live:[5,'配信を見にいく（1日1回）'], omikuji:[5,'もぐみくじを引く（1日1回）'], request:[15,'歌のリクエストを送る（1日1回）'], letter:[15,'おてがみを送る（1日1回）'], share:[5,'みくじをXでシェア（1日1回）'], tap:[2,'もぐのmessage.txtをタップ（1日1回）'], love:[3,'Do you love me? に答える（1日1回）'], card:[30,'スタンプカードをいっぱいにする'] };
   var S=ls('mogu_rank')||{xp:0,got:{}}; if(!S.got) S.got={};
   function save(){ ls('mogu_rank',S); }
   function lvOf(xp){ var l=1; while(l<50&&xp>=need(l+1)) l++; return l; }
@@ -1227,9 +1267,11 @@
   M.gain=gain;
 
   // ---- スタンプカード（10こで1枚） ----
-  var KINDS=['kira','egg','atanu'];
+  var KINDS=['kira','egg','atanu','paw','pxheart'];
   var C=ls('mogu_stamp')||{days:[],cards:0,last:''};
-  function stampSvg(i){ var k=KINDS[i%3];
+  function stampSvg(i){ var k=KINDS[i%5];
+    if(k==='pxheart') return '<img src="img/pxheart.webp" alt="" width="167" height="148" style="filter:drop-shadow(0 0 1px #4E7FCF) drop-shadow(0 0 1px #4E7FCF)">';
+    if(k==='paw') return '<img src="img/paw-1.webp" alt="" width="326" height="284">';
     if(k==='kira') return '<svg viewBox="0 0 20 20" style="color:#4E7FCF"><use href="#kira"/></svg>';
     if(k==='atanu') return '<svg viewBox="0 0 64 56"><use href="#atanu"/></svg>';
     return '<svg viewBox="0 0 40 40"><use href="#egg"/></svg>'; }
@@ -1252,6 +1294,21 @@
   render(); renderCard(false);
   window.addEventListener('mogu:ready',function(){ setTimeout(visit,500); });
   if(!document.getElementById('op')) setTimeout(visit,500);
+
+  // ---- Do you love me?（1日1回だけ出てくる） ----
+  (function(){
+    var box=$('love'), img=$('love-img'), busy=false, key='mogu_love';
+    if(ls(key)===M.today()) return;
+    var pre=[2,3,4,5].map(function(n){ var im=new Image(); im.src='img/love-'+n+'.webp'; return im; });
+    function show(){ if(ls(key)===M.today()) return; box.hidden=false; box.classList.add('is-in'); }
+    function close(){ box.classList.add('is-out'); setTimeout(function(){ box.hidden=true; },420); ls(key,M.today()); }
+    function seq(list,done){ var i=0; (function step(){ if(i>=list.length){ done(); return; } img.src='img/'+list[i][0]+'.webp'; setTimeout(step,list[i++][1]); })(); }
+    $('love-yes').onclick=function(e){ if(busy) return; busy=true; var x=e.clientX, y=e.clientY;
+      seq([['love-2',140],['love-3',800],['love-4',160],['love-5',520]],function(){ close(); M.burst(x,y,18); M.toast('しってた♡<small>ずっと見てるからね</small>'); gain('love',{silent:true}); }); };
+    $('love-x').onclick=function(){ if(busy) return; busy=true; seq([['err-1',700]],close); };
+    window.addEventListener('mogu:ready',function(){ setTimeout(show,6000); });
+    if(!document.getElementById('op')) setTimeout(show,6000);
+  })();
 
   // ---- もぐみくじ（1日1回・結果はこの端末に保存） ----
   var RANKS=[
