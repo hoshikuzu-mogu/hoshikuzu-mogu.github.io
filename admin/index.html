@@ -4,115 +4,198 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#AFCBE8">
+<meta name="theme-color" content="#0B0F2E">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="もぐ管理">
+<link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <title>もぐ管理</title>
 <style>
-  :root {
-    --sky-top:#AFCBE8; --sky:#95B0E4; --lilac:#BCAAD8; --peri:#6F7FEA;
-    --ink:#1F2456; --sub:#3F4880; --white:#fff; --rule:rgba(255,255,255,.6); --err:#B3264A;
+  :root{
+    --n0:#090C26; --n1:#111745; --n2:#1D2463; --ink:#F5F2FF; --sub:#B9BCE8; --dim:#8287C2;
+    --mizu:#8FE4F4; --yolk:#FFC83D; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.07); --err:#FF9BB0;
     --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
     --maru:"Hiragino Maru Gothic ProN","Zen Maru Gothic",var(--sans);
-    box-sizing:border-box;
-    padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
-    color-scheme:light;
+    color-scheme:dark;
   }
+  :root:not([data-theme="light"]), :root[data-theme="dark"]{ color-scheme:dark; }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{min-height:100%}
-  body{background:linear-gradient(180deg,var(--sky-top),var(--sky) 60%,var(--lilac));background-color:var(--sky);color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
-  main{width:min(520px,100% - 40px);margin-inline:auto;padding-block:40px 64px}
-  h1{font-family:var(--maru);font-weight:700;font-size:22px;letter-spacing:.08em;color:var(--white)}
-  h1 small{display:block;font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--sub);margin-top:2px}
-  .card{margin-top:28px}
-  label{display:block;font-family:var(--maru);font-weight:700;font-size:14px;letter-spacing:.08em;margin-bottom:8px}
-  input{width:100%;height:52px;padding:0 14px;border:1.5px solid var(--peri);border-radius:8px;background:rgba(255,255,255,.9);font-size:16px;color:var(--ink);font-family:var(--sans)}
-  input:focus{outline:2px solid var(--white);outline-offset:2px}
+  body{background:linear-gradient(180deg,var(--n0),var(--n1) 60%,var(--n2));background-color:var(--n0);background-attachment:fixed;color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  main{width:min(560px,100% - 32px);margin-inline:auto;padding-block:calc(28px + env(safe-area-inset-top,0px)) calc(64px + env(safe-area-inset-bottom,0px))}
+  h1{display:flex;align-items:center;gap:10px;font-family:var(--maru);font-weight:700;font-size:21px;letter-spacing:.08em}
+  h1 img{width:40px;height:40px;border-radius:50%;border:2px solid var(--mizu)}
+  h1 small{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;color:var(--sub)}
+  .card{margin-top:22px}
+  label{display:block;font-family:var(--maru);font-weight:700;font-size:13px;letter-spacing:.06em;margin-bottom:6px}
+  input,textarea,select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:rgba(255,255,255,.08);font-size:16px;color:var(--ink);font-family:var(--sans)}
+  textarea{min-height:200px;line-height:1.7;resize:vertical}
+  input:focus,textarea:focus{outline:none;border-color:var(--mizu)}
+  input[type=checkbox]{width:22px;min-height:0;height:22px;accent-color:var(--yolk)}
   .row{display:flex;gap:10px;margin-top:12px}
-  button{font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.1em;height:52px;border-radius:8px;cursor:pointer;border:1.5px solid var(--peri)}
-  .primary{flex:1;background:var(--white);color:var(--ink);box-shadow:4px 4px 0 var(--peri);transition:transform .12s,box-shadow .12s}
-  .primary:active{transform:translate(3px,3px);box-shadow:1px 1px 0 var(--peri)}
-  .primary:disabled{opacity:.5}
-  .ghost{background:transparent;color:var(--ink);padding:0 16px}
-  .msg{margin-top:14px;min-height:1.7em;font-size:14px;font-weight:600}
+  button{font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.08em;min-height:48px;border-radius:999px;cursor:pointer;border:1.5px solid var(--line);color:var(--ink);background:transparent}
+  .primary{flex:1;background:var(--yolk);border-color:var(--yolk);color:#3A2A08}
+  .primary:active{transform:translateY(2px)}
+  .primary:disabled,button:disabled{opacity:.5}
+  .ghost{padding:0 18px}
+  .msg{margin-top:12px;min-height:1.7em;font-size:13px;font-weight:600}
   .msg.err{color:var(--err)}
-  h2{margin-top:44px;font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.1em;color:var(--sub)}
+  h2{margin-top:30px;font-family:var(--maru);font-weight:700;font-size:14px;letter-spacing:.08em;color:var(--sub)}
   ul{list-style:none;margin-top:10px}
-  li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--rule);font-size:14px}
-  li:first-child{border-top:1px solid var(--rule)}
-  li a{color:var(--ink);word-break:break-all}
+  li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--line);font-size:14px}
+  li:first-child{border-top:1px solid var(--line)}
+  li a{color:var(--mizu);word-break:break-all}
   li small{display:block;color:var(--sub);font-size:12px}
-  .del{height:36px;padding:0 14px;font-size:13px;background:transparent;color:var(--ink)}
+  .del{min-height:36px;padding:0 14px;font-size:12px}
   .empty{padding:14px 0;font-size:14px;color:var(--sub)}
   .foot{margin-top:40px;display:flex;justify-content:space-between;font-size:12px}
-  .foot a,.foot button{color:var(--sub);background:none;border:0;height:auto;font:inherit;letter-spacing:.06em;text-decoration:underline;cursor:pointer}
-  .tabs{display:flex;gap:8px;margin-top:24px}
-  .tab{flex:1;height:44px;background:rgba(255,255,255,.35);color:var(--ink);font-size:14px;border-color:var(--rule)}
-  .tab[aria-selected="true"]{background:var(--white);border-color:var(--peri);box-shadow:3px 3px 0 var(--peri)}
-  .tab b{font-family:var(--sans);font-size:12px;margin-left:4px;color:var(--peri)}
-  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:24px;padding:14px 16px;border-radius:8px;background:rgba(255,255,255,.4);border:1.5px solid var(--rule);font-family:var(--maru);font-weight:700;font-size:14px;letter-spacing:.06em}
-  .switch small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub);letter-spacing:.02em}
-  .toggle{position:relative;flex:none;width:56px;height:32px;border-radius:16px;padding:0;background:rgba(31,36,86,.18);border:0;transition:background .15s}
-  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--white);box-shadow:0 1px 3px rgba(31,36,86,.3);transition:transform .15s}
-  .toggle[aria-checked="true"]{background:var(--peri)}
+  .foot a,.foot button{color:var(--sub);background:none;border:0;min-height:0;font:inherit;letter-spacing:.06em;text-decoration:underline;cursor:pointer}
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+  .tab{min-height:44px;border-radius:14px;font-size:13px;background:var(--card)}
+  .tab[aria-selected="true"]{background:var(--mizu);border-color:var(--mizu);color:#0E2B3A}
+  .tab b{font-family:var(--sans);font-size:11px;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--yolk);color:#3A2A08}
+  .tab b:empty{display:none}
+  .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding:14px 16px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);font-family:var(--maru);font-weight:700;font-size:14px}
+  .switch small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
+  .toggle{position:relative;flex:none;width:56px;min-height:32px;height:32px;border-radius:16px;padding:0;background:rgba(255,255,255,.18);border:0;transition:background .15s}
+  .toggle::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:transform .15s}
+  .toggle[aria-checked="true"]{background:var(--yolk)}
   .toggle[aria-checked="true"]::after{transform:translateX(24px)}
-  .toggle:disabled{opacity:.5}
   .rq{align-items:flex-start}
-  .rq .t{font-family:var(--maru);font-weight:700;font-size:16px;letter-spacing:.04em;word-break:break-word}
-  .rq .a{font-size:13px;color:var(--sub);margin-top:1px;word-break:break-word}
-  .rq .c{margin-top:6px;font-size:13px;line-height:1.7;word-break:break-word}
+  .rq .t{font-family:var(--maru);font-weight:700;font-size:16px;word-break:break-word}
+  .rq .a{font-size:13px;color:var(--sub);word-break:break-word}
+  .rq .c{margin-top:6px;font-size:14px;line-height:1.8;word-break:break-word;white-space:pre-wrap}
   .rq .m{display:block;margin-top:6px;color:var(--sub);font-size:12px}
   .rq .acts{display:flex;flex-direction:column;gap:6px;flex:none}
-  .rq .sung{height:36px;padding:0 12px;font-size:13px;background:var(--white);color:var(--ink)}
-  .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.5}
-  .rq.is-done .sung{background:transparent}
-  .reload{margin-top:14px;height:auto;padding:0;border:0;background:none;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline;cursor:pointer}
+  .rq .sung{min-height:36px;padding:0 12px;font-size:12px;background:var(--mizu);border-color:var(--mizu);color:#0E2B3A}
+  .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.45}
+  .rq.is-done .sung{background:transparent;color:var(--ink);border-color:var(--line)}
+  .rq.is-new{border-left:3px solid var(--yolk);padding-left:10px}
+  .reload{margin-top:12px;min-height:0;padding:0;border:0;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline}
+  .help{margin-top:8px;font-size:12px;color:var(--sub);line-height:1.8}
+  .days{display:grid;gap:8px;margin-top:14px}
+  .day{display:grid;grid-template-columns:3.6em 1fr;gap:8px;align-items:center;padding:10px 12px;border-radius:14px;background:var(--card);border:1px solid var(--line)}
+  .day .dl{font-family:var(--maru);font-weight:700;font-size:14px;line-height:1.3}
+  .day .dl small{display:block;font-size:11px;color:var(--sub)}
+  .day .fl{display:grid;grid-template-columns:5.6em 1fr auto;gap:6px;align-items:center}
+  .day input{min-height:40px;padding:6px 10px;font-size:15px}
+  .day .off{display:flex;align-items:center;gap:4px;font-size:11px;font-weight:700;margin:0;white-space:nowrap}
+  .day.is-off .fl input:not([type=checkbox]){opacity:.35}
+  .now{margin-top:18px;padding:12px 14px;border-radius:14px;background:var(--card);border:1px dashed var(--line);font-size:13px}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;font-weight:700}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-  <h1>もぐ管理<small>歌のリクエストと X のポスト</small></h1>
+  <h1><img src="../img/chibi.webp" alt="">もぐ管理<small>もぐちゃん専用のページです</small></h1>
 
   <section id="keyView" class="card" hidden>
     <label for="key">合言葉を入れてください</label>
     <input id="key" type="password" autocomplete="current-password" placeholder="xxxx-xxxx-xxxx-xxxx">
-    <div class="row"><button class="primary" id="saveKey">はじめる</button></div>
+    <div class="row"><button class="primary" id="saveKey" type="button">はじめる</button></div>
     <p class="msg" id="keyMsg"></p>
   </section>
 
   <section id="mainView" hidden>
     <div class="tabs" role="tablist">
-      <button class="tab" id="tabReq" role="tab" aria-selected="true" type="button">リクエスト<b id="reqCount"></b></button>
-      <button class="tab" id="tabPost" role="tab" aria-selected="false" type="button">X のポスト</button>
+      <button class="tab" data-tab="req" role="tab" type="button">リクエスト<b id="reqCount"></b></button>
+      <button class="tab" data-tab="msg" role="tab" type="button">おてがみ<b id="msgCount"></b></button>
+      <button class="tab" data-tab="sch" role="tab" type="button">今週の予定</button>
+      <button class="tab" data-tab="ev" role="tab" type="button">カウントダウン</button>
+      <button class="tab" data-tab="song" role="tab" type="button">歌リスト</button>
+      <button class="tab" data-tab="post" role="tab" type="button">X のポスト</button>
     </div>
 
-    <div id="reqView">
-      <div id="reqBody">
+    <!-- 歌のリクエスト -->
+    <div data-view="req">
       <div class="switch">
         <div>リクエスト受付<small id="openText">読み込み中…</small></div>
         <button class="toggle" id="openToggle" role="switch" aria-checked="true" aria-label="リクエスト受付" type="button" disabled></button>
       </div>
       <p class="msg" id="reqMsg"></p>
-      <h2 style="margin-top:20px">届いたリクエスト（新しい順）</h2>
+      <h2 style="margin-top:12px">届いたリクエスト（新しい順）</h2>
       <ul id="reqList"><li class="empty">読み込み中…</li></ul>
       <button class="reload" id="reqReload" type="button">最新にする</button>
-      </div>
     </div>
 
-    <div id="postView" hidden>
-    <div class="card">
-      <label for="url">載せたいポストのリンク</label>
-      <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="https://x.com/…/status/…">
-      <div class="row">
-        <button class="ghost" id="paste" type="button">貼り付け</button>
-        <button class="primary" id="add">載せる</button>
+    <!-- 匿名のおてがみ -->
+    <div data-view="msg" hidden>
+      <div class="switch">
+        <div>おてがみ受付<small id="mOpenText">読み込み中…</small></div>
+        <button class="toggle" id="mOpenToggle" role="switch" aria-checked="true" aria-label="おてがみ受付" type="button" disabled></button>
       </div>
-      <p class="msg" id="msg"></p>
+      <p class="msg" id="mMsg"></p>
+      <h2 style="margin-top:12px">届いたおてがみ（新しい順・名前はわかりません）</h2>
+      <ul id="mList"><li class="empty">読み込み中…</li></ul>
+      <button class="reload" id="mReload" type="button">最新にする</button>
     </div>
 
-    <h2>いま載っているポスト（上から表示・最大5件）</h2>
-    <ul id="list"><li class="empty">読み込み中…</li></ul>
+    <!-- 今週の予定 -->
+    <div data-view="sch" hidden>
+      <div class="card">
+        <label for="schStart">はじまりの日</label>
+        <input id="schStart" type="date">
+        <p class="help">ここから7日分がHPの「今週の配信予定」に出ます。時間だけ・内容だけでもOK。空っぽの日は「未定」になります。</p>
+      </div>
+      <div class="days" id="days"></div>
+      <div class="card">
+        <label for="schNote">ひとこと<small style="font-weight:400;color:var(--sub)">（なしでもOK）</small></label>
+        <input id="schNote" type="text" maxlength="60" placeholder="例：土曜は歌枠多めです">
+      </div>
+      <div class="row"><button class="primary" id="schSave" type="button">HPに出す</button></div>
+      <p class="msg" id="schMsg"></p>
+      <div class="now" id="schNow">いまHPに出ている予定：読み込み中…</div>
+      <button class="reload" id="schClear" type="button">HPの予定を消す</button>
+    </div>
+
+    <!-- カウントダウン -->
+    <div data-view="ev" hidden>
+      <p class="help" style="margin-top:20px">誕生日（11/25）は自動で出ます。デビュー記念日やイベントを足すと、60日前からトップにカウントダウンが出ます。</p>
+      <div class="card">
+        <label for="evTitle">なまえ</label>
+        <input id="evTitle" type="text" maxlength="40" placeholder="例：デビュー1周年">
+      </div>
+      <div class="card">
+        <label for="evDay">日にち</label>
+        <input id="evDay" type="date">
+        <label class="chk"><input type="checkbox" id="evYearly">毎年くりかえす</label>
+      </div>
+      <div class="card">
+        <label for="evUrl">リンク<small style="font-weight:400;color:var(--sub)">（なしでもOK）</small></label>
+        <input id="evUrl" type="url" inputmode="url" placeholder="https://…">
+      </div>
+      <div class="row"><button class="primary" id="evAdd" type="button">追加する</button></div>
+      <p class="msg" id="evMsg"></p>
+      <h2>登録しているもの</h2>
+      <ul id="evList"><li class="empty">読み込み中…</li></ul>
+    </div>
+
+    <!-- 歌リスト -->
+    <div data-view="song" hidden>
+      <div class="card">
+        <label for="songText">歌える（かも）リスト</label>
+        <textarea id="songText" placeholder="1行に1曲。歌手は「 / 」で区切ってね&#10;マリーゴールド / あいみょん&#10;夜に駆ける / YOASOBI"></textarea>
+        <p class="help">1行に1曲。「曲名 / 歌手」の形で書いてね（歌手はなくてもOK）。保存するとHPの「Songs」がこの内容に入れかわります。0曲のときはHPに出ません。</p>
+      </div>
+      <div class="row"><button class="primary" id="songSave" type="button">保存してHPに出す</button></div>
+      <p class="msg" id="songMsg"></p>
+    </div>
+
+    <!-- X のポスト -->
+    <div data-view="post" hidden>
+      <div class="card">
+        <label for="url">載せたいポストのリンク</label>
+        <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="https://x.com/…/status/…">
+        <div class="row">
+          <button class="ghost" id="paste" type="button">貼り付け</button>
+          <button class="primary" id="add" type="button">載せる</button>
+        </div>
+        <p class="msg" id="msg"></p>
+      </div>
+      <h2>いま載っているポスト（上から表示・最大5件）</h2>
+      <ul id="list"><li class="empty">読み込み中…</li></ul>
     </div>
 
     <div class="foot">
@@ -126,47 +209,47 @@
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var PASS='mogu_req_pass';
   var $=function(id){return document.getElementById(id);};
-  var posts=[], req={items:[],open:true};
+  var posts=[], req={items:[],open:true}, mb={items:[],open:true}, loaded={};
 
   function getPass(){ try{return localStorage.getItem(PASS)||'';}catch(e){return '';} }
   function setPass(v){ try{ v?localStorage.setItem(PASS,v):localStorage.removeItem(PASS); localStorage.removeItem('mogu_admin_key'); }catch(e){} }
   function say(el,text,err){ el.textContent=text; el.classList.toggle('err',!!err); }
-  function errText(e){ return e.message==='dup'?'そのポストはもう載っています':'通信できなかったみたい。電波を確認してもう一度押してね'; }
+  function errText(e){ return e.message==='dup'?'そのポストはもう載っています':e.message==='full'?'登録できるのは30件までです':e.message==='setup'?'まだ準備中です（ヒロさんに伝えてね）':'通信できなかったみたい。電波を確認してもう一度押してね'; }
   function call(fn,body){
     body.p_pass=getPass();
     return fetch(SB+fn,{method:'POST',headers:{'apikey':SBKEY,'Content-Type':'application/json'},body:JSON.stringify(body)})
       .then(function(r){ return r.json().catch(function(){return null;}).then(function(d){
-        if(!r.ok) throw new Error(d&&(d.message==='auth'||d.message==='dup')?d.message:'net');
+        if(!r.ok){ var m=d&&d.message||''; throw new Error(m==='auth'||m==='dup'||m==='full'?m:(r.status===404||/function/.test(m))?'setup':'net'); }
         return d; }); });
   }
   function fail(e,el){ if(e.message==='auth'){ setPass(''); showKey('合言葉がちがうみたい。もう一度入れてね'); return; } say(el,errText(e),true); }
+  function pad(n){ return ('0'+n).slice(-2); }
+  function ymd(d){ return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate()); }
+  function fmt(iso){ var d=new Date(iso); if(isNaN(d))return ''; return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+pad(d.getMinutes()); }
+  var WD=['日','月','火','水','木','金','土'];
+
+  // ---- X のポスト ----
   function normalize(u){
     var m=String(u).trim().match(/^https?:\/\/(?:www\.|mobile\.)?(?:x|twitter)\.com\/([A-Za-z0-9_]+)\/status(?:es)?\/(\d+)/);
     return m ? 'https://x.com/'+m[1]+'/status/'+m[2] : null;
   }
-  function fmt(iso){ var d=new Date(iso); if(isNaN(d))return ''; return (d.getMonth()+1)+'/'+d.getDate()+' '+d.getHours()+':'+('0'+d.getMinutes()).slice(-2); }
-
-  // ---- X のポスト ----
-  function render(){
+  function renderPosts(){
     var ul=$('list'); ul.innerHTML='';
     if(!posts.length){ ul.innerHTML='<li class="empty">まだ何も載っていません</li>'; return; }
     posts.forEach(function(p,i){
-      var li=document.createElement('li');
-      var d=p.added?new Date(p.added):null;
-      var left=document.createElement('div');
+      var li=document.createElement('li'), d=p.added?new Date(p.added):null, left=document.createElement('div');
       var a=document.createElement('a'); a.href=p.url; a.target='_blank'; a.rel='noopener'; a.textContent=p.url.replace('https://x.com/','');
       var sm=document.createElement('small'); sm.textContent=(i<5?'表示中':'表示されていません')+(d?'・'+(d.getMonth()+1)+'/'+d.getDate()+'に追加':'');
       left.appendChild(a); left.appendChild(sm);
-      var b=document.createElement('button'); b.className='del'; b.textContent='消す';
+      var b=document.createElement('button'); b.className='del'; b.type='button'; b.textContent='消す';
       b.onclick=function(){ if(!confirm('このポストをサイトから外す？'))return; b.disabled=true;
-        call('mogu_post_admin',{p_action:'delete',p_url:p.url}).then(function(d){ posts=d||[]; render(); say($('msg'),'外しました'); })
-          .catch(function(e){ b.disabled=false; fail(e,$('msg')); });
-      };
+        call('mogu_post_admin',{p_action:'delete',p_url:p.url}).then(function(d){ posts=d||[]; renderPosts(); say($('msg'),'外しました'); })
+          .catch(function(e){ b.disabled=false; fail(e,$('msg')); }); };
       li.appendChild(left); li.appendChild(b); ul.appendChild(li);
     });
   }
   function loadPosts(){
-    return call('mogu_post_admin',{p_action:'list'}).then(function(d){ posts=d||[]; render(); })
+    return call('mogu_post_admin',{p_action:'list'}).then(function(d){ posts=d||[]; renderPosts(); })
       .catch(function(e){ $('list').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('msg')); });
   }
   $('paste').onclick=function(){
@@ -177,9 +260,8 @@
     var url=normalize($('url').value);
     if(!url){ say($('msg'),'Xのポストのリンクを貼ってね（…/status/… の形）',true); return; }
     var btn=$('add'); btn.disabled=true; say($('msg'),'載せています…');
-    call('mogu_post_admin',{p_action:'add',p_url:url}).then(function(d){ posts=d||[]; $('url').value=''; render(); say($('msg'),'載せました！サイトにすぐ出ます'); })
-      .catch(function(e){ fail(e,$('msg')); })
-      .then(function(){ btn.disabled=false; });
+    call('mogu_post_admin',{p_action:'add',p_url:url}).then(function(d){ posts=d||[]; $('url').value=''; renderPosts(); say($('msg'),'載せました！サイトにすぐ出ます'); })
+      .catch(function(e){ fail(e,$('msg')); }).then(function(){ btn.disabled=false; });
   };
 
   // ---- 歌のリクエスト ----
@@ -200,20 +282,14 @@
       var t=document.createElement('div'); t.className='t'; t.textContent=it.song; left.appendChild(t);
       if(it.artist){ var a=document.createElement('div'); a.className='a'; a.textContent=it.artist; left.appendChild(a); }
       if(it.comment){ var c=document.createElement('div'); c.className='c'; c.textContent=it.comment; left.appendChild(c); }
-      var m=document.createElement('small'); m.className='m'; m.textContent=(it.name||'なまえなし')+'・'+fmt(it.at); left.appendChild(m);
+      var m=document.createElement('small'); m.className='m'; m.textContent=(it.name||'なまえなし')+'・'+fmt(it.at||it.created_at); left.appendChild(m);
       var acts=document.createElement('div'); acts.className='acts';
       var s=document.createElement('button'); s.className='sung'; s.type='button'; s.textContent=it.done?'もどす':'歌った✓';
-      s.onclick=function(){ s.disabled=true;
-        rcall('done',it.id,!it.done).then(function(){ it.done=!it.done; renderReq(); })
-          .catch(function(e){ s.disabled=false; fail(e,$('reqMsg')); });
-      };
+      s.onclick=function(){ s.disabled=true; rcall('done',it.id,!it.done).then(function(){ it.done=!it.done; renderReq(); }).catch(function(e){ s.disabled=false; fail(e,$('reqMsg')); }); };
       var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
       d.onclick=function(){ if(!confirm('「'+it.song+'」のリクエストを消す？'))return; d.disabled=true;
-        rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); })
-          .catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); });
-      };
-      acts.appendChild(s); acts.appendChild(d);
-      li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+        rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); }).catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); }); };
+      acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
     });
   }
   function loadReq(){
@@ -228,15 +304,144 @@
   };
   $('reqReload').onclick=loadReq;
 
-  function showTab(name){
-    var r=name==='req';
-    $('tabReq').setAttribute('aria-selected',r?'true':'false'); $('tabPost').setAttribute('aria-selected',r?'false':'true');
-    $('reqView').hidden=!r; $('postView').hidden=r;
+  // ---- 匿名のおてがみ ----
+  function mcall(act,id,val){ return call('mogu_msg_admin',{p_action:act,p_id:id||null,p_value:(val===undefined?null:val)}); }
+  function renderMOpen(){
+    var t=$('mOpenToggle'); t.disabled=false; t.setAttribute('aria-checked',mb.open?'true':'false');
+    $('mOpenText').textContent=mb.open?'受付中（サイトから送れます）':'お休み中（サイトに「お休み中」と出ます）';
   }
-  $('tabReq').onclick=function(){ showTab('req'); };
-  $('tabPost').onclick=function(){ showTab('post'); };
+  function renderMsg(){
+    var ul=$('mList'); ul.innerHTML='';
+    var unread=mb.items.filter(function(x){return !x.read;}).length;
+    $('msgCount').textContent=unread?String(unread):'';
+    if(!mb.items.length){ ul.innerHTML='<li class="empty">まだおてがみはありません</li>'; return; }
+    mb.items.forEach(function(it){
+      var li=document.createElement('li'); li.className='rq'+(it.read?' is-done':' is-new');
+      var left=document.createElement('div');
+      var c=document.createElement('div'); c.className='c'; c.style.marginTop='0'; c.textContent=it.body; left.appendChild(c);
+      var m=document.createElement('small'); m.className='m'; m.textContent=fmt(it.at)+(it.read?'・読んだ':'・まだ読んでない'); left.appendChild(m);
+      var acts=document.createElement('div'); acts.className='acts';
+      var s=document.createElement('button'); s.className='sung'; s.type='button'; s.textContent=it.read?'もどす':'読んだ✓';
+      s.onclick=function(){ s.disabled=true; mcall('read',it.id,!it.read).then(function(){ it.read=!it.read; renderMsg(); }).catch(function(e){ s.disabled=false; fail(e,$('mMsg')); }); };
+      var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
+      d.onclick=function(){ if(!confirm('このおてがみを消す？'))return; d.disabled=true;
+        mcall('delete',it.id).then(function(){ mb.items=mb.items.filter(function(x){return x.id!==it.id;}); renderMsg(); }).catch(function(e){ d.disabled=false; fail(e,$('mMsg')); }); };
+      acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+    });
+  }
+  function loadMsg(){
+    say($('mMsg'),'');
+    return mcall('list').then(function(d){ mb.items=d.items||[]; mb.open=d.open!==false; renderMOpen(); renderMsg(); })
+      .catch(function(e){ $('mList').innerHTML='<li class="empty">読み込めませんでした</li>'; $('mOpenText').textContent=''; fail(e,$('mMsg')); });
+  }
+  $('mOpenToggle').onclick=function(){
+    var t=$('mOpenToggle'), next=!mb.open; t.disabled=true;
+    mcall('open',null,next).then(function(d){ mb.open=d.open; renderMOpen(); say($('mMsg'),next?'受付を再開しました':'受付をお休みにしました'); })
+      .catch(function(e){ t.disabled=false; fail(e,$('mMsg')); });
+  };
+  $('mReload').onclick=loadMsg;
 
-  function start(){ $('keyView').hidden=true; $('mainView').hidden=false; showTab('req'); loadReq(); loadPosts(); }
+  // ---- 今週の予定 ----
+  var sch={start:'',days:{},note:''};
+  try{ var saved=JSON.parse(localStorage.getItem('mogu_sch_draft')||'null'); if(saved) sch=saved; }catch(e){}
+  function saveDraft(){ try{ localStorage.setItem('mogu_sch_draft',JSON.stringify(sch)); }catch(e){} }
+  function dates(){ var s=new Date((sch.start||ymd(new Date()))+'T00:00:00'), out=[]; for(var i=0;i<7;i++){ var d=new Date(s); d.setDate(s.getDate()+i); out.push(d); } return out; }
+  function day(k){ return sch.days[k]||(sch.days[k]={time:'',what:'',off:false}); }
+  function renderDays(){
+    if(!sch.start) sch.start=ymd(new Date());
+    $('schStart').value=sch.start; $('schNote').value=sch.note||'';
+    var box=$('days'); box.innerHTML='';
+    dates().forEach(function(d){
+      var k=ymd(d), v=day(k), row=document.createElement('div'); row.className='day'+(v.off?' is-off':'');
+      row.innerHTML='<div class="dl">'+(d.getMonth()+1)+'/'+d.getDate()+'<small>'+WD[d.getDay()]+'曜</small></div><div class="fl"><input type="text" maxlength="12" placeholder="22:00" aria-label="時間"><input type="text" maxlength="24" placeholder="雑談・歌枠" aria-label="内容"><label class="off"><input type="checkbox">休み</label></div>';
+      var ins=row.querySelectorAll('input');
+      ins[0].value=v.time||''; ins[1].value=v.what||''; ins[2].checked=!!v.off;
+      ins[0].oninput=function(){ v.time=this.value; saveDraft(); };
+      ins[1].oninput=function(){ v.what=this.value; saveDraft(); };
+      ins[2].onchange=function(){ v.off=this.checked; row.classList.toggle('is-off',v.off); saveDraft(); };
+      box.appendChild(row);
+    });
+  }
+  $('schStart').onchange=function(){ if(this.value){ sch.start=this.value; saveDraft(); renderDays(); } };
+  $('schNote').oninput=function(){ sch.note=this.value; saveDraft(); };
+  function showNow(r){
+    var el=$('schNow');
+    if(!r||!r.data||!r.data.days||!r.data.days.length){ el.textContent='いまHPに出ている予定：なし'; $('schClear').hidden=true; return; }
+    var ds=r.data.days, a=new Date(ds[0].date+'T00:00:00'), b=new Date(ds[ds.length-1].date+'T00:00:00'), u=new Date(r.updated_at);
+    var over=ds[ds.length-1].date<ymd(new Date());
+    el.textContent='いまHPに出ている予定：'+(a.getMonth()+1)+'/'+a.getDate()+'〜'+(b.getMonth()+1)+'/'+b.getDate()+(isNaN(u)?'':'（'+fmt(r.updated_at)+' 更新）')+(over?'・期間が終わったのでHPには出ていません':'');
+    $('schClear').hidden=false;
+  }
+  function loadSch(){ return call('mogu_schedule_admin',{p_action:'get'}).then(showNow).catch(function(e){ $('schNow').textContent='確認できませんでした'; fail(e,$('schMsg')); }); }
+  $('schSave').onclick=function(){
+    var btn=this; btn.disabled=true; say($('schMsg'),'HPに出しています…');
+    var data={start:sch.start,note:(sch.note||'').slice(0,60),days:dates().map(function(d){ var v=day(ymd(d)); return {date:ymd(d),time:(v.time||'').slice(0,12),what:(v.what||'').slice(0,24),off:!!v.off}; })};
+    call('mogu_schedule_admin',{p_action:'save',p_data:data}).then(function(r){ showNow(r); say($('schMsg'),'HPに出しました！'); })
+      .catch(function(e){ fail(e,$('schMsg')); }).then(function(){ btn.disabled=false; });
+  };
+  $('schClear').onclick=function(){
+    if(!confirm('HPの「今週の配信予定」を消す？（この画面の入力は消えません）')) return;
+    call('mogu_schedule_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('schMsg'),'HPから予定を消しました'); }).catch(function(e){ fail(e,$('schMsg')); });
+  };
+
+  // ---- カウントダウン ----
+  function renderEv(list){
+    var ul=$('evList'); ul.innerHTML='';
+    if(!list||!list.length){ ul.innerHTML='<li class="empty">まだありません（誕生日は自動で出ます）</li>'; return; }
+    list.forEach(function(e){
+      var li=document.createElement('li'), left=document.createElement('div'), t=document.createElement('div'), d=new Date(e.day+'T00:00:00');
+      t.textContent=e.title; t.style.fontWeight='700';
+      var sm=document.createElement('small'); sm.textContent=(e.yearly?'毎年 ':d.getFullYear()+'年 ')+(d.getMonth()+1)+'月'+d.getDate()+'日'+(e.url?'・リンクあり':'');
+      left.appendChild(t); left.appendChild(sm);
+      var b=document.createElement('button'); b.className='del'; b.type='button'; b.textContent='消す';
+      b.onclick=function(){ if(!confirm('「'+e.title+'」を消す？'))return; b.disabled=true;
+        call('mogu_events_admin',{p_action:'delete',p_id:e.id}).then(renderEv).catch(function(er){ b.disabled=false; fail(er,$('evMsg')); }); };
+      li.appendChild(left); li.appendChild(b); ul.appendChild(li);
+    });
+  }
+  function loadEv(){ return call('mogu_events_admin',{p_action:'list'}).then(renderEv).catch(function(e){ $('evList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('evMsg')); }); }
+  $('evAdd').onclick=function(){
+    var title=$('evTitle').value.trim(), dd=$('evDay').value, url=$('evUrl').value.trim();
+    if(!title){ say($('evMsg'),'なまえを入れてね',true); return; }
+    if(!dd){ say($('evMsg'),'日にちを選んでね',true); return; }
+    if(url&&!/^https:\/\//.test(url)){ say($('evMsg'),'リンクは https:// からはじまる形にしてね',true); return; }
+    var btn=this; btn.disabled=true;
+    call('mogu_events_admin',{p_action:'add',p_title:title,p_day:dd,p_yearly:$('evYearly').checked,p_url:url}).then(function(l){ renderEv(l); $('evTitle').value=''; $('evDay').value=''; $('evUrl').value=''; $('evYearly').checked=false; say($('evMsg'),'追加しました！'); })
+      .catch(function(e){ fail(e,$('evMsg')); }).then(function(){ btn.disabled=false; });
+  };
+
+  // ---- 歌リスト ----
+  function toText(list){ return (list||[]).map(function(s){ return s.t+(s.a?' / '+s.a:''); }).join('\n'); }
+  function loadSongs(){ return call('mogu_songs_admin',{p_action:'list'}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 登録されています'); }).catch(function(e){ fail(e,$('songMsg')); }); }
+  $('songSave').onclick=function(){
+    var list=$('songText').value.split(/\r?\n/).map(function(line){
+      line=line.trim(); if(!line) return null;
+      var m=line.split(/\s+\/\s+|\s*／\s*/); return {t:m[0].trim().slice(0,80), a:(m.slice(1).join(' / ')||'').trim().slice(0,60)};
+    }).filter(Boolean);
+    if(list.length>1000){ say($('songMsg'),'1000曲までにしてね',true); return; }
+    var btn=this; btn.disabled=true; say($('songMsg'),'保存しています…');
+    call('mogu_songs_admin',{p_action:'set',p_list:list}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 保存しました！HPに出ています'); })
+      .catch(function(e){ fail(e,$('songMsg')); }).then(function(){ btn.disabled=false; });
+  };
+
+  // ---- タブ ----
+  var LOAD={req:loadReq,msg:loadMsg,sch:loadSch,ev:loadEv,song:loadSongs,post:loadPosts};
+  function showTab(name){
+    document.querySelectorAll('.tab').forEach(function(t){ t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false'); });
+    document.querySelectorAll('[data-view]').forEach(function(v){ v.hidden=v.dataset.view!==name; });
+    if(name==='sch') renderDays();
+    if(!loaded[name]&&LOAD[name]){ loaded[name]=true; LOAD[name](); }
+    try{ sessionStorage.setItem('mogu_admin_tab',name); }catch(e){}
+  }
+  document.querySelectorAll('.tab').forEach(function(t){ t.onclick=function(){ showTab(t.dataset.tab); }; });
+
+  function start(){
+    $('keyView').hidden=true; $('mainView').hidden=false; loaded={};
+    var last='req'; try{ last=sessionStorage.getItem('mogu_admin_tab')||'req'; }catch(e){}
+    showTab(last);
+    if(last!=='req'){ loaded.req=true; loadReq(); }
+    if(last!=='msg'){ loaded.msg=true; loadMsg(); }
+  }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
