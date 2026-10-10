@@ -4,37 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="theme-color" content="#0B0F2E">
+<meta name="theme-color" content="#D6E4F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="apple-mobile-web-app-title" content="もぐ管理">
 <link rel="apple-touch-icon" href="../apple-touch-icon.png">
 <title>もぐ管理</title>
 <style>
   :root{
-    --n0:#090C26; --n1:#111745; --n2:#1D2463; --ink:#F5F2FF; --sub:#B9BCE8; --dim:#8287C2;
-    --mizu:#8FE4F4; --yolk:#FFC83D; --line:rgba(255,255,255,.16); --card:rgba(255,255,255,.07); --err:#FF9BB0;
+    --n0:#D6E4F1; --n1:#E2ECF7; --n2:#EEF5FC; --ink:#283452; --sub:#5F6E92; --dim:#8D9AB8;
+    --mizu:#4E7FCF; --yolk:#4E7FCF; --line:rgba(78,127,207,.28); --card:rgba(255,255,255,.8); --err:#C33D6B;
     --sans:"Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP","Yu Gothic",sans-serif;
     --maru:"Hiragino Maru Gothic ProN","Zen Maru Gothic",var(--sans);
-    color-scheme:dark;
+    color-scheme:light;
   }
-  :root:not([data-theme="light"]), :root[data-theme="dark"]{ color-scheme:dark; }
+  :root:not([data-theme="light"]), :root[data-theme="dark"]{ color-scheme:light; }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   html,body{min-height:100%}
-  body{background:linear-gradient(180deg,var(--n0),var(--n1) 60%,var(--n2));background-color:var(--n0);background-attachment:fixed;color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
+  body{background:linear-gradient(180deg,var(--n0),var(--n1) 60%,var(--n2));background-image:linear-gradient(rgba(255,255,255,.6) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px);background-size:32px 32px;background-color:var(--n0);background-attachment:fixed;color:var(--ink);font-family:var(--sans);line-height:1.7;-webkit-font-smoothing:antialiased}
   main{width:min(560px,100% - 32px);margin-inline:auto;padding-block:calc(28px + env(safe-area-inset-top,0px)) calc(64px + env(safe-area-inset-bottom,0px))}
   h1{display:flex;align-items:center;gap:10px;font-family:var(--maru);font-weight:700;font-size:21px;letter-spacing:.08em}
   h1 img{width:40px;height:40px;border-radius:50%;border:2px solid var(--mizu)}
   h1 small{display:block;font-size:11px;font-weight:500;letter-spacing:.1em;color:var(--sub)}
   .card{margin-top:22px}
   label{display:block;font-family:var(--maru);font-weight:700;font-size:13px;letter-spacing:.06em;margin-bottom:6px}
-  input,textarea,select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:rgba(255,255,255,.08);font-size:16px;color:var(--ink);font-family:var(--sans)}
+  input,textarea,select{width:100%;min-height:48px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;background:#fff;font-size:16px;color:var(--ink);font-family:var(--sans)}
   textarea{min-height:200px;line-height:1.7;resize:vertical}
   input:focus,textarea:focus{outline:none;border-color:var(--mizu)}
   input[type=checkbox]{width:22px;min-height:0;height:22px;accent-color:var(--yolk)}
   .row{display:flex;gap:10px;margin-top:12px}
   button{font-family:var(--maru);font-weight:700;font-size:15px;letter-spacing:.08em;min-height:48px;border-radius:999px;cursor:pointer;border:1.5px solid var(--line);color:var(--ink);background:transparent}
-  .primary{flex:1;background:var(--yolk);border-color:var(--yolk);color:#3A2A08}
+  .primary{flex:1;background:var(--yolk);border-color:var(--yolk);color:#fff;box-shadow:0 3px 0 #33599B}
   .primary:active{transform:translateY(2px)}
   .primary:disabled,button:disabled{opacity:.5}
   .ghost{padding:0 18px}
@@ -52,12 +52,12 @@
   .foot a,.foot button{color:var(--sub);background:none;border:0;min-height:0;font:inherit;letter-spacing:.06em;text-decoration:underline;cursor:pointer}
   .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
   .tab{min-height:44px;border-radius:14px;font-size:13px;background:var(--card)}
-  .tab[aria-selected="true"]{background:var(--mizu);border-color:var(--mizu);color:#0E2B3A}
-  .tab b{font-family:var(--sans);font-size:11px;margin-left:4px;padding:0 6px;border-radius:9px;background:var(--yolk);color:#3A2A08}
+  .tab[aria-selected="true"]{background:var(--mizu);border-color:var(--mizu);color:#fff}
+  .tab b{font-family:var(--sans);font-size:11px;margin-left:4px;padding:0 6px;border-radius:9px;background:#F08DB4;color:#fff}
   .tab b:empty{display:none}
   .switch{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:22px;padding:14px 16px;border-radius:14px;background:var(--card);border:1.5px solid var(--line);font-family:var(--maru);font-weight:700;font-size:14px}
   .switch small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
-  .toggle{position:relative;flex:none;width:56px;min-height:32px;height:32px;border-radius:16px;padding:0;background:rgba(255,255,255,.18);border:0;transition:background .15s}
+  .toggle{position:relative;flex:none;width:56px;min-height:32px;height:32px;border-radius:16px;padding:0;background:rgba(40,52,82,.2);border:0;transition:background .15s}
   .toggle::after{content:"";position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:#fff;transition:transform .15s}
   .toggle[aria-checked="true"]{background:var(--yolk)}
   .toggle[aria-checked="true"]::after{transform:translateX(24px)}
@@ -67,10 +67,10 @@
   .rq .c{margin-top:6px;font-size:14px;line-height:1.8;word-break:break-word;white-space:pre-wrap}
   .rq .m{display:block;margin-top:6px;color:var(--sub);font-size:12px}
   .rq .acts{display:flex;flex-direction:column;gap:6px;flex:none}
-  .rq .sung{min-height:36px;padding:0 12px;font-size:12px;background:var(--mizu);border-color:var(--mizu);color:#0E2B3A}
+  .rq .sung{min-height:36px;padding:0 12px;font-size:12px;background:var(--mizu);border-color:var(--mizu);color:#fff}
   .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.45}
   .rq.is-done .sung{background:transparent;color:var(--ink);border-color:var(--line)}
-  .rq.is-new{border-left:3px solid var(--yolk);padding-left:10px}
+  .rq.is-new{border-left:3px solid #F08DB4;padding-left:10px}
   .reload{margin-top:12px;min-height:0;padding:0;border:0;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline}
   .help{margin-top:8px;font-size:12px;color:var(--sub);line-height:1.8}
   .days{display:grid;gap:8px;margin-top:14px}
@@ -104,7 +104,7 @@
       <button class="tab" data-tab="msg" role="tab" type="button">おてがみ<b id="msgCount"></b></button>
       <button class="tab" data-tab="sch" role="tab" type="button">今週の予定</button>
       <button class="tab" data-tab="ev" role="tab" type="button">カウントダウン</button>
-      <button class="tab" data-tab="song" role="tab" type="button">歌リスト</button>
+      <button class="tab" data-tab="song" role="tab" type="button">歌える曲</button>
       <button class="tab" data-tab="post" role="tab" type="button">X のポスト</button>
     </div>
 
@@ -175,9 +175,9 @@
     <!-- 歌リスト -->
     <div data-view="song" hidden>
       <div class="card">
-        <label for="songText">歌える（かも）リスト</label>
+        <label for="songText">歌える曲</label>
         <textarea id="songText" placeholder="1行に1曲。歌手は「 / 」で区切ってね&#10;マリーゴールド / あいみょん&#10;夜に駆ける / YOASOBI"></textarea>
-        <p class="help">1行に1曲。「曲名 / 歌手」の形で書いてね（歌手はなくてもOK）。保存するとHPの「Songs」がこの内容に入れかわります。0曲のときはHPに出ません。</p>
+        <p class="help">1行に1曲。「曲名 / 歌手」の形で書いてね（歌手はなくてもOK）。保存するとHPの「歌える曲」がこの内容に入れかわります。0曲のときはHPに出ません。</p>
       </div>
       <div class="row"><button class="primary" id="songSave" type="button">保存してHPに出す</button></div>
       <p class="msg" id="songMsg"></p>
