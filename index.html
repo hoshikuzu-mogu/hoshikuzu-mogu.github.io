@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011044000">
+<meta name="build" content="20261011050000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -236,7 +236,14 @@
   .menu__main a:hover,.menu__main a:focus-visible{background:var(--blue);color:#fff}
   .menu__main .ja{font-family:var(--dot);font-size:12px;color:var(--sub)}
   .menu__main a:hover .ja{color:#fff}
-  .menu__sns{list-style:none;display:flex;flex-wrap:wrap;gap:6px 14px;padding:10px 14px;border-top:1.5px dashed var(--frame);font-family:var(--px);font-size:19px;color:var(--blue-d)}
+  .menu__sns{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px;border-top:1.5px dashed var(--frame);font-family:var(--px);font-size:17px;color:var(--blue-d)}
+  .menu__sns a{display:flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:6px 10px;background:var(--white);border:1.5px solid var(--frame);box-shadow:3px 3px 0 rgba(78,127,207,.22);transition:transform .1s,box-shadow .1s}
+  .menu__sns a::after{content:"↗";font-size:13px;opacity:.6}
+  .menu__sns li:nth-child(2) a{background:var(--pink2);border-color:#E7AFC8}
+  .menu__sns li:nth-child(3) a{background:var(--lav2);border-color:#B9AEE6}
+  .menu__sns a:active{transform:translate(2px,2px);box-shadow:1px 1px 0 rgba(78,127,207,.22)}
+  .menu__sns a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  .menu .btns .btn{flex:1}
   .menu .btns{padding:6px 14px 14px}
   body.menu-open{overflow:hidden}
 
@@ -642,7 +649,6 @@
       </ul>
       <div class="btns">
         <a class="btn btn--main js-live" href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><svg class="ic"><use href="#i-play"/></svg><span class="ja">配信を見る</span></a>
-        <a class="btn btn--sub" href="#request" data-open="req"><span class="ja">🎤 歌をリクエスト</span></a>
       </div>
     </div>
   </div>
@@ -710,7 +716,7 @@
     <div class="hero__btns">
       <div class="btns">
         <a class="btn btn--main js-live" href="https://www.mirrativ.com/user/150527689" target="_blank" rel="noopener"><svg class="ic"><use href="#i-play"/></svg><span class="ja">配信を見る</span></a>
-        <a class="btn btn--sub" href="#request" data-open="req"><span class="ja">🎤 歌をリクエスト</span></a>
+        <a class="btn btn--sub" href="https://x.com/Oo_mgmg_oO" target="_blank" rel="noopener"><span class="ja">X をフォロー</span></a>
       </div>
       <div class="cd" id="cd" hidden style="margin-top:18px"></div>
     </div>
