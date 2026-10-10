@@ -12,6 +12,9 @@
 <link rel="icon" type="image/png" href="icon-180.png">
 <link rel="manifest" href="manifest.webmanifest">
 <title>もぐ管理</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=VT323&family=Zen+Maru+Gothic:wght@700&family=Hachi+Maru+Pop&family=Mochiy+Pop+One&family=Yusei+Magic&family=Zen+Kaku+Gothic+New:wght@700;900&display=swap" rel="stylesheet">
 <style>
   :root{
     --n0:#D6E4F1; --n1:#E2ECF7; --n2:#EEF5FC; --ink:#283452; --sub:#5F6E92; --dim:#8D9AB8;
@@ -52,7 +55,8 @@
   .empty{padding:14px 0;font-size:14px;color:var(--sub)}
   .foot{margin-top:40px;display:flex;justify-content:space-between;font-size:12px}
   .foot a,.foot button{color:var(--sub);background:none;border:0;min-height:0;font:inherit;letter-spacing:.06em;text-decoration:underline;cursor:pointer}
-  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:22px}
+  .tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:22px}
+  @media (max-width:420px){ .tabs{grid-template-columns:repeat(3,1fr)} }
   .tab{min-height:44px;border-radius:14px;font-size:13px;background:var(--card)}
   .tab[aria-selected="true"]{background:var(--mizu);border-color:var(--mizu);color:#fff}
   .tab b{font-family:var(--sans);font-size:11px;margin-left:4px;padding:0 6px;border-radius:9px;background:#F08DB4;color:#fff}
@@ -86,6 +90,70 @@
   .now{margin-top:18px;padding:12px 14px;border-radius:14px;background:var(--card);border:1px dashed var(--line);font-size:13px}
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .chk{display:flex;align-items:center;gap:8px;margin-top:12px;font-size:13px;font-weight:700}
+  .opt{font-family:var(--sans);font-weight:400;font-size:11px;color:var(--sub);margin-left:6px}
+  input[type=date]{-webkit-appearance:none;appearance:none}
+  /* 予定表（しぃちゃん版と同じ形） */
+  .nowBox{margin-top:20px;padding:14px 16px;border-radius:16px;background:#fff;border:1.5px solid var(--line)}
+  .nowBox__lbl{font-size:12px;font-weight:700;color:var(--sub)}
+  .nowBox__val{margin-top:2px;font-family:var(--maru);font-weight:700;font-size:16px}
+  .nowBox__val small{display:block;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub)}
+  .nowBox.is-empty .nowBox__val{color:var(--sub);font-size:14px}
+  .nowBox__del{margin-top:12px;width:100%;min-height:44px;border-color:#E9A2BF;background:#FFF3F8;color:#B4437A;font-size:14px}
+  .sch{display:grid;gap:8px;margin-top:16px}
+  .schRow{display:grid;grid-template-columns:56px 1fr;gap:8px;align-items:start;padding:10px;border-radius:14px;background:rgba(255,255,255,.75);border:1.5px solid var(--line)}
+  .schDay{display:grid;place-items:center;height:56px;border-radius:12px;background:var(--mizu);color:#fff;font-family:var(--maru);font-weight:700;font-size:15px;line-height:1.15;text-align:center}
+  .schDay small{display:block;font-size:11px;opacity:.9}
+  .schDay.sat{background:#7FB3E8}.schDay.sun{background:#E77FAA}
+  .schRow.is-off .schDay{background:#C9C3E6}
+  .schF{display:grid;gap:6px}
+  .schF input[type=text]{min-height:40px;padding:6px 12px;font-size:15px}
+  .schTop{display:flex;gap:6px;align-items:center}
+  .schTop input{flex:1}
+  .schOff{flex:none;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;color:var(--sub);margin:0;letter-spacing:0}
+  .schOff input{width:20px;height:20px}
+  .schRow.is-off .schF input[type=text]{opacity:.35}
+  .quick{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .quick button{min-height:32px;padding:0 12px;font-size:12px;background:#fff}
+  .chkRow{display:flex;align-items:center;gap:8px;margin-top:16px;font-size:13px;font-weight:700}
+  .out{margin-top:18px}
+  .out img{display:block;width:100%;border-radius:14px;box-shadow:0 6px 18px rgba(40,52,82,.18)}
+  .seg{display:flex;flex-wrap:wrap;gap:8px}
+  .seg button{flex:1 1 auto;min-height:40px;padding:0 14px;font-size:13px;background:rgba(255,255,255,.7)}
+  .seg button[aria-pressed="true"]{background:var(--mizu);border-color:var(--mizu);color:#fff}
+  .fontSeg button{flex:1 1 30%;font-weight:400;letter-spacing:0;font-size:14px}
+  .fontLbl{display:block;margin-top:14px}
+  /* 壁紙メーカー */
+  .acc{margin-top:12px;border-radius:18px;background:rgba(255,255,255,.7);border:1.5px solid var(--line);overflow:hidden}
+  .acc[open]{background:#fff;border-color:var(--mizu)}
+  .acc summary{list-style:none;display:flex;align-items:center;gap:12px;min-height:60px;padding:10px 46px 10px 14px;cursor:pointer;position:relative}
+  .acc summary::-webkit-details-marker{display:none}
+  .acc summary::after{content:"";position:absolute;right:20px;top:50%;width:9px;height:9px;border-right:2.5px solid var(--mizu);border-bottom:2.5px solid var(--mizu);transform:translateY(-70%) rotate(45deg);transition:transform .2s}
+  .acc[open] summary::after{transform:translateY(-30%) rotate(-135deg)}
+  .acc__i{flex:none;display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--n2);font-size:18px}
+  .acc__t{display:block;font-family:var(--maru);font-weight:700;font-size:15px}
+  .acc__v{display:block;margin-top:2px;font-family:var(--sans);font-weight:400;font-size:12px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:62vw}
+  .acc__b{padding:4px 16px 18px}
+  .acc__sep{height:1px;margin:16px 0 14px;background:var(--line)}
+  .wallPrev{display:grid;place-items:center;margin-top:18px}
+  .wallPrev canvas{width:min(56%,230px);height:auto;border-radius:24px;box-shadow:0 8px 22px rgba(40,52,82,.25);background:#fff}
+  .wallMini{position:fixed;right:10px;top:calc(10px + env(safe-area-inset-top,0px));z-index:15;width:100px;min-height:0;padding:0;border:3px solid #fff;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 6px 18px rgba(40,52,82,.35);opacity:0;visibility:hidden;transform:translateY(-12px) scale(.9);transition:opacity .2s,transform .25s,visibility .2s}
+  .wallMini.is-show{opacity:1;visibility:visible;transform:none}
+  .wallMini canvas{display:block;width:100%;height:auto}
+  .wallMini span{position:absolute;left:0;right:0;bottom:0;padding:2px 0;background:rgba(78,127,207,.92);color:#fff;font-size:11px;font-weight:700;text-align:center}
+  .wallRand{display:block;margin:12px auto 0;min-height:40px;padding:0 18px;font-size:13px;background:#fff}
+  .illus{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .illus button{min-height:0;aspect-ratio:3/4;padding:2px;border-radius:12px;background:#fff;overflow:hidden}
+  .illus button img{width:100%;height:100%;object-fit:contain;display:block}
+  .illus button[aria-pressed="true"]{border:3px solid var(--mizu)}
+  .swatch{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+  .swatch button{min-height:0;padding:6px 0 4px;border-radius:12px;font-size:10px;background:rgba(255,255,255,.7);display:flex;flex-direction:column;align-items:center;gap:3px;letter-spacing:0}
+  .swatch button i{width:30px;height:30px;border-radius:50%;background:var(--c);box-shadow:inset 0 0 0 2px #fff,0 0 0 1px var(--line)}
+  .swatch button[aria-pressed="true"]{background:#fff;border-color:var(--mizu);box-shadow:0 0 0 2px var(--mizu)}
+  .rng{margin-top:12px}
+  .rng label{font-size:12px;color:var(--sub)}
+  .rng input{min-height:0;padding:0;border:0;background:none;accent-color:var(--mizu)}
+  .file{min-height:0;padding:10px;font-size:14px}
+  .linkBtn{display:inline;min-height:0;padding:0;margin-left:6px;border:0;font-size:12px;color:var(--mizu);text-decoration:underline;letter-spacing:0}
   [hidden]{display:none!important}
 </style>
 </head>
@@ -104,7 +172,8 @@
     <div class="tabs" role="tablist">
       <button class="tab" data-tab="req" role="tab" type="button">リクエスト<b id="reqCount"></b></button>
       <button class="tab" data-tab="msg" role="tab" type="button">おてがみ<b id="msgCount"></b></button>
-      <button class="tab" data-tab="sch" role="tab" type="button">今週の予定</button>
+      <button class="tab" data-tab="sch" role="tab" type="button">予定表</button>
+      <button class="tab" data-tab="wall" role="tab" type="button">ごほうび壁紙</button>
       <button class="tab" data-tab="ev" role="tab" type="button">カウントダウン</button>
       <button class="tab" data-tab="song" role="tab" type="button">歌える曲</button>
       <button class="tab" data-tab="post" role="tab" type="button">X のポスト</button>
@@ -134,22 +203,145 @@
       <button class="reload" id="mReload" type="button">最新にする</button>
     </div>
 
-    <!-- 今週の予定 -->
+    <!-- 予定表 -->
     <div data-view="sch" hidden>
+      <div class="nowBox" id="schNow">
+        <p class="nowBox__lbl">いまHPに載っている予定</p>
+        <p class="nowBox__val" id="schNowVal">確認中…</p>
+        <button class="nowBox__del" id="schClear" type="button" hidden>🗑 HPから予定を消す</button>
+      </div>
       <div class="card">
         <label for="schStart">はじまりの日</label>
         <input id="schStart" type="date">
-        <p class="help">ここから7日分がHPの「今週の配信予定」に出ます。時間だけ・内容だけでもOK。空っぽの日は「未定」になります。</p>
+        <p class="help">選んだ日から7日分の予定表になります。<button class="linkBtn" id="schThisWeek" type="button">今週の月曜にする</button><button class="linkBtn" id="schNextWeek" type="button">来週の月曜にする</button></p>
       </div>
-      <div class="days" id="days"></div>
+      <div class="quick" aria-label="まとめて入れる">
+        <button type="button" data-fill="6:00〜">ぜんぶ 6:00〜</button>
+        <button type="button" data-fill="22:00〜">ぜんぶ 22:00〜</button>
+        <button type="button" data-fill="6:00 / 22:00">ぜんぶ 朝夜2回</button>
+        <button type="button" data-fill="">時間を空にする</button>
+      </div>
+      <div class="sch" id="schRows"></div>
       <div class="card">
-        <label for="schNote">ひとこと<small style="font-weight:400;color:var(--sub)">（なしでもOK）</small></label>
-        <input id="schNote" type="text" maxlength="60" placeholder="例：土曜は歌枠多めです">
+        <label for="schNote">ひとこと<small class="opt">なしでもOK</small></label>
+        <input id="schNote" type="text" maxlength="40" placeholder="例）今週は歌枠多めだよ🎤">
+        <label class="fontLbl">画像の文字のフォント</label><div class="seg fontSeg"></div>
       </div>
-      <div class="row"><button class="primary" id="schSave" type="button">HPに出す</button></div>
+      <label class="chkRow"><input type="checkbox" id="schSync" checked>HPの「今週の配信予定」にも反映する</label>
+      <div class="row"><button class="primary" id="schMake" type="button">予定表の画像をつくる</button></div>
       <p class="msg" id="schMsg"></p>
-      <div class="now" id="schNow">いまHPに出ている予定：読み込み中…</div>
-      <button class="reload" id="schClear" type="button">HPの予定を消す</button>
+      <div class="out" id="schOut" hidden>
+        <img id="schImg" alt="予定表の画像">
+        <div class="row"><button class="ghost" id="schAgain" type="button">直す</button><button class="primary" id="schShare" type="button">保存・Xに投稿</button></div>
+        <p class="help">画像を長押ししても保存できます。入力した内容はこのスマホに残ります。</p>
+      </div>
+    </div>
+
+    <!-- ごほうび壁紙 -->
+    <div data-view="wall" hidden>
+      <div class="nowBox" id="wallNow">
+        <p class="nowBox__lbl">いまのごほうび壁紙（スタンプカードをいっぱいにした人に配られる）</p>
+        <p class="nowBox__val" id="wallNowVal">確認中…</p>
+        <button class="nowBox__del" id="wallClear" type="button" hidden>標準の壁紙に戻す</button>
+      </div>
+      <div class="wallPrev" id="wallTop"><canvas id="wallCv" width="1170" height="2532"></canvas></div>
+      <button class="wallMini" id="wallMini" type="button" aria-label="見本を大きく見る"><canvas id="wallMiniCv" width="300" height="649"></canvas><span>見本 ▲</span></button>
+      <button class="wallRand" id="wallRand" type="button">🎲 おまかせで組み合わせる</button>
+      <p class="help" style="text-align:center">タップで開きます・変えるとすぐ見本に反映</p>
+
+      <details class="acc" data-acc="ill">
+        <summary><span class="acc__i" aria-hidden="true">🪽</span><span class="acc__t">イラスト・かざり方<small class="acc__v" id="accV_ill"></small></span></summary>
+        <div class="acc__b">
+          <label>イラスト</label>
+          <div class="illus" id="wallIllus"></div>
+          <label for="wallFile" style="margin-top:12px">ほかの画像をつかう<small class="opt">なしでもOK</small></label>
+          <input id="wallFile" type="file" accept="image/*" class="file">
+          <div class="acc__sep"></div>
+          <label>かざり方</label>
+          <div class="seg" id="wallMode">
+            <button type="button" data-v="standard">ふつう</button>
+            <button type="button" data-v="window">ウィンドウ</button>
+            <button type="button" data-v="polaroid">チェキ風</button>
+            <button type="button" data-v="circle">まる</button>
+            <button type="button" data-v="heart">ハート</button>
+            <button type="button" data-v="full">全面</button>
+          </div>
+          <p class="help" id="wallModeHint"></p>
+          <div class="rng"><label for="wallPos">イラストの位置（上〜下）</label><input id="wallPos" type="range" min="0" max="100" value="45"></div>
+          <div class="rng"><label for="wallZoom">イラストの大きさ</label><input id="wallZoom" type="range" min="70" max="130" value="100"></div>
+        </div>
+      </details>
+      <details class="acc" data-acc="color">
+        <summary><span class="acc__i" aria-hidden="true">🎨</span><span class="acc__t">色・背景のもよう<small class="acc__v" id="accV_color"></small></span></summary>
+        <div class="acc__b">
+          <label>色</label>
+          <div class="swatch" id="wallColor"></div>
+          <div class="acc__sep"></div>
+          <label>背景のもよう</label>
+          <div class="seg" id="wallPattern">
+            <button type="button" data-v="paw">肉球</button>
+            <button type="button" data-v="grid">方眼×</button>
+            <button type="button" data-v="dot">水玉</button>
+            <button type="button" data-v="heart">ドットハート</button>
+            <button type="button" data-v="star">星空</button>
+            <button type="button" data-v="plain">なし</button>
+          </div>
+        </div>
+      </details>
+      <details class="acc" data-acc="deco">
+        <summary><span class="acc__i" aria-hidden="true">✨</span><span class="acc__t">かざり・名前<small class="acc__v" id="accV_deco"></small></span></summary>
+        <div class="acc__b">
+          <label>まわりのかざり</label>
+          <div class="seg" id="wallDeco">
+            <button type="button" data-v="angel">天使の羽</button>
+            <button type="button" data-v="heart">ハート</button>
+            <button type="button" data-v="kira">キラキラ</button>
+            <button type="button" data-v="paw">肉球</button>
+            <button type="button" data-v="egg">目玉焼き</button>
+            <button type="button" data-v="none">なし</button>
+          </div>
+          <label class="chkRow"><input type="checkbox" id="wallHalo">イラストの上に、たれる輪っか</label>
+          <label class="chkRow" style="margin-top:8px"><input type="checkbox" id="wallTicker">画面の上にパソコン風の帯（ウィンドウのバー）</label>
+          <div class="acc__sep"></div>
+          <label>名前（星屑もぐ）</label>
+          <div class="seg" id="wallLogo">
+            <button type="button" data-v="top">上</button>
+            <button type="button" data-v="bottom">下</button>
+            <button type="button" data-v="none">なし</button>
+          </div>
+        </div>
+      </details>
+      <details class="acc" data-acc="cal">
+        <summary><span class="acc__i" aria-hidden="true">📅</span><span class="acc__t">カレンダー<small class="acc__v" id="accV_cal"></small></span></summary>
+        <div class="acc__b">
+          <div class="seg" id="wallCal">
+            <button type="button" data-v="on">あり</button>
+            <button type="button" data-v="none">なし</button>
+          </div>
+          <div class="seg" id="wallCalMonth" style="margin-top:8px">
+            <button type="button" data-v="next">来月</button>
+            <button type="button" data-v="this">今月</button>
+          </div>
+          <label for="wallCalMarks" style="margin-top:12px">♡をつける日<small class="opt">なしでもOK・数字を「,」で区切る</small></label>
+          <input id="wallCalMarks" type="text" inputmode="numeric" maxlength="60" placeholder="例）5, 25">
+          <p class="help" id="wallCalHint"></p>
+        </div>
+      </details>
+      <details class="acc" data-acc="msg">
+        <summary><span class="acc__i" aria-hidden="true">💬</span><span class="acc__t">ひとこと・フォント<small class="acc__v" id="accV_msg"></small></span></summary>
+        <div class="acc__b">
+          <label for="wallMsg">ひとこと<small class="opt">なしでもOK・2行まで</small></label>
+          <textarea id="wallMsg" rows="2" maxlength="40" style="min-height:80px" placeholder="いつも見にきてくれてありがと♡"></textarea>
+          <div class="seg" id="wallMsgStyle" style="margin-top:10px">
+            <button type="button" data-v="plain">ふつう</button>
+            <button type="button" data-v="window">ウィンドウ</button>
+            <button type="button" data-v="hl">青い帯</button>
+          </div>
+          <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
+        </div>
+      </details>
+      <div class="row"><button class="ghost" id="wallSave" type="button">スマホに保存</button><button class="primary" id="wallSet" type="button">ごほうびに設定</button></div>
+      <p class="msg" id="wallMsgOut"></p>
     </div>
 
     <!-- カウントダウン -->
@@ -343,48 +535,400 @@
   };
   $('mReload').onclick=loadMsg;
 
-  // ---- 今週の予定 ----
-  var sch={start:'',days:{},note:''};
-  try{ var saved=JSON.parse(localStorage.getItem('mogu_sch_draft')||'null'); if(saved) sch=saved; }catch(e){}
-  function saveDraft(){ try{ localStorage.setItem('mogu_sch_draft',JSON.stringify(sch)); }catch(e){} }
-  function dates(){ var s=new Date((sch.start||ymd(new Date()))+'T00:00:00'), out=[]; for(var i=0;i<7;i++){ var d=new Date(s); d.setDate(s.getDate()+i); out.push(d); } return out; }
-  function day(k){ return sch.days[k]||(sch.days[k]={time:'',what:'',off:false}); }
-  function renderDays(){
-    if(!sch.start) sch.start=ymd(new Date());
-    $('schStart').value=sch.start; $('schNote').value=sch.note||'';
-    var box=$('days'); box.innerHTML='';
-    dates().forEach(function(d){
-      var k=ymd(d), v=day(k), row=document.createElement('div'); row.className='day'+(v.off?' is-off':'');
-      row.innerHTML='<div class="dl">'+(d.getMonth()+1)+'/'+d.getDate()+'<small>'+WD[d.getDay()]+'曜</small></div><div class="fl"><input type="text" maxlength="12" placeholder="22:00" aria-label="時間"><input type="text" maxlength="24" placeholder="雑談・歌枠" aria-label="内容"><label class="off"><input type="checkbox">休み</label></div>';
-      var ins=row.querySelectorAll('input');
-      ins[0].value=v.time||''; ins[1].value=v.what||''; ins[2].checked=!!v.off;
-      ins[0].oninput=function(){ v.time=this.value; saveDraft(); };
-      ins[1].oninput=function(){ v.what=this.value; saveDraft(); };
-      ins[2].onchange=function(){ v.off=this.checked; row.classList.toggle('is-off',v.off); saveDraft(); };
-      box.appendChild(row);
-    });
+  // ---- 画像に使うフォント（予定表・壁紙で共通。このスマホに残る） ----
+  var FONTS={ maru:{n:'まるゴシック',f:'"Zen Maru Gothic"'}, dot:{n:'ドット',f:'"DotGothic16"'}, kaku:{n:'かくゴシック',f:'"Zen Kaku Gothic New"'},
+              hachi:{n:'はちまるポップ',f:'"Hachi Maru Pop"'}, mochiy:{n:'もっちりポップ',f:'"Mochiy Pop One"'}, yusei:{n:'ゆせいマジック',f:'"Yusei Magic"'} };
+  var fontKey='dot'; try{ var fk=localStorage.getItem('mogu_font'); if(FONTS[fk]) fontKey=fk; }catch(e){}
+  var fontListeners=[];
+  function FF(){ return FONTS[fontKey].f+',"Hiragino Maru Gothic ProN","Hiragino Sans",sans-serif'; }
+  function fontReady(){ if(!document.fonts||!document.fonts.load) return Promise.resolve();
+    return Promise.all([document.fonts.load('400 40px '+FONTS[fontKey].f,'あア亜Aa1♡'),document.fonts.load('700 40px '+FONTS[fontKey].f,'あア亜Aa1♡'),document.fonts.load('40px "VT323"','0123456789:/ABC'),document.fonts.load('900 40px "Zen Kaku Gothic New"','星屑もぐ')]).catch(function(){}); }
+  document.querySelectorAll('.fontSeg').forEach(function(box){
+    Object.keys(FONTS).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.textContent=FONTS[k].n; b.style.fontFamily=FONTS[k].f+',sans-serif'; b.setAttribute('aria-pressed',k===fontKey?'true':'false');
+      b.onclick=function(){ fontKey=k; try{ localStorage.setItem('mogu_font',k); }catch(e){}
+        document.querySelectorAll('.fontSeg button').forEach(function(c){ c.setAttribute('aria-pressed',c.dataset.v===k?'true':'false'); });
+        fontReady().then(function(){ fontListeners.forEach(function(fn){ fn(); }); }); };
+      box.appendChild(b); });
+  });
+  function loadImg(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
+  function rrect(x,X,Y,W,H,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+W,Y,X+W,Y+H,r); x.arcTo(X+W,Y+H,X,Y+H,r); x.arcTo(X,Y+H,X,Y,r); x.arcTo(X,Y,X+W,Y,r); x.closePath(); }
+  function fitText(x,txt,max){ var s=txt; while(s.length>1 && x.measureText(s).width>max) s=s.slice(0,-1); return s===txt?s:s.slice(0,-1)+'…'; }
+  // パソコン風ウィンドウ（予定表・壁紙で共通）
+  function drawWin(x,X,Y,W,H,title,k,bar){
+    k=k||1; bar=bar||['#BCD2EE','#E3EDF9','#33599B','#9DB8DD'];
+    x.save(); x.fillStyle='rgba(78,127,207,.2)'; x.fillRect(X+10*k,Y+10*k,W,H); x.restore();
+    x.fillStyle='#fff'; x.fillRect(X,Y,W,H);
+    var bh=44*k, g=x.createLinearGradient(X,0,X+W,0); g.addColorStop(0,bar[0]); g.addColorStop(1,bar[1]); x.fillStyle=g; x.fillRect(X,Y,W,bh);
+    x.strokeStyle=bar[3]; x.lineWidth=3*k; x.strokeRect(X,Y,W,H); x.beginPath(); x.moveTo(X,Y+bh); x.lineTo(X+W,Y+bh); x.stroke();
+    x.fillStyle=bar[2]; x.font=(32*k)+'px "VT323",monospace'; x.textAlign='left'; x.textBaseline='middle'; x.fillText(title,X+16*k,Y+bh/2+2*k);
+    ['×','□','_'].forEach(function(t,i){ var bx=X+W-(i+1)*34*k-6*k, by=Y+8*k; x.fillStyle='#EEF5FC'; x.fillRect(bx,by,28*k,26*k); x.strokeStyle=bar[3]; x.lineWidth=2*k; x.strokeRect(bx,by,28*k,26*k); x.fillStyle=bar[2]; x.textAlign='center'; x.fillText(t,bx+14*k,by+14*k); });
+    x.textBaseline='alphabetic';
+    return Y+bh;
   }
-  $('schStart').onchange=function(){ if(this.value){ sch.start=this.value; saveDraft(); renderDays(); } };
-  $('schNote').oninput=function(){ sch.note=this.value; saveDraft(); };
-  function showNow(r){
-    var el=$('schNow');
-    if(!r||!r.data||!r.data.days||!r.data.days.length){ el.textContent='いまHPに出ている予定：なし'; $('schClear').hidden=true; return; }
-    var ds=r.data.days, a=new Date(ds[0].date+'T00:00:00'), b=new Date(ds[ds.length-1].date+'T00:00:00'), u=new Date(r.updated_at);
-    var over=ds[ds.length-1].date<ymd(new Date());
-    el.textContent='いまHPに出ている予定：'+(a.getMonth()+1)+'/'+a.getDate()+'〜'+(b.getMonth()+1)+'/'+b.getDate()+(isNaN(u)?'':'（'+fmt(r.updated_at)+' 更新）')+(over?'・期間が終わったのでHPには出ていません':'');
-    $('schClear').hidden=false;
+  function hlText(x,txt,cx,cy,size,F,align){
+    x.font='900 '+size+'px '+F; var w=x.measureText(txt).width, pad=size*.25, h=size*1.25, X=align==='left'?cx:cx-w/2-pad;
+    x.fillStyle='rgba(78,127,207,.45)'; x.fillRect(X+size*.22,cy-h/2-size*.36,w+pad*2,h);
+    var g=x.createLinearGradient(X,0,X+w+pad*2,0); g.addColorStop(0,'#4E7FCF'); g.addColorStop(1,'#6C8FE0'); x.fillStyle=g; x.fillRect(X,cy-h/2,w+pad*2,h);
+    x.fillStyle='#fff'; x.textAlign='left'; x.textBaseline='middle'; x.fillText(txt,X+pad,cy+size*.04); x.textBaseline='alphabetic';
+    return {x:X,w:w+pad*2,h:h};
   }
-  function loadSch(){ return call('mogu_schedule_admin',{p_action:'get'}).then(showNow).catch(function(e){ $('schNow').textContent='確認できませんでした'; fail(e,$('schMsg')); }); }
-  $('schSave').onclick=function(){
-    var btn=this; btn.disabled=true; say($('schMsg'),'HPに出しています…');
-    var data={start:sch.start,note:(sch.note||'').slice(0,60),days:dates().map(function(d){ var v=day(ymd(d)); return {date:ymd(d),time:(v.time||'').slice(0,12),what:(v.what||'').slice(0,24),off:!!v.off}; })};
-    call('mogu_schedule_admin',{p_action:'save',p_data:data}).then(function(r){ showNow(r); say($('schMsg'),'HPに出しました！'); })
-      .catch(function(e){ fail(e,$('schMsg')); }).then(function(){ btn.disabled=false; });
-  };
-  $('schClear').onclick=function(){
-    if(!confirm('HPの「今週の配信予定」を消す？（この画面の入力は消えません）')) return;
-    call('mogu_schedule_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('schMsg'),'HPから予定を消しました'); }).catch(function(e){ fail(e,$('schMsg')); });
-  };
+
+  // ---- 予定表（しぃちゃんと同じ形：入力はこのスマホに保存・画像も作れる） ----
+  (function(){
+    var KEY='mogu_sch2', st={start:'',note:'',days:{}};
+    try{ var s0=JSON.parse(localStorage.getItem(KEY)||'null'); if(s0) st=s0; }catch(e){}
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    function parse(v){ var p=v.split('-'); return new Date(+p[0],+p[1]-1,+p[2]); }
+    function monday(add){ var d=new Date(); d.setHours(0,0,0,0); d.setDate(d.getDate()-((d.getDay()+6)%7)+(add||0)); return d; }
+    if(!st.start) st.start=ymd(monday());
+    function dates(){ var b=parse(st.start), out=[]; for(var i=0;i<7;i++){ var d=new Date(b); d.setDate(b.getDate()+i); out.push(d); } return out; }
+    function day(k){ return st.days[k]||(st.days[k]={time:'22:00〜',what:'',off:false}); }
+    function rows(){
+      $('schStart').value=st.start; $('schNote').value=st.note||'';
+      var box=$('schRows'); box.innerHTML='';
+      dates().forEach(function(d){
+        var k=ymd(d), v=day(k), w=d.getDay(), row=document.createElement('div'); row.className='schRow'+(v.off?' is-off':'');
+        row.innerHTML='<div class="schDay'+(w===6?' sat':w===0?' sun':'')+'">'+(d.getMonth()+1)+'/'+d.getDate()+'<small>'+WD[w]+'</small></div>'+
+          '<div class="schF"><div class="schTop"><input type="text" class="t" maxlength="14" placeholder="22:00〜" aria-label="時間"><label class="schOff"><input type="checkbox" class="o">お休み</label></div>'+
+          '<input type="text" class="w" maxlength="24" placeholder="内容（雑談・歌枠・ゲームなど）" aria-label="内容"></div>';
+        var ti=row.querySelector('.t'), wi=row.querySelector('.w'), oi=row.querySelector('.o');
+        ti.value=v.time||''; wi.value=v.what||''; oi.checked=!!v.off;
+        ti.oninput=function(){ v.time=ti.value; saveSt(); };
+        wi.oninput=function(){ v.what=wi.value; saveSt(); };
+        oi.onchange=function(){ v.off=oi.checked; row.classList.toggle('is-off',v.off); saveSt(); };
+        box.appendChild(row);
+      });
+    }
+    $('schStart').onchange=function(){ if(this.value){ st.start=this.value; saveSt(); rows(); } };
+    $('schThisWeek').onclick=function(){ st.start=ymd(monday()); saveSt(); rows(); };
+    $('schNextWeek').onclick=function(){ st.start=ymd(monday(7)); saveSt(); rows(); };
+    $('schNote').oninput=function(){ st.note=this.value; saveSt(); };
+    document.querySelectorAll('[data-fill]').forEach(function(b){ b.onclick=function(){ dates().forEach(function(d){ var v=day(ymd(d)); if(!v.off) v.time=b.dataset.fill; }); saveSt(); rows(); }; });
+    if(st.sync===false) $('schSync').checked=false;
+    $('schSync').onchange=function(){ st.sync=this.checked; saveSt(); };
+    rows();
+
+    var blob=null;
+    function draw(){
+      var F=FF();
+      return fontReady().then(function(){ return Promise.all([loadImg('../img/chibi.webp'),loadImg('../img/halo-drip.webp'),loadImg('../img/wing-glow.webp'),loadImg('../img/wing-glow-l.webp'),loadImg('../img/paw-tile.webp'),loadImg('../img/pxheart.webp')]); }).then(function(im){
+        var W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
+        x.fillStyle='#D6E4F1'; x.fillRect(0,0,W,H);
+        if(im[4]){ for(var py=0;py<H;py+=540) for(var px=0;px<W;px+=540) x.drawImage(im[4],px,py,540,540); }
+        x.strokeStyle='rgba(255,255,255,.6)'; x.lineWidth=2; for(var gx=0;gx<W;gx+=54){ x.beginPath(); x.moveTo(gx,0); x.lineTo(gx,H); x.stroke(); } for(var gy=0;gy<H;gy+=54){ x.beginPath(); x.moveTo(0,gy); x.lineTo(W,gy); x.stroke(); }
+        var g=x.createRadialGradient(W,0,0,W,0,700); g.addColorStop(0,'rgba(245,198,218,.6)'); g.addColorStop(1,'rgba(245,198,218,0)'); x.fillStyle=g; x.fillRect(0,0,W,H);
+        var X=56, Y=56, WW=W-112, HH=H-112;
+        var top=drawWin(x,X,Y,WW,HH,'weekly_schedule.exe',1.2);
+        // 見出し
+        var hl=hlText(x,'星屑もぐ',X+46,top+92,74,'"Zen Kaku Gothic New",'+F,'left');
+        if(im[1]){ x.drawImage(im[1],X+20,top+18,150,110); }
+        var ds=dates(), a=ds[0], b=ds[6];
+        x.textAlign='right'; x.fillStyle='#33599B'; x.font='76px "VT323",monospace'; x.fillText('WEEKLY',X+WW-40,top+86); x.fillText('SCHEDULE',X+WW-40,top+148);
+        x.fillStyle='#5F6E92'; x.font='700 32px '+F; x.fillText((a.getMonth()+1)+'/'+a.getDate()+' 〜 '+(b.getMonth()+1)+'/'+b.getDate(),X+WW-40,top+196);
+        x.textAlign='left'; x.fillStyle='#B4437A'; x.font='30px "VT323",monospace'; x.fillText('✝ angel mode : ON',X+48,top+176);
+        var rt=top+226, rh=98, gap=12, RX=X+36, RW=WW-72;
+        ds.forEach(function(d,i){
+          var v=day(ymd(d)), Y2=rt+i*(rh+gap), w=d.getDay();
+          x.fillStyle=v.off?'rgba(234,229,251,.7)':'#EEF5FC'; x.fillRect(RX,Y2,RW,rh); x.strokeStyle='#9DB8DD'; x.lineWidth=2; x.setLineDash([8,6]); x.strokeRect(RX,Y2,RW,rh); x.setLineDash([]);
+          x.fillStyle=v.off?'#C9C3E6':(w===0?'#E77FAA':w===6?'#7FB3E8':'#4E7FCF'); x.fillRect(RX+12,Y2+12,140,rh-24);
+          x.textAlign='center'; x.fillStyle='#fff'; x.font='44px "VT323",monospace'; x.fillText((d.getMonth()+1)+'/'+d.getDate(),RX+82,Y2+50);
+          x.font='700 22px '+F; x.fillText(WD[w],RX+82,Y2+78);
+          x.textAlign='left';
+          if(v.off){ x.fillStyle='#8B7FC2'; x.font='700 38px '+F; x.fillText('おやすみ zzz',RX+180,Y2+62); }
+          else{
+            x.fillStyle='#33599B'; x.font='56px "VT323",monospace'; var tt=fitText(x,v.time||'',300); x.fillText(tt,RX+176,Y2+66);
+            var tw=Math.max(190,x.measureText(tt).width+28);
+            x.fillStyle='#283452'; x.font='700 34px '+F; x.fillText(fitText(x,v.what||'配信',RW-176-tw-30),RX+176+tw,Y2+62);
+          }
+        });
+        var by=rt+7*(rh+gap)+6;
+        if(st.note){ x.fillStyle='#FCE3EE'; x.fillRect(RX,by,RW-230,64); x.strokeStyle='#E7AFC8'; x.lineWidth=2; x.strokeRect(RX,by,RW-230,64); x.fillStyle='#B4437A'; x.font='700 30px '+F; x.fillText(fitText(x,'♡ '+st.note,RW-280),RX+22,by+43); }
+        x.fillStyle='#5F6E92'; x.font='30px "VT323",monospace'; x.fillText('MIRRATIV / X @Oo_mgmg_oO',X+40,Y+HH-26);
+        if(im[2]&&im[3]&&im[0]){ var cw=210, chh=im[0].height*cw/im[0].width, cx0=W-cw-50, cy0=H-chh-30;
+          x.drawImage(im[3],cx0-70,cy0+40,110,96); x.drawImage(im[2],cx0+cw-40,cy0+40,110,96); x.drawImage(im[0],cx0,cy0,cw,chh); x.drawImage(im[1],cx0+30,cy0-50,150,110); }
+        if(im[5]){ x.drawImage(im[5],X+WW-150,top+10,56,50); }
+        return new Promise(function(ok){ c.toBlob(function(bb){ blob=bb; ok(URL.createObjectURL(bb)); },'image/png'); });
+      });
+    }
+    function payload(){ return { start:st.start, note:(st.note||'').slice(0,60), days:dates().map(function(d){ var v=day(ymd(d)); return {date:ymd(d), time:(v.time||'').slice(0,12), what:(v.what||'').slice(0,24), off:!!v.off}; }) }; }
+    function md(d){ return (d.getMonth()+1)+'/'+d.getDate(); }
+    function showNow(res){
+      var box=$('schNow'), val=$('schNowVal'), del=$('schClear');
+      if(!res||!res.data||!res.data.days||!res.data.days.length){ box.classList.add('is-empty'); val.textContent='なし（HPにはいつもの配信時間だけ出ています）'; del.hidden=true; return; }
+      var ds=res.data.days, a=parse(ds[0].date), b=parse(ds[ds.length-1].date), u=new Date(res.updated_at), t=new Date(); t.setHours(0,0,0,0);
+      box.classList.remove('is-empty');
+      val.innerHTML=md(a)+'〜'+md(b)+' の予定<small>'+(isNaN(u)?'':fmt(res.updated_at)+' に更新')+(b<t?'・期間が終わったのでHPには出ていません':'')+'</small>';
+      del.hidden=false;
+    }
+    window.loadSch=function(){ return call('mogu_schedule_admin',{p_action:'get'}).then(showNow).catch(function(e){ $('schNowVal').textContent='確認できませんでした'; fail(e,$('schMsg')); }); };
+    $('schClear').onclick=function(){
+      if(!confirm('HPの「今週の配信予定」を消します。\n（この画面の入力内容は消えません）\nよろしいですか？')) return;
+      var b=this; b.disabled=true;
+      call('mogu_schedule_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('schMsg'),'HPから予定を消しました'); }).catch(function(e){ fail(e,$('schMsg')); }).then(function(){ b.disabled=false; });
+    };
+    $('schMake').onclick=function(){
+      var btn=this; btn.disabled=true; say($('schMsg'),'つくっています…');
+      var sync=$('schSync').checked?call('mogu_schedule_admin',{p_action:'save',p_data:payload()}).then(function(r){ showNow(r); return 'ok'; }):Promise.resolve(null);
+      var syncErr=null; sync=sync.catch(function(e){ syncErr=e; });
+      Promise.all([sync,draw()]).then(function(r){
+        var u=r[1], i=$('schImg'); if(i.dataset.u) URL.revokeObjectURL(i.dataset.u); i.src=u; i.dataset.u=u; $('schOut').hidden=false;
+        if(syncErr){ if(syncErr.message==='auth') fail(syncErr,$('schMsg')); else say($('schMsg'),'画像はできました。HPへの反映はできませんでした（電波を確認してもう一度押してね）',true); }
+        else say($('schMsg'), $('schSync').checked?'できました！HPの予定にも反映済みです':'できました！');
+        setTimeout(function(){ $('schOut').scrollIntoView({behavior:'smooth',block:'start'}); },100);
+      }).catch(function(){ say($('schMsg'),'画像をつくれませんでした。もう一度押してね',true); }).then(function(){ btn.disabled=false; });
+    };
+    fontListeners.push(function(){ if(!$('schOut').hidden) $('schMake').click(); });
+    $('schAgain').onclick=function(){ $('schOut').hidden=true; $('schRows').scrollIntoView({behavior:'smooth',block:'start'}); };
+    $('schShare').onclick=function(){
+      if(!blob) return;
+      var f=new File([blob],'mogu-schedule.png',{type:'image/png'});
+      if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f],text:'今週の配信予定だよ✝ #もぐもぐくずもち'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download='mogu-schedule.png'; document.body.appendChild(a); a.click(); a.remove();
+    };
+  })();
+
+  // ---- ごほうび壁紙メーカー ----
+  (function(){
+    var cv=$('wallCv'), x=cv.getContext('2d'), W=1170, H=2532;
+    var KEY='mogu_wall', st={ill:'hero',mode:'standard',color:'mizu',pattern:'paw',deco:'angel',halo:true,ticker:true,logo:'top',msg:'',msgStyle:'window',pos:45,zoom:100,cal:'on',calMonth:'next',calMarks:''};
+    try{ var s0=JSON.parse(localStorage.getItem(KEY)||'null'); if(s0) for(var k in s0) st[k]=s0[k]; }catch(e){}
+    function saveSt(){ try{ localStorage.setItem(KEY,JSON.stringify(st)); }catch(e){} }
+    // 色：[上, 中, 下, 文字, もよう, かざり1, かざり2]
+    var THEME={
+      mizu:{n:'みずいろ',c:['#E8F1FA','#D6E4F1','#C7D9EC','#33599B','rgba(255,255,255,.75)','#FFFFFF','#F5C6DA']},
+      pink:{n:'ベビーピンク',c:['#FFF3F8','#FCE3EE','#F5C6DA','#B4437A','rgba(255,255,255,.75)','#FFFFFF','#9FC3EE']},
+      lav:{n:'ラベンダー',c:['#F7F4FE','#EAE5FB','#CFC6F2','#5B4BA8','rgba(255,255,255,.7)','#FFFFFF','#F5C6DA']},
+      milk:{n:'ミルク',c:['#FFFFFF','#F7FAFE','#E8F1FA','#4E7FCF','rgba(157,184,221,.35)','#CFE0F5','#F5C6DA']},
+      mint:{n:'ミント',c:['#F1FBF8','#DDF3EC','#C3E9DC','#2F7A64','rgba(255,255,255,.7)','#FFFFFF','#F5C6DA']},
+      yume:{n:'ゆめかわ',c:['#FCE3EE','#EAE5FB','#D6E4F1','#5B4BA8','rgba(255,255,255,.7)','#FFFFFF','#FFE08A']},
+      night:{n:'夜空',c:['#1B2152','#2B3170','#3E3F8C','#F5F2FF','rgba(255,255,255,.28)','#FFE08A','#F5C6DA']},
+      sora:{n:'あおぞら',c:['#9CC8F0','#BBDAF5','#E1EEFA','#2D4F8F','rgba(255,255,255,.6)','#FFFFFF','#FFE08A']}
+    };
+    var ILL={hero:{n:'目玉焼き',src:'../img/hero.webp',cut:true},tup:{n:'たぬき頭',src:'../img/tanuki-up.webp',cut:true},thug:{n:'たぬき抱っこ',src:'../img/tanuki-hug.webp',cut:true},chibi:{n:'ちび',src:'../img/chibi.webp',cut:true},photo:{n:'実写',src:'../img/photo-maid.webp',cut:false}};
+    var imgs={}, userImg=null;
+    var ready=Promise.all([
+      Promise.all(Object.keys(ILL).map(function(k){ return loadImg(ILL[k].src).then(function(i){ imgs[k]=i; }); })),
+      Promise.all(['halo-drip','wing-glow','wing-glow-l','pxheart','paw-1','paw-tile','hearts-1'].map(function(n){ return loadImg('../img/'+n+'.webp').then(function(i){ imgs[n]=i; }); }))
+    ]);
+    // 選べるイラスト
+    var ib=$('wallIllus'); Object.keys(ILL).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.setAttribute('aria-label',ILL[k].n); b.innerHTML='<img src="'+ILL[k].src+'" alt="">'; b.onclick=function(){ userImg=null; $('wallFile').value=''; st.ill=k; if(!ILL[k].cut&&st.mode==='standard') st.mode='window'; saveSt(); syncUI(); redraw(); }; ib.appendChild(b); });
+    function mulberry(a){ return function(){ a|=0; a=a+0x6D2B79F5|0; var t=Math.imul(a^a>>>15,1|a); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+    function heartPath(cx,cy,s){ x.beginPath(); x.moveTo(cx,cy+s*.42); x.bezierCurveTo(cx-s*.62,cy-s*.02,cx-s*.55,cy-s*.58,cx,cy-s*.3); x.bezierCurveTo(cx+s*.55,cy-s*.58,cx+s*.62,cy-s*.02,cx,cy+s*.42); x.closePath(); }
+    function sparkle(cx,cy,s,col){ x.fillStyle=col; x.beginPath(); x.moveTo(cx,cy-s); x.quadraticCurveTo(cx+s*.12,cy-s*.12,cx+s,cy); x.quadraticCurveTo(cx+s*.12,cy+s*.12,cx,cy+s); x.quadraticCurveTo(cx-s*.12,cy+s*.12,cx-s,cy); x.quadraticCurveTo(cx-s*.12,cy-s*.12,cx,cy-s); x.fill(); }
+    function egg(cx,cy,s){ x.save(); x.translate(cx,cy); x.fillStyle='#FFFDF6'; x.strokeStyle='#B9CBE6'; x.lineWidth=s*.04; x.beginPath(); for(var i=0;i<12;i++){ var a=i/12*6.283, r=s*(.48+(i%2?.06:0)); x.lineTo(Math.cos(a)*r,Math.sin(a)*r*.86); } x.closePath(); x.fill(); x.stroke(); x.fillStyle='#FFC83D'; x.beginPath(); x.arc(0,0,s*.2,0,7); x.fill(); x.fillStyle='#FFF0B8'; x.beginPath(); x.arc(-s*.06,-s*.06,s*.06,0,7); x.fill(); x.restore(); }
+    function img(n,cx,cy,w,rot,alpha){ var i=imgs[n]; if(!i) return; var h=i.height*w/i.width; x.save(); x.translate(cx,cy); if(rot) x.rotate(rot); if(alpha!=null) x.globalAlpha=alpha; x.drawImage(i,-w/2,-h/2,w,h); x.restore(); }
+    function bg(T){
+      var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,T[0]); g.addColorStop(.55,T[1]); g.addColorStop(1,T[2]); x.fillStyle=g; x.fillRect(0,0,W,H);
+      var night=st.color==='night';
+      if(st.pattern==='paw' && imgs['paw-tile']){ x.save(); x.globalAlpha=night?.25:.9; for(var py=0;py<H;py+=585) for(var px=0;px<W;px+=585) x.drawImage(imgs['paw-tile'],px,py,585,585); x.restore(); }
+      else if(st.pattern==='grid'){ x.strokeStyle=T[4]; x.lineWidth=3; for(var gx=0;gx<W;gx+=78){ x.beginPath(); x.moveTo(gx,0); x.lineTo(gx,H); x.stroke(); } for(var gy=0;gy<H;gy+=78){ x.beginPath(); x.moveTo(0,gy); x.lineTo(W,gy); x.stroke(); }
+        x.lineWidth=5; for(var yy=39;yy<H;yy+=78) for(var xx=39;xx<W;xx+=78){ x.beginPath(); x.moveTo(xx-9,yy-9); x.lineTo(xx+9,yy+9); x.moveTo(xx+9,yy-9); x.lineTo(xx-9,yy+9); x.stroke(); } }
+      else if(st.pattern==='dot'){ x.fillStyle=T[4]; for(var y3=20;y3<H;y3+=46) for(var x3=20+(y3/46%2)*23;x3<W;x3+=46){ x.beginPath(); x.arc(x3,y3,3.6,0,7); x.fill(); } }
+      else if(st.pattern==='heart'&&imgs.pxheart){ x.save(); x.globalAlpha=night?.35:.55; for(var y4=50;y4<H;y4+=150) for(var x4=40+(Math.round(y4/150)%2)*75;x4<W;x4+=150) x.drawImage(imgs.pxheart,x4,y4,44,39); x.restore(); }
+      else if(st.pattern==='star'){ var Rr=mulberry(7); for(var i=0;i<150;i++){ var px2=Rr()*W, py2=Rr()*H, sz=4+Rr()*14; if(i%4){ x.fillStyle=T[4]; x.beginPath(); x.arc(px2,py2,sz*.3,0,7); x.fill(); } else sparkle(px2,py2,sz,night?'#FFF4C9':'#fff'); } }
+      var rg=x.createRadialGradient(W,0,0,W,0,W*1.1); rg.addColorStop(0,night?'rgba(120,100,200,.35)':'rgba(245,198,218,.5)'); rg.addColorStop(1,'rgba(245,198,218,0)'); x.fillStyle=rg; x.fillRect(0,0,W,H);
+    }
+    function drawIllust(T){
+      var im=userImg||imgs[st.ill]; if(!im) return {top:H*.3,bottom:H*.8,cx:W/2};
+      var cut=!userImg&&ILL[st.ill].cut, z=st.zoom/100, posY=st.pos/100, mode=st.mode;
+      if(mode==='standard'&&!cut) mode='window';
+      if(mode==='standard'){
+        var cy=H*(.5+posY*.14);
+        x.save(); x.globalAlpha=st.color==='night'?.2:.9; x.fillStyle='#fff'; x.beginPath(); x.arc(W/2,cy,W*.44*z,0,7); x.fill(); x.restore();
+        x.save(); x.setLineDash([22,16]); x.lineWidth=6; x.strokeStyle='rgba(255,255,255,.85)'; x.beginPath(); x.arc(W/2,cy,W*.44*z+26,0,7); x.stroke(); x.restore();
+        var hh=H*.52*z, ww=im.width*hh/im.height; if(ww>W*.95){ ww=W*.95; hh=im.height*ww/im.width; } var ty=cy-hh*.5;
+        if(st.deco==='angel'){ img('wing-glow-l',W/2-ww*.42,ty+hh*.34,W*.42,-.1); img('wing-glow',W/2+ww*.42,ty+hh*.34,W*.42,.1); }
+        x.drawImage(im,(W-ww)/2,ty,ww,hh); return {top:ty,bottom:ty+hh,cx:W/2,head:ty+hh*.06,hw:ww};
+      }
+      if(mode==='full'){
+        var s=Math.max(W/im.width,H/im.height)*z, w=im.width*s, h=im.height*s;
+        if(cut){ s=H*.8*z/im.height; w=im.width*s; h=im.height*s; if(w>W*1.05){ w=W*1.05; h=im.height*w/im.width; } x.drawImage(im,(W-w)/2,H-h+H*.04-(posY-.45)*H*.3,w,h); return {top:H-h,bottom:H*.86,cx:W/2,head:H-h+H*.04,hw:w}; }
+        x.drawImage(im,(W-w)/2,(H-h)*posY,w,h);
+        var sh=x.createLinearGradient(0,H*.74,0,H); sh.addColorStop(0,'rgba(255,255,255,0)'); sh.addColorStop(1,st.color==='night'?'rgba(20,20,60,.6)':'rgba(255,255,255,.7)'); x.fillStyle=sh; x.fillRect(0,H*.74,W,H*.26);
+        return {top:0,bottom:H*.84,cx:W/2,head:H*.08,hw:W*.6};
+      }
+      var maxW=W*.76*z, maxH=H*.48*z, r=cut?.8:im.width/im.height, iw=Math.min(maxW,maxH*r), ih=iw/r;
+      if(mode==='circle'||mode==='heart'){ iw=ih=Math.min(maxW,maxH); }
+      var X=(W-iw)/2, Y=H*(.26+posY*.18);
+      function cover(dx,dy,dw,dh){
+        if(cut){ var gg=x.createLinearGradient(0,dy,0,dy+dh); gg.addColorStop(0,'#FFFFFF'); gg.addColorStop(1,T[1]); x.fillStyle=gg; x.fillRect(dx,dy,dw,dh);
+          x.fillStyle='rgba(157,184,221,.25)'; for(var cy2=dy;cy2<dy+dh;cy2+=40) for(var cx2=dx+((cy2-dy)/40%2)*40;cx2<dx+dw;cx2+=80) x.fillRect(cx2,cy2,40,40);
+          var s3=Math.max(dw/im.width,dh/im.height)*1.12, w3=im.width*s3, h3=im.height*s3; x.drawImage(im,dx+(dw-w3)/2,dy+dh*.04,w3,h3); return; }
+        var s2=Math.max(dw/im.width,dh/im.height), w2=im.width*s2, h2=im.height*s2; x.drawImage(im,dx+(dw-w2)/2,dy+(dh-h2)/2,w2,h2); }
+      if(mode==='window'){
+        if(st.deco==='angel'){ img('wing-glow-l',X-iw*.1,Y+ih*.2,W*.4,-.12); img('wing-glow',X+iw*1.1,Y+ih*.2,W*.4,.12); }
+        x.save(); x.translate(W/2,Y+ih/2); x.rotate(.015); x.translate(-W/2,-(Y+ih/2));
+        var tb=drawWin(x,X,Y-60,iw,ih+60,'mogu_angel.png',1.6,['#CFC6F2','#EAE5FB','#5B4BA8','#B9AEE6']);
+        x.save(); x.beginPath(); x.rect(X+2,tb,iw-4,ih-2); x.clip(); cover(X,tb,iw,ih); x.restore(); x.restore();
+        return {top:Y-60,bottom:Y+ih,cx:W/2,head:Y-40,hw:iw};
+      }
+      x.save(); x.shadowColor='rgba(40,52,82,.25)'; x.shadowBlur=40; x.shadowOffsetY=16; x.fillStyle='#fff';
+      if(mode==='polaroid'){ x.translate(W/2,Y+ih/2); x.rotate(-.04); x.fillRect(-iw/2-34,-ih/2-34,iw+68,ih+190); x.restore();
+        x.save(); x.translate(W/2,Y+ih/2); x.rotate(-.04); x.beginPath(); x.rect(-iw/2,-ih/2,iw,ih); x.clip(); cover(-iw/2,-ih/2,iw,ih); x.restore();
+        x.save(); x.translate(W/2,Y-20); x.rotate(.08); x.fillStyle='rgba(159,195,238,.8)'; x.fillRect(-90,-26,180,52); x.restore();
+        if(st.deco==='angel'){ img('wing-glow-l',X-60,Y+ih*.3,W*.3,-.2); img('wing-glow',X+iw+60,Y+ih*.3,W*.3,.2); }
+        return {top:Y-34,bottom:Y+ih+150,cx:W/2,head:Y-30,hw:iw}; }
+      if(mode==='circle'){ x.beginPath(); x.arc(W/2,Y+ih/2,iw/2+22,0,7); x.fill(); x.restore(); x.save(); x.beginPath(); x.arc(W/2,Y+ih/2,iw/2,0,7); x.clip(); cover(X,Y,iw,ih); x.restore();
+        if(st.deco==='angel'){ img('wing-glow-l',X-50,Y+ih*.45,W*.34,-.15); img('wing-glow',X+iw+50,Y+ih*.45,W*.34,.15); }
+        return {top:Y-22,bottom:Y+ih+22,cx:W/2,head:Y-10,hw:iw}; }
+      if(mode==='heart'){ var S=iw*1.25, hx=W/2, hy=Y+ih*.48; heartPath(hx,hy,S+60); x.fill(); x.restore(); x.save(); heartPath(hx,hy,S); x.clip(); cover(hx-S*.62,hy-S*.58,S*1.24,S*1.0); x.restore();
+        if(st.deco==='angel'){ img('wing-glow-l',hx-S*.62,hy-S*.1,W*.34,-.15); img('wing-glow',hx+S*.62,hy-S*.1,W*.34,.15); }
+        return {top:hy-S*.6,bottom:hy+S*.48,cx:W/2,head:hy-S*.5,hw:S}; }
+      x.restore(); return {top:Y,bottom:Y+ih,cx:W/2,head:Y,hw:iw};
+    }
+    // ---- カレンダー（日本の祝日つき） ----
+    function nthMon(y,m,n){ var d=new Date(y,m-1,1).getDay(); return 1+((8-d)%7)+(n-1)*7; }
+    function jpHol(y,m){
+      var h={}, add=function(mm,dd){ if(mm===m) h[dd]=1; };
+      [[1,1],[2,11],[2,23],[4,29],[5,3],[5,4],[5,5],[8,11],[11,3],[11,23]].forEach(function(a){ add(a[0],a[1]); });
+      add(1,nthMon(y,1,2)); add(7,nthMon(y,7,3)); add(9,nthMon(y,9,3)); add(10,nthMon(y,10,2));
+      var q=Math.floor((y-1980)/4); add(3,Math.floor(20.8431+.242194*(y-1980)-q)); add(9,Math.floor(23.2488+.242194*(y-1980)-q));
+      var last=new Date(y,m,0).getDate();
+      for(var d=1;d<=last;d++){ if(h[d]&&new Date(y,m-1,d).getDay()===0){ var e=d+1; while(h[e]) e++; if(e<=last) h[e]=1; } }
+      for(var d2=2;d2<last;d2++){ if(m===9&&h[d2-1]&&h[d2+1]&&!h[d2]&&new Date(y,m-1,d2).getDay()!==0) h[d2]=1; }
+      return h;
+    }
+    var EN=['JANUARY','FEBRUARY','MARCH','APRIL','MAY','JUNE','JULY','AUGUST','SEPTEMBER','OCTOBER','NOVEMBER','DECEMBER'];
+    function calInfo(){ var n=new Date(), nx=new Date(n.getFullYear(),n.getMonth()+(st.calMonth==='this'?0:1),1), y=nx.getFullYear(), m=nx.getMonth(); var first=new Date(y,m,1).getDay(), days=new Date(y,m+1,0).getDate(); return {y:y,m:m,first:first,days:days,rows:Math.ceil((first+days)/7)}; }
+    function calHeight(msg){ var c=calInfo(); return 66+150+64+c.rows*82+(msg?90:34); }
+    function drawCal(T,F,msg){
+      var c=calInfo(), night=st.color==='night', hol=jpHol(c.y,c.m+1), marks={};
+      String(st.calMarks||'').replace(/[０-９]/g,function(d){ return String.fromCharCode(d.charCodeAt(0)-65248); }).split(/[^0-9]+/).forEach(function(v){ if(v) marks[+v]=1; });
+      var cw=W*.88, cx0=(W-cw)/2, ch=calHeight(msg), bottom=H*.955, top=bottom-ch;
+      var fade=300, g=x.createLinearGradient(0,top-fade,0,top+ch*.4); g.addColorStop(0,'rgba(255,255,255,0)'); g.addColorStop(1,night?'rgba(27,33,82,.55)':'rgba(255,255,255,.45)'); x.fillStyle=g; x.fillRect(0,top-fade,W,H-top+fade);
+      var body=drawWin(x,cx0,top,cw,ch,'calendar_'+(c.m+1)+'.exe',1.6,night?['#3E3F8C','#5B5BB0','#F5F2FF','#7C7CC8']:['#BCD2EE','#E3EDF9','#33599B','#9DB8DD']);
+      x.save(); x.globalAlpha=night?.92:.94; x.fillStyle=night?'#22285E':'#FFFFFF'; x.fillRect(cx0+3,body,cw-6,ch-(body-top)-3); x.restore();
+      var INK=night?'#F5F2FF':'#283452', SUN=night?'#FF9EC0':'#D9477F', SAT=night?'#9CCBF5':'#3A82C4';
+      x.textBaseline='alphabetic'; x.textAlign='left';
+      var numT=String(c.m+1); x.font='104px "VT323",monospace'; var w1=x.measureText(numT).width; x.font='700 50px '+F; var w2=x.measureText('月').width; x.font='52px "VT323",monospace'; var w3=x.measureText(EN[c.m]).width;
+      var tot=w1+8+w2+26+w3, sx=W/2-tot/2, base=body+112;
+      x.fillStyle=night?'#FFE08A':T[3]; x.font='104px "VT323",monospace'; x.fillText(numT,sx,base); x.font='700 50px '+F; x.fillText('月',sx+w1+8,base); x.font='52px "VT323",monospace'; x.globalAlpha=.75; x.fillText(EN[c.m],sx+w1+8+w2+26,base-4); x.globalAlpha=1;
+      img('halo-drip',sx-70,base-70,120,-.15);
+      var gx=cx0+40, gw=(cw-80)/7, wy=body+150;
+      x.fillStyle=night?'rgba(255,255,255,.1)':'#EEF5FC'; x.fillRect(gx,wy-28,gw*7,56); x.strokeStyle=night?'rgba(255,255,255,.25)':'#9DB8DD'; x.lineWidth=2; x.strokeRect(gx,wy-28,gw*7,56);
+      x.textAlign='center'; x.textBaseline='middle'; x.font='700 34px '+F;
+      WD.forEach(function(w,i){ x.fillStyle=i===0?SUN:i===6?SAT:INK; x.fillText(w,gx+gw*(i+.5),wy+1); });
+      x.font='54px "VT323",monospace';
+      for(var d=1;d<=c.days;d++){
+        var p=c.first+d-1, col=p%7, row=Math.floor(p/7), cx=gx+gw*(col+.5), cy=body+214+row*82+30;
+        var color=(col===0||hol[d])?SUN:col===6?SAT:INK;
+        if(marks[d]){ if(imgs.pxheart){ x.save(); x.shadowColor=night?'#fff':'#4E7FCF'; x.shadowBlur=4; x.drawImage(imgs.pxheart,cx-38,cy-36,76,67); x.restore(); } color=night?'#fff':'#B4437A'; }
+        x.fillStyle=color; x.fillText(String(d),cx,cy+2);
+      }
+      if(msg){ x.font='700 40px '+F; x.fillStyle=night?'#F5C6DA':T[3]; x.fillText(msg,W/2,bottom-48); }
+      x.textBaseline='alphabetic';
+    }
+    function decorate(T){
+      if(st.deco==='none') return;
+      var P=[[120,640,90],[1050,560,80],[95,1320,70],[1080,1180,86],[140,1980,76],[1030,1900,70],[560,360,52],[300,2200,48],[880,2240,56]];
+      P.forEach(function(p,i){ var t=i%3;
+        if(st.deco==='angel'){ if(t===0) img(i%2?'wing-glow':'wing-glow-l',p[0],p[1],p[2]*1.6,(i%2?.2:-.2)); else if(t===1) img('halo-drip',p[0],p[1],p[2]*1.5,-.1); else sparkle(p[0],p[1],p[2]*.5,T[5]); }
+        else if(st.deco==='heart'){ if(t===2) sparkle(p[0],p[1],p[2]*.45,T[5]); else { x.save(); x.shadowColor='#4E7FCF'; x.shadowBlur=4; img('pxheart',p[0],p[1],p[2]*1.1); x.restore(); } }
+        else if(st.deco==='kira'){ sparkle(p[0],p[1],p[2]*.6,i%2?T[6]:T[5]); }
+        else if(st.deco==='paw'){ if(t===2) sparkle(p[0],p[1],p[2]*.45,T[5]); else img('paw-1',p[0],p[1],p[2]*1.4,(i%2?.25:-.25)); }
+        else if(st.deco==='egg'){ if(t===2) sparkle(p[0],p[1],p[2]*.45,T[5]); else egg(p[0],p[1],p[2]*1.2); }
+      });
+    }
+    function draw(){
+      var T=(THEME[st.color]||THEME.mizu).c, F=FF();
+      x.setTransform(1,0,0,1,0,0); x.globalAlpha=1; x.textBaseline='alphabetic';
+      bg(T); decorate(T);
+      var CAL=st.cal!=='none', msgOne=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2).join(' ');
+      var box=drawIllust(T);
+      if(st.halo && st.mode!=='full'){ img('halo-drip',box.cx-box.hw*.06,box.head-H*.02,Math.min(W*.5,box.hw*.62),-.08); }
+      if(st.ticker){ var th=86; x.fillStyle='rgba(238,245,252,.92)'; x.fillRect(0,0,W,th); x.fillStyle='#9DB8DD'; x.fillRect(0,th-4,W,4);
+        x.fillStyle='#B4437A'; x.font='40px "VT323",monospace'; x.textAlign='left'; x.textBaseline='middle'; x.fillText('✝ welcome to heaven.exe ✝  ♡ 星屑もぐ ♡  ✝ angel mode : ON ✝',24,th/2+2); x.textBaseline='alphabetic'; }
+      var cTop=CAL?H*.955-calHeight(msgOne):H;
+      if(st.logo!=='none'){
+        var ly=st.logo==='top'?H*(st.ticker?.115:.09):Math.min(box.bottom+80,cTop-80);
+        if(st.logo==='top'&&box.top<ly+80) ly=Math.max(H*(st.ticker?.08:.05),box.top-70);
+        hlText(x,'星屑もぐ',W/2,ly,120,'"Zen Kaku Gothic New",'+F);
+        if(st.logo==='bottom') box.bottom=ly+80;
+      }
+      if(CAL){ drawCal(T,F,msgOne); return; }
+      var lines=(st.msg||'').split(/\n/).filter(Boolean).slice(0,2);
+      if(lines.length){
+        x.textAlign='center'; x.textBaseline='middle'; x.font='700 54px '+F;
+        var lh=72, ty=Math.min(Math.max(box.bottom+(st.msgStyle==='window'?190:120),H*.86),H*.95-(lines.length-1)*lh), tw=Math.max.apply(null,lines.map(function(l){ return x.measureText(l).width; }));
+        if(st.msgStyle==='window'){ var bw=tw+120, bh=lines.length*lh+50+62; var by=ty-lh/2-25-62; drawWin(x,W/2-bw/2,by,bw,bh,'message.txt',1.4); x.textAlign='center'; x.textBaseline='middle'; x.font='700 54px '+F; }
+        lines.forEach(function(l,i){ var yy=ty+i*lh;
+          if(st.msgStyle==='hl'){ hlText(x,l,W/2,yy,54,F); return; }
+          if(st.msgStyle==='plain'){ x.lineWidth=12; x.strokeStyle=st.color==='night'?'rgba(27,33,82,.85)':'rgba(255,255,255,.92)'; x.strokeText(l,W/2,yy); }
+          x.fillStyle=st.msgStyle==='window'?'#283452':T[3]; x.fillText(l,W/2,yy); });
+        x.textBaseline='alphabetic';
+      }
+    }
+    var mini=$('wallMiniCv'), mx=mini.getContext('2d');
+    var HINT={standard:'切り抜きのイラストを、白いまるの上に立たせます（実写はウィンドウになります）',window:'パソコンのウィンドウの中に入れます',polaroid:'チェキ風。少し傾けて、上にマステを貼ります',circle:'まるく切り抜いて白フチを付けます',heart:'ハートの形に切り抜きます',full:'画面いっぱいにイラストを広げます'};
+    function redraw(){ $('wallModeHint').textContent=HINT[st.mode]||''; accSum(); ready.then(fontReady).then(draw).then(function(){ mx.drawImage(cv,0,0,mini.width,mini.height); }); }
+    (function(){
+      var top=$('wallTop'), btn=$('wallMini'), vis=true;
+      function upd(){ btn.classList.toggle('is-show', !document.querySelector('[data-view="wall"]').hidden && !vis); }
+      if('IntersectionObserver' in window){ new IntersectionObserver(function(es){ vis=es[0].isIntersecting; upd(); },{threshold:.15}).observe(top); }
+      document.addEventListener('click',function(){ setTimeout(upd,0); });
+      btn.onclick=function(e){ e.stopPropagation(); top.scrollIntoView({behavior:'smooth',block:'center'}); };
+    })();
+    fontListeners.push(redraw);
+    var sw=$('wallColor'); Object.keys(THEME).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.style.setProperty('--c','linear-gradient('+THEME[k].c[0]+','+THEME[k].c[2]+')'); b.innerHTML='<i></i>'+THEME[k].n; sw.appendChild(b); });
+    var SEGS=[['wallMode','mode'],['wallColor','color'],['wallPattern','pattern'],['wallDeco','deco'],['wallLogo','logo'],['wallMsgStyle','msgStyle'],['wallCal','cal'],['wallCalMonth','calMonth'],['wallIllus','ill']];
+    var accs=document.querySelectorAll('[data-view="wall"] .acc');
+    Array.prototype.forEach.call(accs,function(d){ d.addEventListener('toggle',function(){ if(!d.open) return;
+      Array.prototype.forEach.call(accs,function(o){ if(o!==d) o.open=false; });
+      setTimeout(function(){ var r=d.getBoundingClientRect(); if(r.top<0||r.top>innerHeight*.6) d.scrollIntoView({behavior:'smooth',block:'start'}); },60); }); });
+    function segTxt(id){ var b=document.querySelector('#'+id+' [aria-pressed="true"]'); return b?(b.getAttribute('aria-label')||b.textContent.trim()):''; }
+    function accSum(){
+      var set=function(k,t){ var e=$('accV_'+k); if(e) e.textContent=t; };
+      set('ill',(userImg?'選んだ画像':segTxt('wallIllus'))+'・'+segTxt('wallMode'));
+      set('color',segTxt('wallColor')+'・'+segTxt('wallPattern'));
+      set('deco',segTxt('wallDeco')+(st.halo?'・輪っか':'')+'・名前 '+segTxt('wallLogo'));
+      set('cal',st.cal==='none'?'なし':segTxt('wallCalMonth')+(st.calMarks?'・♡ '+st.calMarks:''));
+      set('msg',(st.msg?st.msg.replace(/\n/g,' '):'なし')+'・'+segTxt('wallMsgStyle'));
+    }
+    function calHint(){ var on=st.cal!=='none', c=calInfo(); $('wallCalMarks').disabled=!on;
+      $('wallCalHint').textContent=!on?'カレンダーなしの壁紙になります。':(c.m+1)+'月のカレンダーが画面の下に入ります。日曜・祝日はピンク、土曜は水色。♡の日はドットのハートがつきます。ひとことはカレンダーの中に1行で入ります。'; }
+    function syncUI(){
+      SEGS.forEach(function(p){ Array.prototype.forEach.call($(p[0]).children,function(b){ b.setAttribute('aria-pressed',(!userImg||p[1]!=='ill')&&b.dataset.v===st[p[1]]?'true':'false'); }); });
+      $('wallHalo').checked=!!st.halo; $('wallTicker').checked=!!st.ticker; $('wallMsg').value=st.msg||''; $('wallCalMarks').value=st.calMarks||''; $('wallPos').value=st.pos; $('wallZoom').value=st.zoom; calHint();
+    }
+    SEGS.forEach(function(p){ if(p[1]==='ill') return; Array.prototype.forEach.call($(p[0]).children,function(b){ b.onclick=function(){ st[p[1]]=b.dataset.v; saveSt(); syncUI(); redraw(); }; }); });
+    $('wallHalo').onchange=function(){ st.halo=this.checked; saveSt(); redraw(); };
+    $('wallTicker').onchange=function(){ st.ticker=this.checked; saveSt(); redraw(); };
+    $('wallMsg').oninput=function(){ st.msg=this.value; saveSt(); redraw(); };
+    $('wallCalMarks').oninput=function(){ st.calMarks=this.value; saveSt(); redraw(); };
+    $('wallPos').oninput=function(){ st.pos=+this.value; saveSt(); redraw(); };
+    $('wallZoom').oninput=function(){ st.zoom=+this.value; saveSt(); redraw(); };
+    $('wallRand').onclick=function(){
+      function pick(a){ return a[Math.floor(Math.random()*a.length)]; }
+      st.color=pick(Object.keys(THEME)); st.pattern=pick(['paw','grid','dot','heart','star','plain']); st.deco=pick(['angel','angel','heart','kira','paw','egg']);
+      if(!userImg) st.ill=pick(Object.keys(ILL)); st.mode=pick(['standard','window','polaroid','circle','heart','full']); st.halo=Math.random()<.7; st.ticker=Math.random()<.5; st.logo=pick(['top','top','bottom']); st.msgStyle=pick(['plain','window','hl']);
+      saveSt(); syncUI(); redraw();
+    };
+    $('wallFile').onchange=function(){ var f=this.files&&this.files[0]; if(!f) return;
+      loadImg(URL.createObjectURL(f)).then(function(i){ userImg=i; if(!i) say($('wallMsgOut'),'画像を読み込めませんでした',true); else if(st.mode==='standard'){ st.mode='window'; } syncUI(); redraw(); }); };
+    syncUI();
+    function showNow(r){
+      var u=r&&r.updated_at?new Date(r.updated_at):null;
+      if(u&&!isNaN(u)){ $('wallNowVal').innerHTML='もぐが作った壁紙<small>'+fmt(r.updated_at)+' に設定</small>'; $('wallClear').hidden=false; $('wallNow').classList.remove('is-empty'); }
+      else { $('wallNowVal').textContent='標準の壁紙（目玉焼きのもぐ）'; $('wallClear').hidden=true; $('wallNow').classList.add('is-empty'); }
+    }
+    window.loadWall=function(){ redraw(); return call('mogu_wallpaper_admin',{p_action:'info'}).then(showNow).catch(function(e){ $('wallNowVal').textContent='確認できませんでした'; fail(e,$('wallMsgOut')); }); };
+    $('wallSave').onclick=function(){
+      cv.toBlob(function(b){ var f=new File([b],'mogu-wallpaper.png',{type:'image/png'});
+        if(navigator.canShare&&navigator.canShare({files:[f]})){ navigator.share({files:[f]}).catch(function(){}); return; }
+        var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='mogu-wallpaper.png'; document.body.appendChild(a); a.click(); a.remove(); },'image/png');
+    };
+    $('wallSet').onclick=function(){
+      if(!confirm('この壁紙を、スタンプカードのごほうびに設定します。よろしいですか？')) return;
+      var b=this; b.disabled=true; say($('wallMsgOut'),'設定しています…');
+      var data=cv.toDataURL('image/jpeg',.85); if(data.length>2800000) data=cv.toDataURL('image/jpeg',.7);
+      call('mogu_wallpaper_admin',{p_action:'save',p_image:data}).then(function(r){ showNow(r); say($('wallMsgOut'),'設定しました！これからスタンプカードをいっぱいにした人にはこの壁紙が届きます'); $('wallNow').scrollIntoView({behavior:'smooth',block:'center'}); })
+        .catch(function(e){ fail(e,$('wallMsgOut')); }).then(function(){ b.disabled=false; });
+    };
+    $('wallClear').onclick=function(){
+      if(!confirm('ごほうび壁紙を、標準の壁紙に戻します。よろしいですか？')) return;
+      call('mogu_wallpaper_admin',{p_action:'clear'}).then(function(r){ showNow(r); say($('wallMsgOut'),'標準の壁紙に戻しました'); }).catch(function(e){ fail(e,$('wallMsgOut')); });
+    };
+  })();
 
   // ---- カウントダウン ----
   function renderEv(list){
@@ -427,11 +971,10 @@
   };
 
   // ---- タブ ----
-  var LOAD={req:loadReq,msg:loadMsg,sch:loadSch,ev:loadEv,song:loadSongs,post:loadPosts};
+  var LOAD={req:loadReq,msg:loadMsg,sch:function(){ return window.loadSch(); },wall:function(){ return window.loadWall(); },ev:loadEv,song:loadSongs,post:loadPosts};
   function showTab(name){
     document.querySelectorAll('.tab').forEach(function(t){ t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false'); });
     document.querySelectorAll('[data-view]').forEach(function(v){ v.hidden=v.dataset.view!==name; });
-    if(name==='sch') renderDays();
     if(!loaded[name]&&LOAD[name]){ loaded[name]=true; LOAD[name](); }
     try{ sessionStorage.setItem('mogu_admin_tab',name); }catch(e){}
   }
