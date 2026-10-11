@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011213500">
+<meta name="build" content="20261011214000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -345,6 +345,11 @@
   .band{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--hh) + 610px);height:110px;background:rgba(255,255,255,.85);z-index:0}
   .hero{position:relative;width:var(--wrap);margin-inline:auto;padding-block:8px 30px;display:grid;gap:26px}
   .hero__title{display:block;position:relative;z-index:2;isolation:isolate;font-weight:900;font-size:clamp(40px,12vw,76px);line-height:1.15;letter-spacing:.06em}
+  .boing{animation:boing .7s cubic-bezier(.3,1.6,.5,1) !important}
+  @keyframes boing{0%{transform:scale(1)}20%{transform:scale(1.08,.9)}45%{transform:scale(.95,1.07) rotate(-2deg)}70%{transform:scale(1.03,.98) rotate(1deg)}100%{transform:none}}
+  .logo-star{position:fixed;z-index:61;pointer-events:none;width:22px;height:22px;margin:-11px 0 0 -11px;animation:logoStar .9s cubic-bezier(.2,.7,.3,1) forwards}
+  .logo-star svg{width:100%;height:100%}
+  @keyframes logoStar{0%{transform:translate(0,0) scale(.3) rotate(0);opacity:1}70%{opacity:1}100%{transform:translate(var(--sx),var(--sy)) scale(1) rotate(160deg);opacity:0}}
   .hero__logo{display:block;width:min(100%,560px);height:auto;margin-left:-3%;filter:drop-shadow(4px 6px 0 rgba(78,127,207,.18));animation:float 5s ease-in-out infinite}
   .hero__lines{position:relative;z-index:2;margin-top:14px;display:grid;gap:8px;justify-items:start;font-weight:700;font-size:14px}
   .hero__lines .hl{font-size:14px}
@@ -1323,11 +1328,17 @@
     host.appendChild(h); anim(host,'holo-flash'); setTimeout(function(){ h.remove(); },1250); }
   function holoTarget(t){ var tc=t.closest('.tcard__body'); if(tc) return tc; if(t.closest('.hero__vis')) return null; var b=t.closest('.win__body'); if(b&&b.querySelector('img')&&!t.closest('.dlg')) return b;
     if(t.tagName==='IMG'&&!t.closest('.stk,.net,.hbadge,.header,.menu,.op,.love,.rw')) return t.parentNode; return null; }
+  function logoBurst(el){ if(reduce) return; var r=el.getBoundingClientRect(), cx=r.left+r.width/2, cy=r.top+r.height/2;
+    for(var i=0;i<12;i++){ var a=i/12*Math.PI*2+Math.random()*.3, d=r.width*(.42+Math.random()*.2), st=document.createElement('span'); st.className='logo-star';
+      st.style.left=cx+'px'; st.style.top=cy+'px'; st.style.setProperty('--sx',(Math.cos(a)*d)+'px'); st.style.setProperty('--sy',(Math.sin(a)*d*.55)+'px');
+      st.innerHTML='<svg viewBox="0 0 20 20" style="color:'+(i%3===0?'#F5A9C8':i%3===1?'#fff':'#B9AEE6')+';filter:drop-shadow(0 0 2px #4E7FCF)"><use href="#kira"/></svg>';
+      document.body.appendChild(st); (function(n){ setTimeout(function(){ n.remove(); },950); })(st); } }
   function fx(e){
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
     var t=e.target, x=e.clientX, y=e.clientY;
     if(t.closest('input,textarea,.menu,.omi__stage,.love')) return;
     if(t.closest('.sl-arrow')){ anim(t.closest('.sl-arrow'),'poke'); pop(x,y,['kira','pink'],14); return; }
+    var lg=t.closest('.hero__logo,.footer__logo,.op__logo'); if(lg){ anim(lg,'boing'); logoBurst(lg); pop(x,y,['heart','pink','kira'],22); return; }
     var hh=t.closest('.hero__vis,.prof__vis')?holoTarget(t):null; if(hh) holo(hh,x,y);
     if(t.closest('.hero__vis')){ if(!t.closest('.dlg')&&window.MOGU.heroTap) window.MOGU.heroTap(); ring(x,y); pop(x,y,['wingl','wing','heart','kira','pink'],26); anim(document.querySelector('.hero__drip'),'spin'); return; }
     if(t.closest('.prof__vis')){ pop(x,y,['paw','heart','kira']); return; }
