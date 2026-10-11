@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011174000">
+<meta name="build" content="20261011175000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -441,6 +441,17 @@
   .slide__txt{position:absolute;z-index:1;left:30%;right:16%;top:75%;bottom:7%;display:flex;align-items:center;
     font-family:"ISEKAI",var(--px);font-size:11px;font-size:4.8cqw;line-height:1.2;color:#fff;text-align:left;
     text-shadow:0 0 2px #3E4C70,0 0 3px #3E4C70,0 0 6px rgba(78,127,207,.8);transform:rotate(-2deg)}
+  .slide{perspective:1400px}
+  .tcard.is-back .tcard__foil{-webkit-mask-image:url(img/card-mask-back.png);mask-image:url(img/card-mask-back.png)}
+  .cflip{position:absolute;inset:0;transform-style:preserve-3d;transition:transform .7s cubic-bezier(.3,.75,.3,1)}
+  .slide.is-flip .cflip{transform:rotateY(180deg)}
+  .face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+  .face--back{transform:rotateY(180deg)}
+  .tcard__body{cursor:pointer}
+  .credit{margin:18px auto 14px;max-width:520px;padding:10px 14px;border:1.5px dashed var(--frame);background:rgba(255,255,255,.6);font-size:11px;line-height:1.7;color:var(--sub);text-align:left}
+  .credit__ttl{font-family:var(--px);font-size:15px;letter-spacing:.12em;color:var(--blue-d);text-align:center}
+  .credit ul{list-style:none;margin:4px 0 0;padding:0}
+  .credit a{color:var(--blue-d);text-decoration:underline;text-underline-offset:2px}
   .tcard__cap{margin:16px -50px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:var(--px);font-size:15px;color:var(--blue-d);letter-spacing:.06em}
   .tcard__rare{padding:0 7px;color:#fff;background:linear-gradient(90deg,#ff8fcf,#a99bff,#7fd3ff);text-shadow:0 0 4px rgba(255,255,255,.6)}
   .tcard__cap .dots{position:static;width:auto;display:inline-flex;gap:5px}
@@ -865,9 +876,9 @@
         <div class="tcard tilt-l">
           <div class="tcard__body">
             <div class="slides" id="slides" tabindex="0" aria-label="もぐのカード（横にスクロール）" aria-roledescription="carousel">
-              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><span class="slide__ttl" aria-hidden="true">TANUKI ON HEAD</span><span class="slide__txt" aria-hidden="true">A tanuki crown for the angel. Angel mode on, memory 5 percent.</span><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="No.02 ★ REAL MOGU"><span class="slide__ttl" aria-hidden="true">REAL MOGU</span><span class="slide__txt" aria-hidden="true">The real Mogu in maid mode. Handle with care, she is fragile.</span><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><span class="slide__ttl" aria-hidden="true">TANUKI HUG</span><span class="slide__txt" aria-hidden="true">One hug for the tanuki, one hug for you. Stay until she sleeps.</span><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI ON HEAD</span><span class="slide__txt" aria-hidden="true">A tanuki crown for the angel. Angel mode on, memory 5 percent.</span><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
+              <figure class="slide" data-name="No.02 ★ REAL MOGU"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">REAL MOGU</span><span class="slide__txt" aria-hidden="true">The real Mogu in maid mode. Handle with care, she is fragile.</span><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
+              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI HUG</span><span class="slide__txt" aria-hidden="true">One hug for the tanuki, one hug for you. Stay until she sleeps.</span><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
             </div>
             <span class="tcard__foil" aria-hidden="true"></span>
             <span class="tcard__shine" aria-hidden="true"></span>
@@ -1111,6 +1122,15 @@
     <p class="dream" style="margin-top:6px;font-size:20px">see you in heaven ♡</p>
     <p class="footer__tag">#もぐもぐくずもち</p>
     <p>FM 💍⛓</p>
+    <div class="credit">
+      <p class="credit__ttl">CREDIT</p>
+      <ul>
+        <li>天使界隈系フリー素材 / <a href="https://booth.pm/ja/items/5543069" target="_blank" rel="noopener">あくむ病院</a></li>
+        <li>天使界隈トレカ風素材 / <a href="https://booth.pm/ja/items/6981268" target="_blank" rel="noopener">紺崎イラスト堂</a></li>
+        <li>Font: ISEKAI-grimoire / <a href="https://x.com/shibuyamiam" target="_blank" rel="noopener">Hitomi Shibuya</a></li>
+        <li>Font: DotGothic16, VT323, Syncopate, Cormorant Garamond, Zen Kaku Gothic New / <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></li>
+      </ul>
+    </div>
     <small>(c) hoshikuzu mogu</small>
   </div>
 </footer>
@@ -1238,12 +1258,15 @@
   (function(){
     var box=$('slides'), slides=[].slice.call(box.querySelectorAll('.slide')), dots=$('sl-dots'), name=$('sl-name'), cur=0, timer=null, hold=0;
     slides.forEach(function(){ dots.appendChild(document.createElement('i')); });
-    function mark(i){ cur=i; [].forEach.call(dots.children,function(d,k){ d.classList.toggle('on',k===i); }); name.textContent=slides[i].dataset.name; }
+    function mark(i){ slides.forEach(function(sl,k){ if(k!==i) sl.classList.remove('is-flip'); }); cur=i; if(typeof backState==='function') backState(); [].forEach.call(dots.children,function(d,k){ d.classList.toggle('on',k===i); }); name.textContent=slides[i].dataset.name; }
     mark(0);
     box.addEventListener('scroll',function(){ var i=Math.round(box.scrollLeft/box.clientWidth); if(i!==cur&&slides[i]) mark(i); },{passive:true});
     function go(i){ box.scrollTo({left:i*box.clientWidth,behavior:reduce?'auto':'smooth'}); }
     function pause(){ hold=Date.now()+7000; }
     ['pointerdown','touchstart','wheel','keydown'].forEach(function(ev){ box.addEventListener(ev,pause,{passive:true}); });
+    var tc=box.closest('.tcard');
+    function backState(){ if(tc) tc.classList.toggle('is-back',!!(slides[cur]&&slides[cur].classList.contains('is-flip'))); }
+    box.addEventListener('click',function(){ var sl=slides[cur]; if(sl){ sl.classList.toggle('is-flip'); pause(); backState(); } });
     var n=slides.length;
     $('sl-prev').addEventListener('click',function(){ pause(); go((cur-1+n)%n); });
     $('sl-next').addEventListener('click',function(){ pause(); go((cur+1)%n); });
