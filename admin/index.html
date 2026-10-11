@@ -303,7 +303,7 @@
           <label class="chkRow"><input type="checkbox" id="wallHalo">イラストの上に、たれる輪っか</label>
           <label class="chkRow" style="margin-top:8px"><input type="checkbox" id="wallTicker">画面の上にパソコン風の帯（ウィンドウのバー）</label>
           <div class="acc__sep"></div>
-          <label>名前（星屑もぐ）</label>
+          <label>ロゴ（星屑もぐ）</label>
           <div class="seg" id="wallLogo">
             <button type="button" data-v="top">上</button>
             <button type="button" data-v="bottom">下</button>
@@ -611,7 +611,7 @@
     var blob=null;
     function draw(){
       var F=FF();
-      return fontReady().then(function(){ return Promise.all([loadImg('../img/chibi.webp'),loadImg('../img/halo-drip.webp'),loadImg('../img/wing-glow.webp'),loadImg('../img/wing-glow-l.webp'),loadImg('../img/paw-tile.webp'),loadImg('../img/pxheart.webp')]); }).then(function(im){
+      return fontReady().then(function(){ return Promise.all([loadImg('../img/chibi.webp'),loadImg('../img/halo-drip.webp'),loadImg('../img/wing-glow.webp'),loadImg('../img/wing-glow-l.webp'),loadImg('../img/paw-tile.webp'),loadImg('../img/pxheart.webp'),loadImg('../img/logo.webp')]); }).then(function(im){
         var W=1080,H=1350,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
         x.fillStyle='#D6E4F1'; x.fillRect(0,0,W,H);
         if(im[4]){ for(var py=0;py<H;py+=540) for(var px=0;px<W;px+=540) x.drawImage(im[4],px,py,540,540); }
@@ -620,12 +620,12 @@
         var X=56, Y=56, WW=W-112, HH=H-112;
         var top=drawWin(x,X,Y,WW,HH,'weekly_schedule.exe',1.2);
         // 見出し
-        var hl=hlText(x,'星屑もぐ',X+46,top+92,74,'"Zen Kaku Gothic New",'+F,'left');
-        if(im[1]){ x.drawImage(im[1],X+20,top+18,150,110); }
+        if(im[6]){ var lw=430, lh=im[6].height*lw/im[6].width; x.drawImage(im[6],X+24,top+10,lw,lh); }
+        else { hlText(x,'星屑もぐ',X+46,top+92,74,'"Zen Kaku Gothic New",'+F,'left'); }
         var ds=dates(), a=ds[0], b=ds[6];
         x.textAlign='right'; x.fillStyle='#33599B'; x.font='76px "VT323",monospace'; x.fillText('WEEKLY',X+WW-40,top+86); x.fillText('SCHEDULE',X+WW-40,top+148);
         x.fillStyle='#5F6E92'; x.font='700 32px '+F; x.fillText((a.getMonth()+1)+'/'+a.getDate()+' 〜 '+(b.getMonth()+1)+'/'+b.getDate(),X+WW-40,top+196);
-        x.textAlign='left'; x.fillStyle='#B4437A'; x.font='30px "VT323",monospace'; x.fillText('✝ angel mode : ON',X+48,top+176);
+        x.textAlign='left';
         var rt=top+226, rh=98, gap=12, RX=X+36, RW=WW-72;
         ds.forEach(function(d,i){
           var v=day(ymd(d)), Y2=rt+i*(rh+gap), w=d.getDay();
@@ -708,7 +708,7 @@
     var imgs={}, userImg=null;
     var ready=Promise.all([
       Promise.all(Object.keys(ILL).map(function(k){ return loadImg(ILL[k].src).then(function(i){ imgs[k]=i; }); })),
-      Promise.all(['halo-drip','wing-glow','wing-glow-l','pxheart','paw-1','paw-tile','hearts-1'].map(function(n){ return loadImg('../img/'+n+'.webp').then(function(i){ imgs[n]=i; }); }))
+      Promise.all(['halo-drip','wing-glow','wing-glow-l','pxheart','paw-1','paw-tile','hearts-1','logo'].map(function(n){ return loadImg('../img/'+n+'.webp').then(function(i){ imgs[n]=i; }); }))
     ]);
     // 選べるイラスト
     var ib=$('wallIllus'); Object.keys(ILL).forEach(function(k){ var b=document.createElement('button'); b.type='button'; b.dataset.v=k; b.setAttribute('aria-label',ILL[k].n); b.innerHTML='<img src="'+ILL[k].src+'" alt="">'; b.onclick=function(){ userImg=null; $('wallFile').value=''; st.ill=k; if(!ILL[k].cut&&st.mode==='standard') st.mode='window'; saveSt(); syncUI(); redraw(); }; ib.appendChild(b); });
@@ -842,7 +842,7 @@
       if(st.logo!=='none'){
         var ly=st.logo==='top'?H*(st.ticker?.115:.09):Math.min(box.bottom+80,cTop-80);
         if(st.logo==='top'&&box.top<ly+80) ly=Math.max(H*(st.ticker?.08:.05),box.top-70);
-        hlText(x,'星屑もぐ',W/2,ly,120,'"Zen Kaku Gothic New",'+F);
+        if(imgs.logo){ var lw=Math.min(W*.46,520), lh=imgs.logo.height*lw/imgs.logo.width; x.drawImage(imgs.logo,(W-lw)/2,ly-lh/2,lw,lh); } else hlText(x,'星屑もぐ',W/2,ly,120,'"Zen Kaku Gothic New",'+F);
         if(st.logo==='bottom') box.bottom=ly+80;
       }
       if(CAL){ drawCal(T,F,msgOne); return; }
