@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011163000">
+<meta name="build" content="20261011164000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -96,6 +96,15 @@
   .gs__bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,#F5A9C8 0 8px,transparent 8px 10px);animation:barFill .6s steps(8) forwards}
   @keyframes barFill{to{width:100%}}
   .gs__press{font-size:18px;color:#FFE08A;letter-spacing:.1em;opacity:0;animation:blink .3s steps(1) .45s infinite}
+  .gs.is-cut{animation:gsCut .12s steps(2)}
+  @keyframes gsCut{0%{filter:brightness(1.8) contrast(1.4)}100%{filter:none}}
+  .hero__vis .win__body::after{content:"";position:absolute;z-index:3;left:0;right:0;top:var(--ty,40%);height:14%;pointer-events:none;opacity:0;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.55) 0 1px,rgba(120,200,255,.25) 1px 2px,rgba(255,150,210,.25) 2px 3px);mix-blend-mode:screen}
+  .is-flick::after{animation:tear .38s steps(4)}
+  @keyframes tear{0%{opacity:.9;transform:translateX(-6px) scaleY(.4)}50%{opacity:.7;transform:translateX(5px) scaleY(1)}100%{opacity:0;transform:none}}
+  .is-flick .hero__img{animation:flick .38s steps(4)}
+  @keyframes flick{0%{transform:translateX(2px);filter:drop-shadow(2px 0 0 rgba(255,95,190,.7)) drop-shadow(-2px 0 0 rgba(90,220,255,.7)) brightness(1.08)}
+    35%{transform:translateX(-2px);opacity:.85}60%{transform:translateX(1px);filter:drop-shadow(-1px 0 0 rgba(255,95,190,.6)) drop-shadow(1px 0 0 rgba(90,220,255,.6))}100%{transform:none;filter:none;opacity:1}}
   .hero__img.is-glitch{animation:glitch .5s steps(2)}
   @keyframes glitch{0%{filter:drop-shadow(4px 0 0 rgba(255,95,190,.8)) drop-shadow(-4px 0 0 rgba(90,220,255,.8));transform:translateX(3px)}
     40%{filter:drop-shadow(-3px 0 0 rgba(255,95,190,.8)) drop-shadow(3px 0 0 rgba(90,220,255,.8));transform:translateX(-3px) skewX(-2deg)}
@@ -1139,17 +1148,18 @@
       for(var k=0;k<3;k++){ cx.fillStyle=['rgba(255,95,190,.55)','rgba(90,220,255,.55)','rgba(255,255,255,.5)'][k]; cx.fillRect(0,Math.random()*h|0,w,2+Math.random()*6|0); }
       if(noiseOn) raf=requestAnimationFrame(noise); }
     function setNoise(on){ noiseOn=on; gs.classList.toggle('is-noise',on); if(on){ cancelAnimationFrame(raf); noise(); } }
-    function show(k){ [].forEach.call(gs.querySelectorAll('.gs__scr'),function(el){ el.classList.toggle('is-on',el.dataset.s===k); }); }
+    function show(k){ [].forEach.call(gs.querySelectorAll('.gs__scr'),function(el){ el.classList.toggle('is-on',el.dataset.s===k); }); if(k) anim(gs,'is-cut'); }
     var full=true; try{ full=!sessionStorage.getItem('mogu_gs'); sessionStorage.setItem('mogu_gs','1'); }catch(e){}
     var T=full?[
       [0,function(){ show('off'); }],[650,function(){ show('line'); }],[950,function(){ show(''); setNoise(true); }],
-      [1300,function(){ setNoise(false); show('ch1'); }],[1560,function(){ show(''); setNoise(true); }],
-      [1660,function(){ setNoise(false); show('ch2'); }],[1920,function(){ show(''); setNoise(true); }],
-      [2020,function(){ setNoise(false); show('ch3'); }],[2280,function(){ show('err'); }],[2460,function(){ show(''); setNoise(true); }],
-      [2600,function(){ setNoise(false); show('load'); }],[3500,function(){ show(''); setNoise(true); }],
-      [3780,function(){ end(); }]
-    ]:[[0,function(){ show('line'); }],[300,function(){ show(''); setNoise(true); }],[650,function(){ end(); }]];
-    function end(){ setNoise(false); gs.classList.add('is-done'); anim(img,'is-glitch'); setTimeout(function(){ gs.remove(); },500); }
+      [1250,function(){ setNoise(false); show('ch1'); }],[1500,function(){ show('ch2'); }],
+      [1750,function(){ show('ch3'); }],[2000,function(){ show('err'); }],
+      [2200,function(){ show('load'); }],[3100,function(){ show(''); setNoise(true); }],
+      [3350,function(){ end(); }]
+    ]:[[0,function(){ show('line'); }],[300,function(){ show(''); setNoise(true); }],[600,function(){ end(); }]];
+    function end(){ setNoise(false); gs.classList.add('is-done'); anim(img,'is-glitch'); setTimeout(function(){ gs.remove(); },500); setTimeout(flickLoop,4000); }
+    var body=img.parentNode;
+    function flickLoop(){ setTimeout(function(){ if(!document.hidden){ var r=body.getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight){ body.style.setProperty('--ty',(10+Math.random()*70)+'%'); anim(body,'is-flick'); } } flickLoop(); },3500+Math.random()*5000); }
     var started=false;
     function run(){ if(started) return; started=true; T.forEach(function(s){ setTimeout(s[1],s[0]); }); }
     window.addEventListener('mogu:ready',function(){ setTimeout(run,200); });
