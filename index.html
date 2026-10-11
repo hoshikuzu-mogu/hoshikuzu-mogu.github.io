@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011134500">
+<meta name="build" content="20261011140500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -59,8 +59,7 @@
     background-size:100% 100%,260% 260%;background-position:0 0,100% 100%;
     animation:holo 1.15s cubic-bezier(.3,.7,.3,1) forwards}
   .holo::after{content:"";position:absolute;inset:0;mix-blend-mode:overlay;opacity:.7;
-    background:repeating-linear-gradient(115deg,rgba(255,255,255,0) 0 6px,rgba(255,255,255,.55) 7px,rgba(255,255,255,0) 9px),
-      radial-gradient(rgba(255,255,255,.9) 1px,transparent 1.6px) 0 0/14px 14px;
+    background:repeating-linear-gradient(115deg,rgba(255,255,255,0) 0 6px,rgba(255,255,255,.55) 7px,rgba(255,255,255,0) 9px);
     animation:holoGlit 1.15s steps(6) forwards}
   @keyframes holo{0%{opacity:0;background-position:0 0,100% 100%}18%{opacity:1}100%{opacity:0;background-position:0 0,0% 0%}}
   @keyframes holoGlit{0%{opacity:0;transform:translateX(-8%)}30%{opacity:.8}100%{opacity:0;transform:translateX(8%)}}
@@ -1107,7 +1106,7 @@
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
     var t=e.target, x=e.clientX, y=e.clientY;
     if(t.closest('input,textarea,.menu,.omi__stage,.love')) return;
-    var hh=(t.closest('.hero__vis,.prof__vis')||t.tagName==='IMG')?holoTarget(t):null; if(hh) holo(hh,x,y);
+    var hh=t.closest('.hero__vis,.prof__vis')?holoTarget(t):null; if(hh) holo(hh,x,y);
     if(t.closest('.hero__vis')){ ring(x,y); pop(x,y,['wingl','wing','heart','kira','pink'],26); anim(document.querySelector('.hero__drip'),'spin'); return; }
     if(t.closest('.prof__vis')){ pop(x,y,['paw','heart','kira']); return; }
     var h=t.closest('.sec__head h2'); if(h){ ring(x,y); pop(x,y,['wingl','wing','kira']); anim(h.querySelector('.sh-drip'),'spin'); anim(h.querySelector('.hl'),'poke'); return; }
