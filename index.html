@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011170000">
+<meta name="build" content="20261011172000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -359,7 +359,7 @@
   .hero__vis .win{animation:hover 6s ease-in-out infinite}
   @keyframes hover{0%,100%{translate:0 0;rotate:1deg}50%{translate:0 -12px;rotate:-.6deg}}
   .hero__vis .dlg{animation:hover 5s ease-in-out -1.5s infinite}
-  .prof__vis .win{animation:hover 7s ease-in-out -2s infinite}
+  .prof__vis .tcard{animation:hover 7s ease-in-out -2s infinite}
   .hero__shadow{position:absolute;z-index:0;left:18%;right:18%;bottom:-22px;height:14px;border-radius:50%;background:radial-gradient(closest-side,rgba(78,127,207,.35),transparent);animation:shadow 6s ease-in-out infinite}
   @keyframes shadow{50%{transform:scaleX(.8);opacity:.55}}
   .hero__vis .win__body{padding:0;background-color:#fff;
@@ -418,8 +418,25 @@
   /* プロフィール */
   .prof{display:grid;gap:26px}
   .prof__vis{position:relative;width:min(80%,330px);justify-self:center}
-  .prof__vis .win__body{padding:0;background:var(--ice)}
-  .prof__vis .win__body{position:relative}
+  .tcard{position:relative;z-index:1}
+  .tcard__body{position:relative;border-radius:12px;overflow:hidden;background:var(--ice);
+    box-shadow:0 0 0 2px #fff,0 0 0 3.5px rgba(78,127,207,.35),0 0 18px rgba(255,150,210,.45),0 0 26px rgba(120,200,255,.45),6px 10px 0 rgba(78,127,207,.18);
+    animation:cardGlow 4s ease-in-out infinite}
+  @keyframes cardGlow{0%,100%{box-shadow:0 0 0 2px #fff,0 0 0 3.5px rgba(78,127,207,.35),0 0 18px rgba(255,150,210,.45),0 0 26px rgba(120,200,255,.45),6px 10px 0 rgba(78,127,207,.18)}
+    50%{box-shadow:0 0 0 2px #fff,0 0 0 3.5px rgba(78,127,207,.35),0 0 22px rgba(150,120,255,.5),0 0 30px rgba(120,250,200,.45),6px 10px 0 rgba(78,127,207,.18)}}
+  .tcard__foil,.tcard__shine{position:absolute;inset:0;z-index:2;pointer-events:none}
+  .tcard__foil{mix-blend-mode:hard-light;opacity:.5;-webkit-mask:url(img/card-mask.png) 0 0/100% 100% no-repeat;mask:url(img/card-mask.png) 0 0/100% 100% no-repeat;
+    background:repeating-linear-gradient(115deg,#ff7ac8 0,#a78bff 45px,#6fd0ff 90px,#7dffc4 135px,#ffe98a 180px,#ff7ac8 225px);animation:foil 8s linear infinite}
+  @keyframes foil{0%{background-position:0 0}100%{background-position:248px 0}}
+  .tcard__shine{inset:-10% auto -10% 0;width:55%;transform:translateX(-140%) skewX(-18deg);
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 40%,rgba(255,215,245,.4) 50%,rgba(190,235,255,.32) 60%,transparent);
+    animation:shine 4.5s ease-in-out infinite}
+  @keyframes shine{0%,50%{transform:translateX(-140%) skewX(-18deg)}85%,100%{transform:translateX(260%) skewX(-18deg)}}
+  .tcard .sl-arrow--prev{left:-14px}.tcard .sl-arrow--next{right:-14px}
+  .tcard__cap{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:var(--px);font-size:15px;color:var(--blue-d);letter-spacing:.06em}
+  .tcard__rare{padding:0 7px;color:#fff;background:linear-gradient(90deg,#ff8fcf,#a99bff,#7fd3ff);text-shadow:0 0 4px rgba(255,255,255,.6)}
+  .tcard__cap .dots{position:static;width:auto;display:inline-flex;gap:5px}
+  @media (prefers-reduced-motion: reduce){ .tcard__foil,.tcard__shine,.tcard__body{animation:none} }
   .slides{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain}
   .slides::-webkit-scrollbar{display:none}
   .slide{flex:0 0 100%;aspect-ratio:750/1051;scroll-snap-align:center;position:relative;overflow:hidden;margin:0}
@@ -837,19 +854,20 @@
     <div class="sec__head"><h2><span class="ghost sec__en" data-t="PROFILE"><span class="hl">PROFILE</span></span><span class="sec__ja">ぷろふぃーる</span></h2></div>
     <div class="prof">
       <div class="prof__vis">
-        <div class="win win--pink tilt-l lace">
-          <div class="win__bar"><span class="t" id="sl-name">tanuki_on_head.png</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
-          <div class="win__body">
-            <div class="slides" id="slides" tabindex="0" aria-label="もぐの写真とイラスト（横にスクロール）" aria-roledescription="carousel">
-              <figure class="slide" data-name="tanuki_on_head.png"><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="real_mogu.jpg"><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="tanuki_hug.png"><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
+        <div class="tcard tilt-l">
+          <div class="tcard__body">
+            <div class="slides" id="slides" tabindex="0" aria-label="もぐのカード（横にスクロール）" aria-roledescription="carousel">
+              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.02 ★ REAL MOGU"><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
             </div>
-            <div class="dots" id="sl-dots" aria-hidden="true"></div>
-            <button class="sl-arrow sl-arrow--prev" id="sl-prev" type="button" aria-label="前の画像">◀</button>
-            <button class="sl-arrow sl-arrow--next" id="sl-next" type="button" aria-label="次の画像">▶</button>
+            <span class="tcard__foil" aria-hidden="true"></span>
+            <span class="tcard__shine" aria-hidden="true"></span>
           </div>
+          <button class="sl-arrow sl-arrow--prev" id="sl-prev" type="button" aria-label="前のカード">◀</button>
+          <button class="sl-arrow sl-arrow--next" id="sl-next" type="button" aria-label="次のカード">▶</button>
         </div>
+        <div class="tcard__cap"><span class="tcard__rare">✦ HOLO</span><span id="sl-name">No.01 ★ TANUKI ON HEAD</span><span class="dots" id="sl-dots" aria-hidden="true"></span></div>
         <span class="stk" style="right:-14px;top:-20px;width:62px;height:54px;transform:rotate(10deg)"><svg viewBox="0 0 64 56"><use href="#atanu"/></svg></span>
         <span class="stk" style="left:-10px;bottom:16px;width:20px;height:28px;color:var(--blue)"><svg viewBox="0 0 20 28"><use href="#cross"/></svg></span>
         <span class="stk flip flip--blink" style="right:-18px;bottom:-14px;width:76px;transform:rotate(14deg)"><img src="img/paw-1.webp" alt="" width="326" height="284"><img src="img/paw-2.webp" alt="" width="326" height="284"></span>
@@ -1251,7 +1269,7 @@
     var r=host.getBoundingClientRect(), h=document.createElement('span'); h.className='holo';
     h.style.setProperty('--hx',((x-r.left)/r.width*100)+'%'); h.style.setProperty('--hy',((y-r.top)/r.height*100)+'%');
     host.appendChild(h); anim(host,'holo-flash'); setTimeout(function(){ h.remove(); },1250); }
-  function holoTarget(t){ var hv=t.closest('.hero__vis'); if(hv&&!t.closest('.dlg')) return hv.querySelector('.win__body'); var b=t.closest('.win__body'); if(b&&b.querySelector('img')&&!t.closest('.dlg')) return b;
+  function holoTarget(t){ var tc=t.closest('.tcard__body'); if(tc) return tc; var hv=t.closest('.hero__vis'); if(hv&&!t.closest('.dlg')) return hv.querySelector('.win__body'); var b=t.closest('.win__body'); if(b&&b.querySelector('img')&&!t.closest('.dlg')) return b;
     if(t.tagName==='IMG'&&!t.closest('.stk,.net,.hbadge,.header,.menu,.op,.love,.rw')) return t.parentNode; return null; }
   function fx(e){
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
