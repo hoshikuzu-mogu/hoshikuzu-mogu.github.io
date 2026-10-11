@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011172000">
+<meta name="build" content="20261011173000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -417,7 +417,7 @@
 
   /* プロフィール */
   .prof{display:grid;gap:26px}
-  .prof__vis{position:relative;width:min(80%,330px);justify-self:center}
+  .prof__vis{position:relative;width:min(calc(100% - 112px),330px);justify-self:center}
   .tcard{position:relative;z-index:1}
   .tcard__body{position:relative;border-radius:12px;overflow:hidden;background:var(--ice);
     box-shadow:0 0 0 2px #fff,0 0 0 3.5px rgba(78,127,207,.35),0 0 18px rgba(255,150,210,.45),0 0 26px rgba(120,200,255,.45),6px 10px 0 rgba(78,127,207,.18);
@@ -432,8 +432,12 @@
     background:linear-gradient(90deg,transparent,rgba(255,255,255,.32) 40%,rgba(255,215,245,.4) 50%,rgba(190,235,255,.32) 60%,transparent);
     animation:shine 4.5s ease-in-out infinite}
   @keyframes shine{0%,50%{transform:translateX(-140%) skewX(-18deg)}85%,100%{transform:translateX(260%) skewX(-18deg)}}
-  .tcard .sl-arrow--prev{left:-14px}.tcard .sl-arrow--next{right:-14px}
-  .tcard__cap{margin-top:14px;display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;font-family:var(--px);font-size:15px;color:var(--blue-d);letter-spacing:.06em}
+  .tcard .sl-arrow--prev{left:-50px}.tcard .sl-arrow--next{right:-50px}
+  .slide{container-type:inline-size}
+  .slide__ttl{position:absolute;z-index:1;left:24.5%;width:51%;top:2.6%;height:6%;display:grid;place-items:center;white-space:nowrap;overflow:hidden;
+    font-family:var(--px);font-size:14px;font-size:6cqw;line-height:1;letter-spacing:.03em;color:#56688F;
+    text-shadow:0 1px 0 #fff,0 0 4px rgba(255,255,255,.9)}
+  .tcard__cap{margin:16px -50px 0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:var(--px);font-size:15px;color:var(--blue-d);letter-spacing:.06em}
   .tcard__rare{padding:0 7px;color:#fff;background:linear-gradient(90deg,#ff8fcf,#a99bff,#7fd3ff);text-shadow:0 0 4px rgba(255,255,255,.6)}
   .tcard__cap .dots{position:static;width:auto;display:inline-flex;gap:5px}
   @media (prefers-reduced-motion: reduce){ .tcard__foil,.tcard__shine,.tcard__body{animation:none} }
@@ -857,20 +861,20 @@
         <div class="tcard tilt-l">
           <div class="tcard__body">
             <div class="slides" id="slides" tabindex="0" aria-label="もぐのカード（横にスクロール）" aria-roledescription="carousel">
-              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="No.02 ★ REAL MOGU"><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></figure>
-              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><span class="slide__ttl" aria-hidden="true">TANUKI ON HEAD</span><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.02 ★ REAL MOGU"><span class="slide__ttl" aria-hidden="true">REAL MOGU</span><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></figure>
+              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><span class="slide__ttl" aria-hidden="true">TANUKI HUG</span><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></figure>
             </div>
             <span class="tcard__foil" aria-hidden="true"></span>
             <span class="tcard__shine" aria-hidden="true"></span>
           </div>
           <button class="sl-arrow sl-arrow--prev" id="sl-prev" type="button" aria-label="前のカード">◀</button>
           <button class="sl-arrow sl-arrow--next" id="sl-next" type="button" aria-label="次のカード">▶</button>
-        </div>
-        <div class="tcard__cap"><span class="tcard__rare">✦ HOLO</span><span id="sl-name">No.01 ★ TANUKI ON HEAD</span><span class="dots" id="sl-dots" aria-hidden="true"></span></div>
         <span class="stk" style="right:-14px;top:-20px;width:62px;height:54px;transform:rotate(10deg)"><svg viewBox="0 0 64 56"><use href="#atanu"/></svg></span>
         <span class="stk" style="left:-10px;bottom:16px;width:20px;height:28px;color:var(--blue)"><svg viewBox="0 0 20 28"><use href="#cross"/></svg></span>
         <span class="stk flip flip--blink" style="right:-18px;bottom:-14px;width:76px;transform:rotate(14deg)"><img src="img/paw-1.webp" alt="" width="326" height="284"><img src="img/paw-2.webp" alt="" width="326" height="284"></span>
+        </div>
+        <div class="tcard__cap"><span class="tcard__rare">✦ HOLO</span><span id="sl-name">No.01 ★ TANUKI ON HEAD</span><span class="dots" id="sl-dots" aria-hidden="true"></span></div>
       </div>
       <div class="win lace">
         <div class="win__bar"><span class="t">profile.txt</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
@@ -1180,7 +1184,17 @@
       [2600,function(){ setNoise(false); show('load'); }],[3500,function(){ show(''); setNoise(true); }],
       [3780,function(){ end(); }]
     ]:[[0,function(){ show('line'); }],[300,function(){ show(''); setNoise(true); }],[650,function(){ end(); }]];
-    function end(){ setNoise(false); gs.classList.add('is-done'); anim(img,'is-glitch'); setTimeout(function(){ gs.remove(); },500); setTimeout(flickLoop,4000); }
+    var booted=false, busy=false;
+    function end(){ setNoise(false); gs.classList.add('is-done'); gs.style.animation='none'; anim(img,'is-glitch'); setTimeout(function(){ show(''); booted=true; },400); setTimeout(flickLoop,4000); }
+    // タップでノイズ→チャンネルが切り替わって→もぐちゃんに戻る
+    window.MOGU.heroTap=function(){
+      if(!booted||busy) return; busy=true;
+      var CH=['ch1','ch2','ch3','err'], k=CH[Math.random()*CH.length|0];
+      gs.style.transition='none'; gs.classList.remove('is-done'); show(''); setNoise(true);
+      setTimeout(function(){ setNoise(false); show(k); },200);
+      setTimeout(function(){ show(''); setNoise(true); },560);
+      setTimeout(function(){ setNoise(false); gs.style.transition=''; gs.classList.add('is-done'); anim(img,'is-glitch'); setTimeout(function(){ show(''); busy=false; },380); },720);
+    };
     var body=img.parentNode;
     function flickLoop(){ setTimeout(function(){ if(!document.hidden){ var r=body.getBoundingClientRect(); if(r.bottom>0&&r.top<innerHeight){ body.style.setProperty('--ty',(10+Math.random()*70)+'%'); anim(body,'is-flick'); } } flickLoop(); },3500+Math.random()*5000); }
     var started=false;
@@ -1269,7 +1283,7 @@
     var r=host.getBoundingClientRect(), h=document.createElement('span'); h.className='holo';
     h.style.setProperty('--hx',((x-r.left)/r.width*100)+'%'); h.style.setProperty('--hy',((y-r.top)/r.height*100)+'%');
     host.appendChild(h); anim(host,'holo-flash'); setTimeout(function(){ h.remove(); },1250); }
-  function holoTarget(t){ var tc=t.closest('.tcard__body'); if(tc) return tc; var hv=t.closest('.hero__vis'); if(hv&&!t.closest('.dlg')) return hv.querySelector('.win__body'); var b=t.closest('.win__body'); if(b&&b.querySelector('img')&&!t.closest('.dlg')) return b;
+  function holoTarget(t){ var tc=t.closest('.tcard__body'); if(tc) return tc; if(t.closest('.hero__vis')) return null; var b=t.closest('.win__body'); if(b&&b.querySelector('img')&&!t.closest('.dlg')) return b;
     if(t.tagName==='IMG'&&!t.closest('.stk,.net,.hbadge,.header,.menu,.op,.love,.rw')) return t.parentNode; return null; }
   function fx(e){
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
@@ -1277,7 +1291,7 @@
     if(t.closest('input,textarea,.menu,.omi__stage,.love')) return;
     if(t.closest('.sl-arrow')){ anim(t.closest('.sl-arrow'),'poke'); pop(x,y,['kira','pink'],14); return; }
     var hh=t.closest('.hero__vis,.prof__vis')?holoTarget(t):null; if(hh) holo(hh,x,y);
-    if(t.closest('.hero__vis')){ ring(x,y); pop(x,y,['wingl','wing','heart','kira','pink'],26); anim(document.querySelector('.hero__drip'),'spin'); return; }
+    if(t.closest('.hero__vis')){ if(!t.closest('.dlg')&&window.MOGU.heroTap) window.MOGU.heroTap(); ring(x,y); pop(x,y,['wingl','wing','heart','kira','pink'],26); anim(document.querySelector('.hero__drip'),'spin'); return; }
     if(t.closest('.prof__vis')){ pop(x,y,['paw','heart','kira']); return; }
     var h=t.closest('.sec__head h2'); if(h){ ring(x,y); pop(x,y,['wingl','wing','kira']); anim(h.querySelector('.sh-drip'),'spin'); anim(h.querySelector('.hl'),'poke'); return; }
     var bar=t.closest('.win__bar'); if(bar){ anim(bar.parentNode,'jump'); pop(x,y,['kira','heart']); return; }
