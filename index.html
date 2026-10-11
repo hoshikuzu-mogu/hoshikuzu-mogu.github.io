@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011180000">
+<meta name="build" content="20261011180500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -447,6 +447,8 @@
   .slide.is-flip .cflip{transform:rotateY(180deg)}
   .face{position:absolute;inset:0;-webkit-backface-visibility:hidden;backface-visibility:hidden}
   .face--back{transform:rotateY(180deg)}
+  .slide__ttl,.slide__txt{transition:opacity .2s .25s}
+  .slide.is-flip .slide__ttl,.slide.is-flip .slide__txt{opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .15s}
   .tcard__body{cursor:pointer}
   .credit{margin:18px auto 14px;max-width:520px;padding:10px 14px;border:1.5px dashed var(--frame);background:rgba(255,255,255,.6);font-size:11px;line-height:1.7;color:var(--sub);text-align:left}
   .credit__ttl{font-family:var(--px);font-size:15px;letter-spacing:.12em;color:var(--blue-d);text-align:center;cursor:pointer;list-style:none;padding:2px 0}
@@ -881,9 +883,9 @@
         <div class="tcard tilt-l">
           <div class="tcard__body">
             <div class="slides" id="slides" tabindex="0" aria-label="もぐのカード（横にスクロール）" aria-roledescription="carousel">
-              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI ON HEAD</span><span class="slide__txt" aria-hidden="true">A tanuki crown for the angel. Angel mode on, memory 5 percent.</span><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back2.webp" alt="カードのうら面" width="750" height="1051" loading="lazy"></div></div></figure>
-              <figure class="slide" data-name="No.02 ★ REAL MOGU"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">REAL MOGU</span><span class="slide__txt" aria-hidden="true">The real Mogu in maid mode. Handle with care, she is fragile.</span><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back2.webp" alt="カードのうら面" width="750" height="1051" loading="lazy"></div></div></figure>
-              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI HUG</span><span class="slide__txt" aria-hidden="true">One hug for the tanuki, one hug for you. Stay until she sleeps.</span><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back2.webp" alt="カードのうら面" width="750" height="1051" loading="lazy"></div></div></figure>
+              <figure class="slide" data-name="No.01 ★ TANUKI ON HEAD"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI ON HEAD</span><span class="slide__txt" aria-hidden="true">A tanuki crown for the angel. Angel mode on, memory 5 percent.</span><img src="img/card-tanuki-up.webp" alt="たぬきを頭にのせた星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
+              <figure class="slide" data-name="No.02 ★ REAL MOGU"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">REAL MOGU</span><span class="slide__txt" aria-hidden="true">The real Mogu in maid mode. Handle with care, she is fragile.</span><img src="img/card-photo.webp" alt="メイド服の星屑もぐのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
+              <figure class="slide" data-name="No.03 ★ TANUKI HUG"><div class="cflip"><div class="face face--front"><span class="slide__ttl" aria-hidden="true">TANUKI HUG</span><span class="slide__txt" aria-hidden="true">One hug for the tanuki, one hug for you. Stay until she sleeps.</span><img src="img/card-tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラストのカード" width="750" height="1051" loading="lazy"></div><div class="face face--back"><img src="img/card-back.webp" alt="カードのうら面（Tensi Kaiwai）" width="750" height="1051" loading="lazy"></div></div></figure>
             </div>
             <span class="tcard__foil" aria-hidden="true"></span>
             <span class="tcard__shine" aria-hidden="true"></span>
