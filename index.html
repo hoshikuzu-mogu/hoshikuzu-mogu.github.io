@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011181000">
+<meta name="build" content="20261011213500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -269,6 +269,7 @@
   .op.is-out{opacity:0;visibility:hidden}
   .op .win{width:min(320px,86vw)}
   .op__body{padding:18px 18px 16px;text-align:center}
+  .op__logo{display:block;width:min(92%,260px);height:auto;margin:4px auto 2px}
   .op__chibi{position:relative;width:132px;margin:0 auto;isolation:isolate}
   .op__halo{position:absolute;left:50%;top:-22px;width:86px;height:28px;transform:translate(-50%,-60px);opacity:0;animation:haloDrop .7s 1.3s cubic-bezier(.3,1.5,.5,1) forwards}
   @keyframes haloDrop{to{transform:translate(-50%,0);opacity:1}}
@@ -343,8 +344,8 @@
   main{padding-top:calc(env(safe-area-inset-top,0px) + var(--hh) + 24px)}
   .band{position:absolute;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--hh) + 610px);height:110px;background:rgba(255,255,255,.85);z-index:0}
   .hero{position:relative;width:var(--wrap);margin-inline:auto;padding-block:8px 30px;display:grid;gap:26px}
-  .hero__title{position:relative;z-index:2;isolation:isolate;font-weight:900;font-size:clamp(40px,12vw,76px);line-height:1.15;letter-spacing:.06em}
-  .hero__title .ghost::before{font-weight:900}
+  .hero__title{display:block;position:relative;z-index:2;isolation:isolate;font-weight:900;font-size:clamp(40px,12vw,76px);line-height:1.15;letter-spacing:.06em}
+  .hero__logo{display:block;width:min(100%,560px);height:auto;margin-left:-3%;filter:drop-shadow(4px 6px 0 rgba(78,127,207,.18));animation:float 5s ease-in-out infinite}
   .hero__lines{position:relative;z-index:2;margin-top:14px;display:grid;gap:8px;justify-items:start;font-weight:700;font-size:14px}
   .hero__lines .hl{font-size:14px}
   .hero__lines .hl.s{background:rgba(78,127,207,.82);font-weight:500;font-size:13px}
@@ -677,6 +678,7 @@
   .footer__peek .halo{position:absolute;left:50%;top:-8px;width:76px;height:26px;transform:translateX(-50%);animation:float 3.6s ease-in-out infinite}
   .bye{display:inline-block;font-family:var(--wide);font-weight:700;font-size:26px;letter-spacing:.04em}
   .footer__in{padding:18px 16px 0;border-top:1.5px solid var(--frame);background:rgba(255,255,255,.7)}
+  .footer__logo{display:block;width:min(70%,300px);height:auto;margin:0 auto 10px}
   .footer__tag{margin-top:10px;font-weight:900;font-size:15px}
   .footer p{font-size:13px;color:var(--sub)}
   .footer small{display:block;margin-top:8px;font-family:var(--px);font-size:16px;color:var(--dim)}
@@ -739,6 +741,7 @@
     <div class="win__bar"><span class="t">mogu.exe</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
     <div class="op__body">
       <div class="op__chibi"><img class="puffy" src="img/puffy-glow.webp" alt="" style="left:-14%;top:-6%;width:128%"><img class="op__wing op__wing--l" src="img/wing-glow-l.webp" alt="" width="365" height="320"><img class="op__wing op__wing--r" src="img/wing-glow.webp" alt="" width="365" height="320"><svg class="op__halo" viewBox="0 0 100 32"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493"></div>
+      <img class="op__logo" src="img/logo.webp" alt="" width="1200" height="533">
       <p class="op__txt" id="op-txt">booting heaven.sys</p>
       <div class="op__bar"><i></i></div>
       <p class="op__ok">みつけてくれた？</p>
@@ -813,7 +816,7 @@
 <main id="top">
   <section class="hero" aria-label="星屑もぐ">
     <div>
-      <h1 class="hero__title"><span class="twings flip flip--swap" aria-hidden="true"><img src="img/wings-1.webp" alt="" width="480" height="76"><img src="img/wings-2.webp" alt="" width="480" height="76"></span><span class="ghost" data-t="星屑もぐ"><span class="hl">星屑もぐ</span></span></h1>
+      <h1 class="hero__title"><img class="hero__logo" src="img/logo.webp" alt="星屑もぐ Hoshikuzu Mogu" width="1200" height="533" fetchpriority="high"></h1>
       <div class="hero__lines">
         <span class="hl">取扱い注意⁉️記憶力5%のぽんこつバブニート</span>
         <span class="hl s">あなたも波乱万丈な枠に巻き込まれにおいで💞</span>
@@ -1125,6 +1128,7 @@
   <div class="pearls" aria-hidden="true" style="margin-bottom:26px"></div>
   <div class="footer__peek" id="peek"><img class="puffy" src="img/puffy-glow.webp" alt="" style="left:-22%;top:-12%;width:144%"><span class="flip flip--swap" aria-hidden="true" style="position:absolute;left:-60%;right:-60%;top:40%;z-index:-1;filter:drop-shadow(0 0 2px rgba(78,127,207,.9))"><img src="img/wings-1.webp" alt="" width="480" height="76"><img src="img/wings-2.webp" alt="" width="480" height="76"></span><svg class="halo" viewBox="0 0 100 32" aria-hidden="true"><use href="#halo"/></svg><img src="img/chibi.webp" alt="" width="480" height="493" loading="lazy"></div>
   <div class="footer__in">
+    <img class="footer__logo" src="img/logo.webp" alt="星屑もぐ" width="1200" height="533" loading="lazy">
     <p class="bye"><span class="hl">BYE BYE!</span></p>
     <p class="dream" style="margin-top:6px;font-size:20px">see you in heaven ♡</p>
     <p class="footer__tag">#もぐもぐくずもち</p>
@@ -1641,7 +1645,7 @@
     return M.rpc('mogu_wallpaper_get').then(function(d){ if(!d||!d.image) return null; return fetch(d.image).then(function(r){ return r.blob(); }); }).catch(function(){ return null; });
   }
   function defaultWall(){
-    return Promise.all(['hero','halo-drip','wing-glow','wing-glow-l','paw-tile','pxheart'].map(function(n){ return li('img/'+n+'.webp'); })).then(function(im){
+    return Promise.all(['hero','halo-drip','wing-glow','wing-glow-l','paw-tile','pxheart','logo'].map(function(n){ return li('img/'+n+'.webp'); })).then(function(im){
       var W=1170,H=2532,c=document.createElement('canvas'),x=c.getContext('2d'); c.width=W; c.height=H;
       var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#E8F1FA'); g.addColorStop(.55,'#D6E4F1'); g.addColorStop(1,'#C7D9EC'); x.fillStyle=g; x.fillRect(0,0,W,H);
       if(im[4]) for(var py=0;py<H;py+=585) for(var px=0;px<W;px+=585) x.drawImage(im[4],px,py,585,585);
@@ -1653,9 +1657,9 @@
       if(im[0]){ var hh=H*.52, ww=im[0].width*hh/im[0].height; if(ww>W*.95){ ww=W*.95; hh=im[0].height*ww/im[0].width; } x.drawImage(im[0],(W-ww)/2,H*.3,ww,hh); }
       put(im[1],W*.44,H*.3,W*.5,-.08);
       [[150,620,70],[1020,560,56],[120,1560,50],[1060,1420,66],[200,2200,58],[980,2140,46]].forEach(function(p){ if(im[5]){ x.save(); x.shadowColor='#4E7FCF'; x.shadowBlur=4; put(im[5],p[0],p[1],p[2]); x.restore(); } });
-      // 名前（青い帯）
-      x.font='900 120px "Zen Kaku Gothic New","Hiragino Sans",sans-serif'; var t='星屑もぐ', tw=x.measureText(t).width, pad=30, X=W/2-tw/2-pad, Y=H*.13;
-      x.fillStyle='rgba(78,127,207,.45)'; x.fillRect(X+26,Y-118,tw+pad*2,150); x.fillStyle='#4E7FCF'; x.fillRect(X,Y-75,tw+pad*2,150); x.fillStyle='#fff'; x.textBaseline='middle'; x.fillText(t,X+pad,Y+4);
+      // ロゴ
+      if(im[6]){ var lw=W*.86, lh=im[6].height*lw/im[6].width; x.drawImage(im[6],(W-lw)/2,H*.13-lh*.55,lw,lh); }
+      else { x.font='900 120px "Zen Kaku Gothic New","Hiragino Sans",sans-serif'; x.textAlign='center'; x.fillStyle='#4E7FCF'; x.textBaseline='middle'; x.fillText('星屑もぐ',W/2,H*.13); }
       x.textAlign='center'; x.fillStyle='#33599B'; x.font='64px "VT323",monospace'; x.fillText('ANGEL STAMP COMPLETE',W/2,H*.93);
       x.fillStyle='#B4437A'; x.font='700 44px "Zen Kaku Gothic New","Hiragino Sans",sans-serif'; x.fillText('いつも見にきてくれてありがと♡',W/2,H*.96);
       return new Promise(function(ok){ c.toBlob(function(b){ wallBlob=b; wallURL=URL.createObjectURL(b); ok(wallURL); },'image/png'); });
