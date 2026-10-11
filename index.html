@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011162500">
+<meta name="build" content="20261011163500">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -51,6 +51,17 @@
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 
+  /* ===== 画面のあちこちに電子ノイズのブレ ===== */
+  .zap{animation:zap .36s steps(4) !important}
+  @keyframes zap{0%{translate:4px 0;filter:drop-shadow(2px 0 0 rgba(255,95,190,.8)) drop-shadow(-2px 0 0 rgba(90,220,255,.8))}
+    30%{translate:-5px 0;clip-path:inset(18% 0 48% 0)}55%{translate:3px 1px;clip-path:inset(58% 0 12% 0);filter:drop-shadow(-2px 0 0 rgba(255,95,190,.8)) drop-shadow(2px 0 0 rgba(90,220,255,.8))}
+    80%{translate:-1px 0;clip-path:none;opacity:.8}100%{translate:0 0;filter:none;opacity:1}}
+  .tear{position:fixed;left:0;right:0;z-index:58;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(255,255,255,.35) 0 1px,rgba(120,200,255,.18) 1px 2px,rgba(255,150,210,.18) 2px 3px);
+    -webkit-backdrop-filter:hue-rotate(70deg) saturate(1.5) brightness(1.06);backdrop-filter:hue-rotate(70deg) saturate(1.5) brightness(1.06);
+    animation:tearMove .32s steps(4) forwards}
+  @keyframes tearMove{0%{transform:translateX(-10px) scaleY(.3);opacity:1}40%{transform:translateX(8px) scaleY(1)}70%{transform:translateX(-4px);opacity:.8}100%{transform:none;opacity:0}}
+  @media (prefers-reduced-motion: reduce){ .zap{animation:none !important} .tear{display:none} }
   /* ===== ゲームスクリーン風（トップの絵） ===== */
   .hero__vis .win__body{position:relative}
   .gs-hud{position:absolute;z-index:2;left:8px;right:8px;top:6px;display:flex;justify-content:space-between;align-items:center;font-family:var(--px);font-size:16px;line-height:1;color:#fff;letter-spacing:.06em;
@@ -1162,6 +1173,29 @@
     function run(){ if(started) return; started=true; T.forEach(function(s){ setTimeout(s[1],s[0]); }); }
     window.addEventListener('mogu:ready',function(){ setTimeout(run,200); });
     if(!document.getElementById('op')) setTimeout(run,200);
+  })();
+
+  // ---- 画面のあちこちに、ときどき電子ノイズのブレ ----
+  (function(){
+    if(reduce) return;
+    var SEL='.sec__head h2,.win,.desk .icn,.hero__lines .hl,.hero__title,.stair,.angel-line,.stk,.cd,.links li,.btn';
+    function visible(el){ var r=el.getBoundingClientRect(); return r.width>0&&r.bottom>60&&r.top<innerHeight-20; }
+    function idle(el){ try{ return !el.getAnimations().some(function(a){ return a.playState==='running'; }); }catch(e){ return true; } }
+    function zapSome(){
+      var list=[].filter.call(document.querySelectorAll(SEL),function(el){ return visible(el)&&idle(el)&&!el.closest('.menu,.op,.rw,.love'); });
+      var n=1+Math.floor(Math.random()*2);
+      for(var i=0;i<n&&list.length;i++){ var el=list.splice(Math.floor(Math.random()*list.length),1)[0]; (function(el,d){ setTimeout(function(){ anim(el,'zap'); },d); })(el,i*120); }
+    }
+    function tear(){
+      var k=1+Math.floor(Math.random()*3);
+      for(var i=0;i<k;i++){ (function(d){ setTimeout(function(){ var t=document.createElement('div'); t.className='tear';
+        var h=6+Math.random()*34; t.style.top=(Math.random()*(innerHeight-h))+'px'; t.style.height=h+'px';
+        document.body.appendChild(t); setTimeout(function(){ t.remove(); },400); },d); })(i*70); }
+    }
+    function loop(){ setTimeout(function(){
+      if(!document.hidden&&!document.body.classList.contains('menu-open')){ var r=Math.random(); if(r<.45){ zapSome(); } else if(r<.75){ tear(); } else { tear(); zapSome(); } }
+      loop(); },2600+Math.random()*4400); }
+    window.addEventListener('mogu:ready',function(){ setTimeout(loop,5000); });
   })();
   // ---- プロフィールのスライド（横スクロール＋自動で切り替え） ----
   (function(){
