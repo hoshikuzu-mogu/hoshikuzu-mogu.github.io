@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011154000">
+<meta name="build" content="20261011163000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -50,6 +50,57 @@
     --hh:52px;
   }
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+  /* ===== ゲームスクリーン風（トップの絵） ===== */
+  .hero__vis .win__body{position:relative}
+  .gs-hud{position:absolute;z-index:2;left:8px;right:8px;top:6px;display:flex;justify-content:space-between;align-items:center;font-family:var(--px);font-size:16px;line-height:1;color:#fff;letter-spacing:.06em;
+    text-shadow:1px 0 #4E7FCF,-1px 0 #4E7FCF,0 1px #4E7FCF,0 -1px #4E7FCF;pointer-events:none}
+  .gs-hud__hp{display:flex;gap:3px}
+  .gs-hud__hp img{width:14px;height:auto;filter:drop-shadow(0 0 1px #4E7FCF) drop-shadow(0 0 1px #4E7FCF);animation:hpBeat 1.6s steps(2) infinite}
+  .gs-hud__hp img:nth-child(2){animation-delay:.2s}.gs-hud__hp img:nth-child(3){animation-delay:.4s}
+  @keyframes hpBeat{50%{transform:scale(1.18)}}
+  .gs-scan{position:absolute;z-index:2;inset:0;pointer-events:none;
+    background:repeating-linear-gradient(0deg,rgba(40,52,82,.06) 0 1px,transparent 1px 3px),radial-gradient(ellipse at 50% 50%,transparent 62%,rgba(78,127,207,.18) 100%)}
+  .gs{position:absolute;z-index:4;inset:0;background:#0E1024;overflow:hidden;pointer-events:none;animation:gsSafe .3s 10s forwards}
+  @keyframes gsSafe{to{opacity:0;visibility:hidden}}
+  .gs.is-done{opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+  .gs__noise{position:absolute;inset:0;width:100%;height:100%;image-rendering:pixelated;opacity:0}
+  .gs.is-noise .gs__noise{opacity:1}
+  .gs__scr{position:absolute;inset:0;display:none;font-family:var(--px);color:#fff;text-align:center}
+  .gs__scr.is-on{display:grid}
+  .gs__off{place-items:center;font-size:20px;letter-spacing:.12em;color:#9FB4E8}
+  .gs__off p{margin:0}
+  .gs__cur{animation:blink .5s steps(1) infinite}
+  @keyframes blink{50%{opacity:0}}
+  .gs__line{place-items:center}
+  .gs__line::after{content:"";width:100%;height:3px;background:#fff;box-shadow:0 0 14px #CFE0FF,0 0 30px #F5A9C8;animation:crt .32s ease-out forwards}
+  @keyframes crt{0%{transform:scale(.02,1)}60%{transform:scale(1,1)}100%{transform:scale(1,60);opacity:.0}}
+  .gs__ch{grid-template-columns:100%;justify-items:center;align-content:start;padding-top:24%;gap:8px}
+  .gs__ch--pink{background:#FFD3E6}.gs__ch--sky{background:#CFE3FA}.gs__ch--lav{background:#E4DCFB}.gs__ch--err{background:#2B3A8C}
+  .gs__ch img,.gs__ch svg{width:48%;height:auto;aspect-ratio:1;image-rendering:pixelated;animation:chPop .2s steps(3,jump-none)}
+  .gs__ch--err img{width:72%;aspect-ratio:auto}
+  .gs__ch--lav svg{width:72%;aspect-ratio:64/56}
+  @keyframes chPop{0%{transform:scale(.6)}100%{transform:scale(1)}}
+  .gs__osd{position:absolute;left:10px;top:28px;margin:0;font-size:22px;color:#7CFF9B;text-shadow:2px 2px 0 rgba(0,0,0,.35)}
+  .gs__cap{margin:0;font-size:20px;letter-spacing:.1em;color:#4E7FCF;text-shadow:1px 1px 0 #fff}
+  .gs__ch--err .gs__cap{color:#FFE08A;text-shadow:none}
+  .gs__load{grid-template-columns:100%;justify-items:center;align-content:start;padding-top:22%;gap:10px;background:radial-gradient(circle at 50% 40%,#2A2F66,#0E1024 70%)}
+  .gs__load p{margin:0}
+  .gs__ttl{font-family:var(--wide);font-weight:800;font-size:clamp(26px,9vw,40px);line-height:1;letter-spacing:.04em;color:#fff;
+    text-shadow:2px 0 #F5A9C8,-2px 0 #7FD3FF,0 0 16px rgba(207,224,255,.8);animation:ttlIn .4s steps(4)}
+  @keyframes ttlIn{0%{transform:translateY(12px);opacity:0}100%{transform:none;opacity:1}}
+  .gs__now{font-size:18px;letter-spacing:.14em;color:#CFE0FF}
+  .gs__dots::after{content:"";animation:dots 1s steps(4) infinite}
+  @keyframes dots{0%{content:""}25%{content:"."}50%{content:".."}75%{content:"..."}}
+  .gs__bar{width:62%;height:12px;padding:2px;border:2px solid #CFE0FF}
+  .gs__bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(90deg,#F5A9C8 0 8px,transparent 8px 10px);animation:barFill .6s steps(8) forwards}
+  @keyframes barFill{to{width:100%}}
+  .gs__press{font-size:18px;color:#FFE08A;letter-spacing:.1em;opacity:0;animation:blink .3s steps(1) .45s infinite}
+  .hero__img.is-glitch{animation:glitch .5s steps(2)}
+  @keyframes glitch{0%{filter:drop-shadow(4px 0 0 rgba(255,95,190,.8)) drop-shadow(-4px 0 0 rgba(90,220,255,.8));transform:translateX(3px)}
+    40%{filter:drop-shadow(-3px 0 0 rgba(255,95,190,.8)) drop-shadow(3px 0 0 rgba(90,220,255,.8));transform:translateX(-3px) skewX(-2deg)}
+    80%{clip-path:inset(30% 0 40% 0);transform:translateX(5px)}100%{filter:none;transform:none;clip-path:none}}
+  @media (prefers-reduced-motion: reduce){ .gs{display:none} }
   /* ホログラム（画像タップで光る） */
   .holo-host{position:relative;overflow:hidden;isolation:isolate}
   .holo{position:absolute;inset:-2px;z-index:5;pointer-events:none;border-radius:inherit;mix-blend-mode:normal;opacity:0;
@@ -601,6 +652,7 @@
     <linearGradient id="haloG" x1="0" x2="1"><stop offset="0" stop-color="#FFE9A8"/><stop offset=".5" stop-color="#FFD25C"/><stop offset="1" stop-color="#FFE9A8"/></linearGradient>
   </defs>
   <symbol id="halo" viewBox="0 0 100 32"><ellipse cx="50" cy="16" rx="45" ry="11" fill="none" stroke="#fff" stroke-width="9" opacity=".9"/><ellipse cx="50" cy="16" rx="45" ry="11" fill="none" stroke="url(#haloG)" stroke-width="5"/><ellipse cx="50" cy="16" rx="45" ry="11" fill="none" stroke="#E9B33A" stroke-width="1" opacity=".6"/></symbol>
+  <symbol id="cursor" viewBox="-1.5 -1.5 15 22"><path d="M0 0V16L4 12L7 18.5L9.6 17.3L6.8 11H12Z" stroke-width="1.6" stroke-linejoin="miter" shape-rendering="crispEdges"/></symbol>
   <symbol id="kira" viewBox="0 0 20 20"><path fill="currentColor" d="M10 0c.6 5.2 4.8 9.4 10 10-5.2.6-9.4 4.8-10 10-.6-5.2-4.8-9.4-10-10C5.2 9.4 9.4 5.2 10 0z"/></symbol>
   <symbol id="cross" viewBox="0 0 20 28"><path d="M8 0h4v8h8v4h-8v16H8V12H0V8h8z" fill="currentColor"/></symbol>
   <symbol id="ribbon" viewBox="0 0 48 32"><g fill="#F5C6DA" stroke="#D987A8" stroke-width="1.6" stroke-linejoin="round"><path d="M24 14 6 4C3 3 1 5 2 8l3 12c1 3 4 4 7 2z"/><path d="M24 14 42 4c3-1 5 1 4 4l-3 12c-1 3-4 4-7 2z"/><path d="M22 16l-8 15 5-1 3 3 2-16zM26 16l8 15-5-1-3 3-2-16z"/><rect x="19.5" y="10" width="9" height="9" rx="3"/></g></symbol>
@@ -718,8 +770,21 @@
       <img class="wings wings--l" src="img/wing-glow-l.webp" alt="" width="365" height="320" aria-hidden="true">
       <img class="wings wings--r" src="img/wing-glow.webp" alt="" width="365" height="320" aria-hidden="true">
       <div class="win win--lav tilt-r lace">
-        <div class="win__bar"><span class="t">mogu_angel.png</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
-        <div class="win__body"><img class="hero__img" src="img/hero.webp" alt="星屑もぐのイラスト" width="960" height="1333" fetchpriority="high"></div>
+        <div class="win__bar"><span class="t">mogu_angel.exe</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
+        <div class="win__body"><img class="hero__img" src="img/hero.webp" alt="星屑もぐのイラスト" width="960" height="1333" fetchpriority="high">
+          <div class="gs-hud" aria-hidden="true"><span>1P&nbsp;MOGU</span><span class="gs-hud__hp"><img src="img/pxheart.webp" alt=""><img src="img/pxheart.webp" alt=""><img src="img/pxheart.webp" alt=""></span></div>
+          <div class="gs-scan" aria-hidden="true"></div>
+          <div class="gs" id="gs" aria-hidden="true">
+            <canvas class="gs__noise" id="gs-noise" width="72" height="100"></canvas>
+            <div class="gs__scr gs__off" data-s="off"><p>POWER ON<span class="gs__cur">_</span></p></div>
+            <div class="gs__scr gs__line" data-s="line"></div>
+            <div class="gs__scr gs__ch gs__ch--pink" data-s="ch1"><p class="gs__osd">CH.01</p><img src="img/pxheart.webp" alt=""><p class="gs__cap">LOVE ♡ LOVE</p></div>
+            <div class="gs__scr gs__ch gs__ch--sky" data-s="ch2"><p class="gs__osd">CH.02</p><svg viewBox="0 0 40 40"><use href="#egg"/></svg><p class="gs__cap">GOOD MORNING</p></div>
+            <div class="gs__scr gs__ch gs__ch--lav" data-s="ch3"><p class="gs__osd">CH.03</p><svg viewBox="0 0 64 56"><use href="#atanu"/></svg><p class="gs__cap">TANUKI TV</p></div>
+            <div class="gs__scr gs__ch gs__ch--err" data-s="err"><p class="gs__osd">CH.??</p><img src="img/err-1.webp" alt=""><p class="gs__cap">ERROR?!</p></div>
+            <div class="gs__scr gs__load" data-s="load"><p class="gs__ttl">MOGU<br>ANGEL</p><p class="gs__now">NOW LOADING<span class="gs__dots"></span></p><p class="gs__bar"><i></i></p><p class="gs__press">PRESS ♡ START</p></div>
+          </div>
+        </div>
         <button class="hero__tap" type="button" aria-label="もぐをタップ" id="hero-tap"></button>
       </div>
       <img class="drip hero__drip" src="img/halo-drip.webp" alt="" width="454" height="334" aria-hidden="true">
@@ -1062,6 +1127,34 @@
     document.addEventListener('visibilitychange',function(){ if(!document.hidden&&!reduce) start(); });
   })();
 
+
+  // ---- トップの絵：ゲーム画面風の起動演出 ----
+  (function(){
+    var gs=$('gs'); if(!gs) return;
+    var img=document.querySelector('.hero__img'), cv=$('gs-noise'), cx=cv.getContext('2d'), raf=0, noiseOn=false;
+    if(reduce){ gs.remove(); return; }
+    function noise(){ var w=cv.width,h=cv.height,d=cx.createImageData(w,h),a=d.data;
+      for(var i=0;i<a.length;i+=4){ var v=Math.random()*255|0; a[i]=v; a[i+1]=v; a[i+2]=v+20>255?255:v+20; a[i+3]=255; }
+      cx.putImageData(d,0,0);
+      for(var k=0;k<3;k++){ cx.fillStyle=['rgba(255,95,190,.55)','rgba(90,220,255,.55)','rgba(255,255,255,.5)'][k]; cx.fillRect(0,Math.random()*h|0,w,2+Math.random()*6|0); }
+      if(noiseOn) raf=requestAnimationFrame(noise); }
+    function setNoise(on){ noiseOn=on; gs.classList.toggle('is-noise',on); if(on){ cancelAnimationFrame(raf); noise(); } }
+    function show(k){ [].forEach.call(gs.querySelectorAll('.gs__scr'),function(el){ el.classList.toggle('is-on',el.dataset.s===k); }); }
+    var full=true; try{ full=!sessionStorage.getItem('mogu_gs'); sessionStorage.setItem('mogu_gs','1'); }catch(e){}
+    var T=full?[
+      [0,function(){ show('off'); }],[650,function(){ show('line'); }],[950,function(){ show(''); setNoise(true); }],
+      [1300,function(){ setNoise(false); show('ch1'); }],[1560,function(){ show(''); setNoise(true); }],
+      [1660,function(){ setNoise(false); show('ch2'); }],[1920,function(){ show(''); setNoise(true); }],
+      [2020,function(){ setNoise(false); show('ch3'); }],[2280,function(){ show('err'); }],[2460,function(){ show(''); setNoise(true); }],
+      [2600,function(){ setNoise(false); show('load'); }],[3500,function(){ show(''); setNoise(true); }],
+      [3780,function(){ end(); }]
+    ]:[[0,function(){ show('line'); }],[300,function(){ show(''); setNoise(true); }],[650,function(){ end(); }]];
+    function end(){ setNoise(false); gs.classList.add('is-done'); anim(img,'is-glitch'); setTimeout(function(){ gs.remove(); },500); }
+    var started=false;
+    function run(){ if(started) return; started=true; T.forEach(function(s){ setTimeout(s[1],s[0]); }); }
+    window.addEventListener('mogu:ready',function(){ setTimeout(run,200); });
+    if(!document.getElementById('op')) setTimeout(run,200);
+  })();
   // ---- プロフィールのスライド（横スクロール＋自動で切り替え） ----
   (function(){
     var box=$('slides'), slides=[].slice.call(box.querySelectorAll('.slide')), dots=$('sl-dots'), name=$('sl-name'), cur=0, timer=null, hold=0;
@@ -1089,10 +1182,13 @@
   // ---- タップの演出 ----
   var FX={wing:'<img src="img/wing-glow.webp" alt="">',wingl:'<img src="img/wing-glow-l.webp" alt="">',heart:'<img src="img/pxheart.webp" alt="" style="filter:drop-shadow(0 0 1px #4E7FCF) drop-shadow(0 0 1px #4E7FCF)">',
     paw:'<img src="img/paw-1.webp" alt="">',kira:'<svg viewBox="0 0 20 20" style="color:#fff;filter:drop-shadow(0 0 2px #4E7FCF)"><use href="#kira"/></svg>',
-    pink:'<svg viewBox="0 0 24 22" style="color:#F5A9C8"><use href="#heart"/></svg>'};
+    pink:'<svg viewBox="0 0 24 22" style="color:#F5A9C8"><use href="#heart"/></svg>',
+    cur:'<svg viewBox="-1.5 -1.5 15 22" style="fill:#fff;stroke:#4E7FCF;filter:drop-shadow(1px 1px 0 rgba(78,127,207,.35))"><use href="#cursor"/></svg>',
+    curp:'<svg viewBox="-1.5 -1.5 15 22" style="fill:#FFE3EF;stroke:#E77FAA;filter:drop-shadow(1px 1px 0 rgba(231,127,170,.35))"><use href="#cursor"/></svg>'};
   function pop(x,y,kinds,size){
     if(reduce) return;
-    kinds.forEach(function(k,i){ var el=document.createElement('span'); el.className='tap-fx'; el.innerHTML=FX[k]; var z=size||(k==='wing'||k==='wingl'?30:20);
+    kinds=kinds.concat([Math.random()<.5?'cur':'curp']);
+    kinds.forEach(function(k,i){ var el=document.createElement('span'); el.className='tap-fx'; el.innerHTML=FX[k]; var z=(k==='cur'||k==='curp')?22:(size||(k==='wing'||k==='wingl'?30:20));
       el.style.width=el.style.height=z+'px'; el.style.left=x+'px'; el.style.top=y+'px';
       el.style.setProperty('--dx',(Math.random()*80-40)+'px'); el.style.setProperty('--rt',(Math.random()*80-40)+'deg'); el.style.animationDelay=(i*.05)+'s';
       document.body.appendChild(el); setTimeout(function(){ el.remove(); },1300); });
