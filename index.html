@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011140500">
+<meta name="build" content="20261011154000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -363,6 +363,13 @@
   .dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;gap:6px;pointer-events:none}
   .dots i{width:8px;height:8px;border:1.5px solid #fff;background:rgba(255,255,255,.4);box-shadow:0 0 0 1px rgba(78,127,207,.35);transition:background .2s,transform .2s}
   .dots i.on{background:var(--rose);transform:scale(1.25)}
+  .sl-arrow{position:absolute;top:50%;z-index:6;width:38px;height:38px;margin-top:-19px;display:grid;place-items:center;padding:0;
+    background:rgba(255,255,255,.88);border:1.5px solid var(--frame);color:var(--blue);font-size:15px;line-height:1;cursor:pointer;
+    box-shadow:2px 2px 0 rgba(78,127,207,.25);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);transition:transform .1s,box-shadow .1s}
+  .sl-arrow--prev{left:8px}
+  .sl-arrow--next{right:8px}
+  .sl-arrow:active{transform:translate(1px,1px);box-shadow:1px 1px 0 rgba(78,127,207,.25)}
+  .sl-arrow:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .prof__name{font-weight:900;font-size:24px;letter-spacing:.08em}
   .prof__name small{margin-left:10px;font-family:var(--dot);font-size:12px;font-weight:400;color:var(--sub)}
   .prof__dl{margin-top:12px}
@@ -760,6 +767,8 @@
               <figure class="slide" data-name="tanuki_hug.png"><img src="img/tanuki-hug.webp" alt="たぬきのぬいぐるみを抱っこする星屑もぐのイラスト" width="760" height="1287" loading="lazy"></figure>
             </div>
             <div class="dots" id="sl-dots" aria-hidden="true"></div>
+            <button class="sl-arrow sl-arrow--prev" id="sl-prev" type="button" aria-label="前の画像">◀</button>
+            <button class="sl-arrow sl-arrow--next" id="sl-next" type="button" aria-label="次の画像">▶</button>
           </div>
         </div>
         <span class="stk" style="right:-14px;top:-20px;width:62px;height:54px;transform:rotate(10deg)"><svg viewBox="0 0 64 56"><use href="#atanu"/></svg></span>
@@ -1063,6 +1072,9 @@
     function go(i){ box.scrollTo({left:i*box.clientWidth,behavior:reduce?'auto':'smooth'}); }
     function pause(){ hold=Date.now()+7000; }
     ['pointerdown','touchstart','wheel','keydown'].forEach(function(ev){ box.addEventListener(ev,pause,{passive:true}); });
+    var n=slides.length;
+    $('sl-prev').addEventListener('click',function(){ pause(); go((cur-1+n)%n); });
+    $('sl-next').addEventListener('click',function(){ pause(); go((cur+1)%n); });
     box.addEventListener('keydown',function(e){ if(e.key==='ArrowRight'){ go(Math.min(cur+1,slides.length-1)); } if(e.key==='ArrowLeft'){ go(Math.max(cur-1,0)); } });
     function tick(){ if(document.hidden||Date.now()<hold) return; var r=box.getBoundingClientRect(); if(r.bottom<0||r.top>innerHeight) return; go((cur+1)%slides.length); }
     if(!reduce) timer=setInterval(tick,3800);
@@ -1106,6 +1118,7 @@
     var now=Date.now(); if(now-lastTap<120) return; lastTap=now;
     var t=e.target, x=e.clientX, y=e.clientY;
     if(t.closest('input,textarea,.menu,.omi__stage,.love')) return;
+    if(t.closest('.sl-arrow')){ anim(t.closest('.sl-arrow'),'poke'); pop(x,y,['kira','pink'],14); return; }
     var hh=t.closest('.hero__vis,.prof__vis')?holoTarget(t):null; if(hh) holo(hh,x,y);
     if(t.closest('.hero__vis')){ ring(x,y); pop(x,y,['wingl','wing','heart','kira','pink'],26); anim(document.querySelector('.hero__drip'),'spin'); return; }
     if(t.closest('.prof__vis')){ pop(x,y,['paw','heart','kira']); return; }
