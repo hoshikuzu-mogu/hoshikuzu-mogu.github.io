@@ -1,6 +1,6 @@
 {
-  "name": "もぐ管理",
-  "short_name": "もぐ管理",
+  "name": "もぐちゃんのHP更新ページ",
+  "short_name": "もぐHP更新",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
