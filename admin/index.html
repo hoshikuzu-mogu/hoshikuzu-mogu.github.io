@@ -154,12 +154,24 @@
   .rng input{min-height:0;padding:0;border:0;background:none;accent-color:var(--mizu)}
   .file{min-height:0;padding:10px;font-size:14px}
   .linkBtn{display:inline;min-height:0;padding:0;margin-left:6px;border:0;font-size:12px;color:var(--mizu);text-decoration:underline;letter-spacing:0}
+  /* ===== タッチパネル方式（大きなボタンで えらぶ） ===== */
+  .panel{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:24px}
+  .panel button{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:136px;padding:14px 8px;border-radius:18px;border:2px solid var(--mizu);background:rgba(255,255,255,.92);color:var(--ink);box-shadow:0 5px 0 #33599B;transition:transform .12s,box-shadow .12s;letter-spacing:.06em}
+  .panel button:active{transform:translateY(4px);box-shadow:0 1px 0 #33599B}
+  .panel .ic{font-size:34px;line-height:1;color:var(--mizu)}
+  .panel .lb{font-family:var(--maru);font-weight:700;font-size:19px;line-height:1.3}
+  .panel .st{font-family:var(--sans);font-weight:500;font-size:12.5px;letter-spacing:.02em;color:var(--sub);line-height:1.4;min-height:1.4em}
+  .panel .n{position:absolute;top:-10px;right:-6px;min-width:26px;height:26px;padding:0 8px;border-radius:99px;background:#F08DB4;color:#fff;font-family:var(--sans);font-size:14px;font-weight:800;line-height:26px;text-align:center;letter-spacing:0}
+  .panel .wide{grid-column:1/-1;min-height:112px}
+  .backbar{position:sticky;top:0;z-index:20;margin:0 -16px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:rgba(226,236,247,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
+  .backbar button{flex:none;min-height:52px;padding:0 18px;font-size:16px;background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--line)}
+  .backbar b{font-family:var(--maru);font-size:18px;letter-spacing:.06em;color:var(--mizu)}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
 <main>
-  <h1><img src="../img/chibi.webp" alt="">もぐ管理<small>もぐちゃん専用のページです</small></h1>
+  <h1><img src="../img/chibi.webp" alt="">もぐ管理<small>HP更新ページ ｜ ここから内容を更新できます</small></h1>
 
   <section id="keyView" class="card" hidden>
     <label for="key">合言葉を入れてください</label>
@@ -169,7 +181,17 @@
   </section>
 
   <section id="mainView" hidden>
-    <div class="tabs" role="tablist">
+    <div class="panel" id="panel">
+      <button type="button" data-t="song"><span class="ic">♪</span><span class="lb">歌える曲</span><span class="st" id="tlSong">曲を足す・直す</span></button>
+      <button type="button" data-t="req"><span class="ic">♡</span><span class="lb">リクエスト</span><span class="n" id="reqN" hidden>0</span><span class="st" id="tlReq">届いた歌のお願い</span></button>
+      <button type="button" data-t="msg"><span class="ic">✉</span><span class="lb">おてがみ</span><span class="n" id="msgN" hidden>0</span><span class="st" id="tlMsg">匿名のおてがみ</span></button>
+      <button type="button" data-t="post"><span class="ic">✕</span><span class="lb">Xのポスト</span><span class="st">HPにのせる</span></button>
+      <button type="button" data-t="sch"><span class="ic">◷</span><span class="lb">予定表</span><span class="st">画像をつくる</span></button>
+      <button type="button" data-t="wall"><span class="ic">✿</span><span class="lb">ごほうび壁紙</span><span class="st">スタンプの壁紙</span></button>
+      <button type="button" data-t="ev" class="wide"><span class="ic">✦</span><span class="lb">カウントダウン</span><span class="st">デビュー記念日・イベント</span></button>
+    </div>
+    <div class="backbar" id="backbar" hidden><button type="button" id="backBtn">‹ もどる</button><b id="backTitle"></b></div>
+    <div class="tabs" role="tablist" style="display:none">
       <button class="tab" data-tab="req" role="tab" type="button">リクエスト<b id="reqCount"></b></button>
       <button class="tab" data-tab="msg" role="tab" type="button">おてがみ<b id="msgCount"></b></button>
       <button class="tab" data-tab="sch" role="tab" type="button">予定表</button>
@@ -958,7 +980,7 @@
 
   // ---- 歌リスト ----
   function toText(list){ return (list||[]).map(function(s){ return s.t+(s.a?' / '+s.a:''); }).join('\n'); }
-  function loadSongs(){ return call('mogu_songs_admin',{p_action:'list'}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 登録されています'); }).catch(function(e){ fail(e,$('songMsg')); }); }
+  function loadSongs(){ return call('mogu_songs_admin',{p_action:'list'}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 登録されています'); $('tlSong').textContent='いま '+(l||[]).length+'曲'; }).catch(function(e){ fail(e,$('songMsg')); }); }
   $('songSave').onclick=function(){
     var list=$('songText').value.split(/\r?\n/).map(function(line){
       line=line.trim(); if(!line) return null;
@@ -980,12 +1002,32 @@
   }
   document.querySelectorAll('.tab').forEach(function(t){ t.onclick=function(){ showTab(t.dataset.tab); }; });
 
+  // ---- タッチパネル方式：トップは大きなボタン、えらぶと中身が開く ----
+  var TILE={song:'歌える曲',req:'リクエスト',msg:'おてがみ',post:'Xのポスト',sch:'予定表',wall:'ごほうび壁紙',ev:'カウントダウン'};
+  function openPanel(){
+    document.querySelectorAll('[data-view]').forEach(function(v){ v.hidden=true; });
+    $('panel').hidden=false; $('backbar').hidden=true; window.scrollTo(0,0);
+  }
+  function openTile(t,fromPop){
+    showTab(t); $('panel').hidden=true; $('backbar').hidden=false; $('backTitle').textContent=TILE[t]; window.scrollTo(0,0);
+    if(!fromPop){ try{ history.pushState({tile:t},''); }catch(e){} }
+  }
+  $('panel').addEventListener('click',function(e){ var b=e.target.closest('button'); if(b&&b.dataset.t) openTile(b.dataset.t); });
+  $('backBtn').onclick=function(){ if(history.state&&history.state.tile){ history.back(); } else openPanel(); };
+  window.addEventListener('popstate',function(e){ if(e.state&&e.state.tile) openTile(e.state.tile,true); else openPanel(); });
+  function syncTiles(){
+    var r=$('reqCount').textContent, m=$('msgCount').textContent;
+    $('reqN').hidden=!r; $('reqN').textContent=r; $('tlReq').textContent=r?'まだ歌ってない曲あり':'届いた歌のお願い';
+    $('msgN').hidden=!m; $('msgN').textContent=m; $('tlMsg').textContent=m?'未読あり':'匿名のおてがみ';
+  }
+  ['reqCount','msgCount'].forEach(function(id){ new MutationObserver(syncTiles).observe($(id),{childList:true,characterData:true,subtree:true}); });
+
   function start(){
     $('keyView').hidden=true; $('mainView').hidden=false; loaded={};
-    var last='req'; try{ last=sessionStorage.getItem('mogu_admin_tab')||'req'; }catch(e){}
-    showTab(last);
-    if(last!=='req'){ loaded.req=true; loadReq(); }
-    if(last!=='msg'){ loaded.msg=true; loadMsg(); }
+    // トップはタッチパネル。件数バッジのために、リクエストとおてがみだけ先に読み込む
+    loaded.req=true; loadReq();
+    loaded.msg=true; loadMsg();
+    openPanel();
   }
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
