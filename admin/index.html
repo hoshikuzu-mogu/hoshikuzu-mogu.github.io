@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="20261018233000">
+<meta name="build" content="20261019003000">
 <meta name="theme-color" content="#D6E4F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -445,7 +445,7 @@
 
     <div class="foot">
       <a href="../" target="_blank" rel="noopener">サイトを見る</a>
-      <button id="resetKey" type="button">合言葉を入れ直す</button>
+      <button id="reloadBtn" type="button">↻ 更新する</button>
     </div>
   </section>
 </main>
@@ -1130,7 +1130,12 @@
   function showKey(t){ $('mainView').hidden=true; $('keyView').hidden=false; say($('keyMsg'),t||'',!!t); }
   $('saveKey').onclick=function(){ var v=$('key').value.trim(); if(!v){ say($('keyMsg'),'合言葉が空っぽです',true); return; } setPass(v); $('key').value=''; start(); };
   $('key').addEventListener('keydown',function(e){ if(e.key==='Enter') $('saveKey').click(); });
-  $('resetKey').onclick=function(){ setPass(''); showKey(''); };
+  // 更新：キャッシュを消して最新の画面を読み込み直す
+  $('reloadBtn').onclick=function(){
+    this.disabled=true; this.textContent='更新しています…';
+    var go=function(){ location.reload(); };
+    if('caches' in window){ caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(go,go); } else go();
+  };
 
   getPass() ? start() : showKey('');
 })();
