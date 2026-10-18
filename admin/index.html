@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="build" content="20261018231000">
 <meta name="theme-color" content="#D6E4F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -166,10 +167,24 @@
   .backbar{position:sticky;top:0;z-index:20;margin:0 -16px;padding:calc(10px + env(safe-area-inset-top,0px)) 16px 10px;background:rgba(226,236,247,.94);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:12px}
   .backbar button{flex:none;min-height:52px;padding:0 18px;font-size:16px;background:#fff;color:var(--ink);box-shadow:0 3px 0 var(--line)}
   .backbar b{font-family:var(--maru);font-size:18px;letter-spacing:.06em;color:var(--mizu)}
+  /* 歌える曲 */
+  .hint{margin-top:8px;font-size:12px;color:var(--sub);line-height:1.6}
+  .songOne input[type=text]{display:block;margin-bottom:10px}
+  .song b{display:block;font-weight:700;word-break:break-word}
+  .song small{display:block;color:var(--sub);font-size:12px;word-break:break-word}
+  .songFilter{margin:10px 0 6px}
+  .songFilter input[type=text]{min-height:44px}
+  /* 更新のお知らせ */
+  .upd{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:90;transform:translate(-50%,160%);display:flex;align-items:center;gap:10px;width:max-content;max-width:calc(100% - 32px);white-space:nowrap;text-align:left;padding:12px 18px 12px 16px;background:var(--mizu);color:#fff;border:2px solid #fff;border-radius:999px;box-shadow:0 8px 22px rgba(51,89,155,.35);font-family:var(--maru);font-weight:700;font-size:14px;letter-spacing:.06em;cursor:pointer;transition:transform .45s cubic-bezier(.3,1.5,.5,1);-webkit-tap-highlight-color:transparent}
+  .upd.is-show{transform:translate(-50%,0)}
+  .upd small{display:block;font-weight:500;font-size:11px;opacity:.9}
+  .upd__dot{flex:none;width:10px;height:10px;border-radius:50%;background:#fff;animation:upd-blink 1.2s ease-in-out infinite}
+  @keyframes upd-blink{50%{opacity:.3;transform:scale(.7)}}
   [hidden]{display:none!important}
 </style>
 </head>
 <body>
+<button class="upd" id="upd" type="button" hidden><span class="upd__dot" aria-hidden="true"></span><span>新しいバージョンがあります<small>タップで更新</small></span></button>
 <main>
   <h1><img src="../img/chibi.webp" alt="">もぐ管理<small>HP更新ページ ｜ ここから内容を更新できます</small></h1>
 
@@ -390,13 +405,25 @@
 
     <!-- 歌リスト -->
     <div data-view="song" hidden>
-      <div class="card">
-        <label for="songText">歌える曲</label>
-        <textarea id="songText" placeholder="1行に1曲。歌手は「 / 」で区切ってね&#10;マリーゴールド / あいみょん&#10;夜に駆ける / YOASOBI"></textarea>
-        <p class="help">1行に1曲。「曲名 / 歌手」の形で書いてね（歌手はなくてもOK）。保存するとHPの「歌える曲」がこの内容に入れかわります。0曲のときはHPに出ません。</p>
+      <div class="card songOne">
+        <label for="songTitle">1曲ずつ追加</label>
+        <input id="songTitle" type="text" maxlength="80" autocomplete="off" placeholder="曲名（必須）　例）マリーゴールド">
+        <input id="songArtist" type="text" maxlength="60" autocomplete="off" placeholder="歌手（なくてもOK）　例）あいみょん">
+        <div class="row"><button class="primary" id="songOneAdd" type="button">この曲を追加</button></div>
+        <p class="hint">追加するとHPの「歌える曲」にすぐ出ます。いまある曲は消えません。</p>
+        <p class="msg" id="songOneMsg"></p>
       </div>
-      <div class="row"><button class="primary" id="songSave" type="button">保存してHPに出す</button></div>
-      <p class="msg" id="songMsg"></p>
+      <div class="card">
+        <label for="songPaste">まとめて追加（たくさん足したいとき）</label>
+        <textarea id="songPaste" rows="7" style="min-height:160px" placeholder="1行に1曲。&#10;曲名 / 歌手　の形で書くと、歌手も分かれます。&#10;&#10;例）&#10;マリーゴールド / あいみょん&#10;夜に駆ける / YOASOBI"></textarea>
+        <p class="hint" id="songPreview">1行に1曲。「曲名 / 歌手」の形で書いてね。</p>
+        <div class="row"><button class="primary" id="songAdd" type="button">貼り付けた曲をリストに追加</button></div>
+        <div class="row"><button class="ghost" id="songReplace" type="button" style="flex:1">全部入れ替える（上級者向け）</button></div>
+        <p class="msg" id="songMsg"></p>
+      </div>
+      <h2>いま載っている曲<span id="songNum"></span></h2>
+      <div class="songFilter"><input id="songQ" type="text" autocomplete="off" placeholder="曲名・歌手で絞り込み"></div>
+      <ul id="songList"><li class="empty">読み込み中…</li></ul>
     </div>
 
     <!-- X のポスト -->
@@ -978,17 +1005,86 @@
       .catch(function(e){ fail(e,$('evMsg')); }).then(function(){ btn.disabled=false; });
   };
 
-  // ---- 歌リスト ----
-  function toText(list){ return (list||[]).map(function(s){ return s.t+(s.a?' / '+s.a:''); }).join('\n'); }
-  function loadSongs(){ return call('mogu_songs_admin',{p_action:'list'}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 登録されています'); $('tlSong').textContent='いま '+(l||[]).length+'曲'; }).catch(function(e){ fail(e,$('songMsg')); }); }
-  $('songSave').onclick=function(){
-    var list=$('songText').value.split(/\r?\n/).map(function(line){
-      line=line.trim(); if(!line) return null;
-      var m=line.split(/\s+\/\s+|\s*／\s*/); return {t:m[0].trim().slice(0,80), a:(m.slice(1).join(' / ')||'').trim().slice(0,60)};
-    }).filter(Boolean);
-    if(list.length>1000){ say($('songMsg'),'1000曲までにしてね',true); return; }
-    var btn=this; btn.disabled=true; say($('songMsg'),'保存しています…');
-    call('mogu_songs_admin',{p_action:'set',p_list:list}).then(function(l){ $('songText').value=toText(l); say($('songMsg'),(l||[]).length+' 曲 保存しました！HPに出ています'); })
+  // ---- 歌える曲（1曲ずつ追加・まとめて追加・一覧から消す） ----
+  var songs=[];
+  function scall(act,list){ return call('mogu_songs_admin',list?{p_action:act,p_list:list}:{p_action:act}); }
+  function songKey(s){ return (String(s.t||'')+'\u0001'+String(s.a||'')).normalize('NFKC').replace(/[\s　]/g,'').toLowerCase(); }
+  function songNorm(x){ return String(x||'').normalize('NFKC').toLowerCase().replace(/[\s　]/g,'').replace(/[ァ-ヶ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }); }
+  function parseSongs(text){
+    var out=[];
+    String(text).split(/\r?\n/).forEach(function(raw){
+      var line=raw.replace(/　/g,' ').trim(); if(!line) return;
+      if(/^【.+】$/.test(line)||/^[#＃■◆●]/.test(line)||/^\[.+\]$/.test(line)) return;
+      line=line.replace(/^(\d+[\.\)．、:：]?\s+|[・\-–―*]\s*)/,'');
+      var parts=line.split(/\t|\s+\/\s+|\s*／\s*|[｜|]|\s+[-–―]\s+/);
+      var t=(parts.shift()||'').trim(), a=parts.join(' ').trim();
+      if(t) out.push({t:t.slice(0,80), a:a.slice(0,60)});
+    });
+    return out;
+  }
+  function renderSongs(){
+    var ul=$('songList'); ul.innerHTML='';
+    var q=songNorm($('songQ').value);
+    var view=songs.filter(function(s){ return !q||songNorm(s.t+' '+(s.a||'')).indexOf(q)>=0; });
+    $('songNum').textContent=songs.length?'（'+(view.length<songs.length?view.length+' / ':'')+songs.length+'曲）':'';
+    $('tlSong').textContent=songs.length?('いま '+songs.length+'曲'):'曲を足す・直す';
+    if(!songs.length){ ul.innerHTML='<li class="empty">まだ曲がありません（HPには出ていません）</li>'; return; }
+    if(!view.length){ ul.innerHTML='<li class="empty">条件に合う曲がありません</li>'; return; }
+    view.forEach(function(s){
+      var li=document.createElement('li'); li.className='song';
+      var d=document.createElement('div'); var b=document.createElement('b'); b.textContent=s.t; d.appendChild(b);
+      var sm=document.createElement('small'); sm.textContent=s.a||''; d.appendChild(sm);
+      var x=document.createElement('button'); x.className='del'; x.type='button'; x.textContent='消す';
+      x.onclick=function(){
+        if(!confirm('「'+s.t+'」をリストから外す？')) return; x.disabled=true;
+        scall('list').then(function(cur){
+          var k=songKey(s), done=false;
+          return scall('set',(cur||[]).filter(function(y){ if(!done&&songKey(y)===k){ done=true; return false; } return true; }).map(function(y){ return {t:y.t,a:y.a||''}; }));
+        }).then(function(l){ songs=l||[]; renderSongs(); say($('songMsg'),'「'+s.t+'」を外しました'); })
+          .catch(function(e){ x.disabled=false; fail(e,$('songMsg')); });
+      };
+      li.appendChild(d); li.appendChild(x); ul.appendChild(li);
+    });
+  }
+  function loadSongs(){ return scall('list').then(function(l){ songs=l||[]; renderSongs(); }).catch(function(e){ $('songList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('songMsg')); }); }
+  $('songQ').addEventListener('input',renderSongs);
+  $('songPaste').addEventListener('input',function(){
+    var p=parseSongs(this.value);
+    $('songPreview').textContent=p.length?p.length+'曲を読み取りました（例：'+p.slice(0,3).map(function(s){ return s.t+(s.a?' / '+s.a:''); }).join('、')+'）':'1行に1曲。「曲名 / 歌手」の形で書いてね。';
+  });
+  // 追加：いまのリストを読み込み → 新しい曲を後ろに足す（同じ曲名+歌手は足さない）→ 保存
+  function addSongs(p,btn,msgEl,onOk){
+    btn.disabled=true; say(msgEl,'追加しています…');
+    scall('list').then(function(cur){
+      cur=cur||[];
+      var seen={}, merged=[], added=0, skipped=0;
+      cur.forEach(function(s){ seen[songKey(s)]=1; merged.push({t:s.t,a:s.a||''}); });
+      p.forEach(function(s){ var k=songKey(s); if(seen[k]){ skipped++; return; } seen[k]=1; merged.push(s); added++; });
+      if(!added){ say(msgEl,'すでにリストに載っている曲でした（追加なし）'); songs=cur; renderSongs(); return; }
+      if(merged.length>1000){ say(msgEl,'1000曲までにしてね',true); return; }
+      return scall('set',merged).then(function(l){
+        songs=l||[]; renderSongs(); onOk();
+        say(msgEl,added+'曲を追加しました！'+(skipped?'（すでにあった'+skipped+'曲は飛ばしました）':'')+' HPにすぐ出ます');
+      });
+    }).catch(function(e){ fail(e,msgEl); }).then(function(){ btn.disabled=false; });
+  }
+  $('songOneAdd').onclick=function(){
+    var title=$('songTitle').value.replace(/　/g,' ').trim();
+    if(!title){ say($('songOneMsg'),'曲名を入れてね',true); return; }
+    addSongs([{t:title.slice(0,80), a:$('songArtist').value.replace(/　/g,' ').trim().slice(0,60)}],$('songOneAdd'),$('songOneMsg'),function(){ $('songTitle').value=''; $('songArtist').value=''; $('songTitle').focus(); });
+  };
+  $('songAdd').onclick=function(){
+    var p=parseSongs($('songPaste').value);
+    if(!p.length){ say($('songMsg'),'曲が読み取れませんでした。1行に1曲で貼り付けてね',true); return; }
+    addSongs(p,$('songAdd'),$('songMsg'),function(){ $('songPaste').value=''; $('songPreview').textContent='1行に1曲。「曲名 / 歌手」の形で書いてね。'; });
+  };
+  $('songReplace').onclick=function(){
+    var p=parseSongs($('songPaste').value);
+    if(!p.length){ say($('songMsg'),'曲が読み取れませんでした。1行に1曲で貼り付けてね',true); return; }
+    if(p.length>1000){ say($('songMsg'),'1000曲までにしてね',true); return; }
+    if(!confirm('【注意】今のリストは全部消えて、貼り付けた'+p.length+'曲だけになります。曲を足したいだけなら「貼り付けた曲をリストに追加」を使ってね。本当に入れ替える？')) return;
+    var btn=$('songReplace'); btn.disabled=true; say($('songMsg'),'更新しています…');
+    scall('set',p).then(function(l){ songs=l||[]; renderSongs(); $('songPaste').value=''; say($('songMsg'),'リストを入れ替えました！HPにすぐ出ます'); })
       .catch(function(e){ fail(e,$('songMsg')); }).then(function(){ btn.disabled=false; });
   };
 
@@ -1035,6 +1131,27 @@
   $('resetKey').onclick=function(){ setPass(''); showKey(''); };
 
   getPass() ? start() : showKey('');
+})();
+</script>
+<script>
+(function(){
+  var meta=document.querySelector('meta[name="build"]'), mine=meta&&meta.content, el=document.getElementById('upd'), shown=false;
+  if(!mine||!el) return;
+  function check(){
+    if(shown||document.visibilityState==='hidden') return;
+    fetch('../version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){return r.ok?r.json():null;}).then(function(v){
+      var latest=v&&v.pages&&v.pages['admin/index.html'];
+      if(latest&&latest!==mine){ shown=true; el.hidden=false; requestAnimationFrame(function(){ el.classList.add('is-show'); }); }
+    }).catch(function(){});
+  }
+  el.addEventListener('click',function(){
+    el.querySelector('small').textContent='更新しています…';
+    var go=function(){ location.reload(); };
+    if('caches' in window){ caches.keys().then(function(ks){ return Promise.all(ks.map(function(k){ return caches.delete(k); })); }).then(go,go); } else go();
+  });
+  setTimeout(check,1500);
+  document.addEventListener('visibilitychange',function(){ if(document.visibilityState==='visible') check(); });
+  setInterval(check,10*60*1000);
 })();
 </script>
 </body>
