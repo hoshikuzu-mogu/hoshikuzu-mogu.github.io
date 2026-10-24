@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="20261019003000">
+<meta name="build" content="20261024133000">
 <meta name="theme-color" content="#D6E4F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -78,6 +78,16 @@
   .rq .acts{display:flex;flex-direction:column;gap:6px;flex:none}
   .rq .sung{min-height:36px;padding:0 12px;font-size:12px;background:var(--mizu);border-color:var(--mizu);color:#fff}
   .rq.is-done .t,.rq.is-done .a,.rq.is-done .c{opacity:.45}
+  .sheet{position:fixed;inset:0;z-index:95;background:rgba(40,52,82,.45);display:flex;align-items:flex-end;justify-content:center;padding:16px;padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+  .sheet[hidden]{display:none}
+  .sheet__in{width:min(520px,100%);max-height:100%;overflow:auto;background:var(--n2);border-radius:20px;padding:18px}
+  .sheet__in img{display:block;width:100%;height:auto;border-radius:12px;box-shadow:0 4px 16px rgba(40,52,82,.2)}
+  .sheet__hint{margin-top:10px;font-size:12px;color:var(--sub);text-align:center}
+  .sheet .row button{flex:1}
+  .sheet__ttl{font-family:var(--maru);font-weight:700;font-size:17px;color:var(--mizu);margin-bottom:10px}
+  .sheet__lbl{display:block;font-size:13px;font-weight:700;margin-bottom:6px}
+  .sheet textarea{font-size:16px}
+  .rq .card-btn{min-height:36px;padding:0 12px;font-size:12px;background:#fff;border-color:var(--mizu);color:var(--mizu)}
   .rq.is-done .sung{background:transparent;color:var(--ink);border-color:var(--line)}
   .rq.is-new{border-left:3px solid #F08DB4;padding-left:10px}
   .reload{margin-top:12px;min-height:0;padding:0;border:0;font:inherit;font-size:12px;color:var(--sub);text-decoration:underline}
@@ -449,6 +459,23 @@
     </div>
   </section>
 </main>
+<div class="sheet" id="sheet" hidden>
+  <div class="sheet__in">
+    <p class="sheet__ttl" id="sheetTtl">お返事してXに投稿</p>
+    <label for="replyTxt" class="sheet__lbl">もぐからのお返事<small class="opt">なしでもOK</small></label>
+    <textarea id="replyTxt" rows="3" maxlength="140" placeholder="例）ありがとう〜！次の歌枠で歌うね🎤"></textarea>
+    <label class="fontLbl">文字のフォント</label><div class="seg fontSeg"></div>
+    <p class="sheet__lbl" style="margin-top:12px">投稿される画像</p>
+    <img id="sheetImg" alt="お返事の画像">
+    <label for="postTxt" class="sheet__lbl" style="margin-top:12px">投稿の文章</label>
+    <textarea id="postTxt" rows="2" maxlength="200"></textarea>
+    <div class="row">
+      <button class="ghost" id="sheetClose" type="button">閉じる</button>
+      <button class="primary" id="sheetShare" type="button">Xに投稿する</button>
+    </div>
+    <p class="sheet__hint">「Xに投稿する」→ 出てきた一覧から X を選ぶと、画像つきで投稿画面が開きます。<br>X が出ない時は、画像を長押しで保存してから X で投稿してね。</p>
+  </div>
+</div>
 <script>
 (function(){
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', SBKEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
@@ -534,7 +561,9 @@
       var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
       d.onclick=function(){ if(!confirm('「'+it.song+'」のリクエストを消す？'))return; d.disabled=true;
         rcall('delete',it.id).then(function(){ req.items=req.items.filter(function(x){return x.id!==it.id;}); renderReq(); }).catch(function(e){ d.disabled=false; fail(e,$('reqMsg')); }); };
-      acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+      var x=document.createElement('button'); x.className='card-btn'; x.type='button'; x.textContent='返信してXへ';
+      x.onclick=function(){ openReply({kind:'req',item:it}); };
+      acts.appendChild(x); acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
     });
   }
   function loadReq(){
@@ -571,7 +600,9 @@
       var d=document.createElement('button'); d.className='del'; d.type='button'; d.textContent='消す';
       d.onclick=function(){ if(!confirm('このおてがみを消す？'))return; d.disabled=true;
         mcall('delete',it.id).then(function(){ mb.items=mb.items.filter(function(x){return x.id!==it.id;}); renderMsg(); }).catch(function(e){ d.disabled=false; fail(e,$('mMsg')); }); };
-      acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
+      var x=document.createElement('button'); x.className='card-btn'; x.type='button'; x.textContent='返信してXへ';
+      x.onclick=function(){ openReply({kind:'msg',item:it}); if(!it.read){ mcall('read',it.id,true).then(function(){ it.read=true; renderMsg(); }).catch(function(){}); } };
+      acts.appendChild(x); acts.appendChild(s); acts.appendChild(d); li.appendChild(left); li.appendChild(acts); ul.appendChild(li);
     });
   }
   function loadMsg(){
@@ -601,6 +632,77 @@
         fontReady().then(function(){ fontListeners.forEach(function(fn){ fn(); }); }); };
       box.appendChild(b); });
   });
+
+  // ---- お返事画像（おてがみ／歌のリクエスト → もぐのお返事つきでXへ） ----
+  var cur=null, iconImg=null, drawT=null, cardBlob=null;
+  (function(){ var i=new Image(); i.onload=function(){ iconImg=i; }; i.src='../img/chibi.webp'; })();
+  function wrap(ctx,text,maxW){
+    var lines=[];
+    String(text).split('\n').forEach(function(par){
+      var line='';
+      Array.from(par).forEach(function(ch){ if(ctx.measureText(line+ch).width>maxW){ lines.push(line); line=ch; } else line+=ch; });
+      lines.push(line);
+    });
+    return lines;
+  }
+  function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+  function drawReply(){
+    if(!cur) return;
+    var W=1200, P=70, F=FF();
+    var cv=document.createElement('canvas'), x=cv.getContext('2d');
+    var it=cur.item, isReq=cur.kind==='req', reply=$('replyTxt').value.trim();
+    var qLines, qSub=[];
+    if(isReq){
+      x.font='700 56px '+F; qLines=wrap(x,'♪ '+it.song,W-P*2-100);
+      x.font='500 36px '+F; if(it.artist) qSub=qSub.concat(wrap(x,it.artist,W-P*2-100));
+      if(it.comment) qSub=qSub.concat(wrap(x,'「'+it.comment+'」',W-P*2-100));
+      qSub.push('from '+(it.name||'なまえなしさん'));
+    } else { x.font='700 46px '+F; qLines=wrap(x,it.body,W-P*2-100); }
+    x.font='700 44px '+F; var rLines=reply?wrap(x,reply,W-P*2-260):[];
+    var qh=(isReq?qLines.length*76:qLines.length*74)+qSub.length*52+90;
+    var rh=reply?Math.max(160,rLines.length*70+80):0;
+    var H=140+qh+(reply?rh+50:0)+120;
+    cv.width=W; cv.height=H;
+    var g=x.createLinearGradient(0,0,0,H); g.addColorStop(0,'#E6F0FA'); g.addColorStop(1,'#B5CDEC'); x.fillStyle=g; x.fillRect(0,0,W,H);
+    x.fillStyle='rgba(255,255,255,.55)'; for(var yy=16;yy<H;yy+=32) for(var xx=16+(yy/32%2)*16;xx<W;xx+=32){ x.beginPath(); x.arc(xx,yy,2.4,0,7); x.fill(); }
+    x.font='700 34px '+F; var lab=isReq?'🎤 歌のリクエスト':'💌 とくめいのおてがみ', lw=x.measureText(lab).width+56;
+    x.fillStyle='#4E7FCF'; rr(x,P,48,lw,62,31); x.fill(); x.fillStyle='#fff'; x.textBaseline='middle'; x.fillText(lab,P+28,80);
+    var qy=140; x.save(); x.shadowColor='rgba(51,89,155,.22)'; x.shadowOffsetY=8; x.fillStyle='#fff'; rr(x,P,qy,W-P*2,qh,40); x.fill(); x.restore();
+    var ty=qy+45+(isReq?38:37);
+    if(isReq){ x.fillStyle='#33599B'; x.font='700 56px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=76; }); x.fillStyle='#5F6E92'; x.font='500 36px '+F; qSub.forEach(function(l){ x.fillText(l,P+50,ty-12); ty+=52; }); }
+    else { x.fillStyle='#283452'; x.font='700 46px '+F; qLines.forEach(function(l){ x.fillText(l,P+50,ty); ty+=74; }); }
+    if(reply){
+      var ry=qy+qh+50, bx=P+170, bw=W-P-bx;
+      if(iconImg){ x.save(); x.beginPath(); x.arc(P+70,ry+70,70,0,7); x.closePath(); x.fillStyle='#fff'; x.fill(); x.clip(); x.drawImage(iconImg,P+6,ry+6,128,128); x.restore(); x.strokeStyle='#fff'; x.lineWidth=8; x.beginPath(); x.arc(P+70,ry+70,68,0,7); x.stroke(); }
+      x.fillStyle='#E77FAA'; rr(x,bx,ry,bw,rh,40); x.fill();
+      x.beginPath(); x.moveTo(bx+2,ry+50); x.lineTo(bx-26,ry+70); x.lineTo(bx+2,ry+90); x.fill();
+      x.fillStyle='#fff'; x.font='700 44px '+F; var y2=ry+(rh-rLines.length*70)/2+35; rLines.forEach(function(l){ x.fillText(l,bx+44,y2); y2+=70; });
+      x.fillStyle='#33599B'; x.font='700 28px '+F; x.fillText('もぐ',P+44,ry+178);
+    }
+    x.textAlign='right'; x.fillStyle='#5F6E92'; x.font='700 30px '+F; x.fillText('星屑もぐ ♡ hoshikuzu-mogu.github.io',W-P,H-56); x.textAlign='left';
+    cv.toBlob(function(b){ cardBlob=b; var u=URL.createObjectURL(b); var img=$('sheetImg'); if(img.dataset.u) URL.revokeObjectURL(img.dataset.u); img.src=u; img.dataset.u=u; },'image/png');
+  }
+  function openReply(o){
+    cur=o; $('replyTxt').value='';
+    $('sheetTtl').textContent=o.kind==='req'?'リクエストにお返事してXに投稿':'おてがみにお返事してXに投稿';
+    $('postTxt').value=(o.kind==='req'?'リクエストありがとう🎤✨':'おてがみありがとう💌')+'\n#もぐもぐくずもち\nhttps://hoshikuzu-mogu.github.io/';
+    $('sheet').hidden=false; fontReady().then(drawReply);
+  }
+  $('replyTxt').addEventListener('input',function(){ clearTimeout(drawT); drawT=setTimeout(function(){ fontReady().then(drawReply); },250); });
+  fontListeners.push(function(){ if(!$('sheet').hidden) drawReply(); });
+  $('sheetClose').onclick=function(){ $('sheet').hidden=true; };
+  $('sheet').addEventListener('click',function(e){ if(e.target.id==='sheet') $('sheet').hidden=true; });
+  $('sheetShare').onclick=function(){
+    if(!cardBlob) return;
+    var text=$('postTxt').value;
+    var file=new File([cardBlob],'mogu-reply.png',{type:'image/png'});
+    if(navigator.canShare&&navigator.canShare({files:[file]})){
+      try{ navigator.clipboard&&navigator.clipboard.writeText(text); }catch(e){}
+      navigator.share({files:[file],text:text}).catch(function(){}); return;
+    }
+    var a=document.createElement('a'); a.href=$('sheetImg').src; a.download='mogu-reply.png'; document.body.appendChild(a); a.click(); a.remove();
+    window.open('https://x.com/intent/post?text='+encodeURIComponent(text),'_blank');
+  };
   function loadImg(src){ return new Promise(function(ok){ var i=new Image(); i.onload=function(){ok(i);}; i.onerror=function(){ok(null);}; i.src=src; }); }
   function rrect(x,X,Y,W,H,r){ x.beginPath(); x.moveTo(X+r,Y); x.arcTo(X+W,Y,X+W,Y+H,r); x.arcTo(X+W,Y+H,X,Y+H,r); x.arcTo(X,Y+H,X,Y,r); x.arcTo(X,Y,X+W,Y,r); x.closePath(); }
   function fitText(x,txt,max){ var s=txt; while(s.length>1 && x.measureText(s).width>max) s=s.slice(0,-1); return s===txt?s:s.slice(0,-1)+'…'; }
