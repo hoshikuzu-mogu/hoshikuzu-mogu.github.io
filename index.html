@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261011214000">
+<meta name="build" content="20261024120000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -976,17 +976,15 @@
     </div>
   </section>
 
-  <section class="sec" id="songs" hidden>
+  <section class="sec" id="songs">
     <p class="arrows" aria-hidden="true">♡↓↓↓↓ songs i sing ↓↓↓↓✝↓↓↓↓ songs i sing ↓↓↓↓♡</p>
     <div class="sec__head" style="margin-top:10px"><h2><span class="ghost sec__en" data-t="SONGS"><span class="hl">SONGS</span></span><span class="sec__ja">歌える曲</span></h2></div>
-    <p class="lead">もぐが歌える曲たち。気になる曲は「リクエスト」を押すとそのまま送れるよ。</p>
+    <p class="lead">もぐが歌える曲たち。曲名・歌手・読みでさがして、リクエスト用のコメントをコピーできるよ。</p>
     <div class="win" style="margin-top:16px">
       <div class="win__bar"><span class="t">songs.m3u</span><span class="win__btns"><i>_</i><i>□</i><i>×</i></span></div>
-      <div class="songs__tools">
-        <label class="songs__search"><span class="sr">曲をさがす</span><svg class="ic" viewBox="0 0 24 24"><use href="#search"/></svg><input id="song-q" type="search" placeholder="曲名・歌手でさがす" autocomplete="off"></label>
-        <span class="songs__n" id="song-n"></span>
+      <div class="win__body" style="text-align:center">
+        <a class="btn btn--main" href="songs.html"><svg class="ic" viewBox="0 0 24 24"><use href="#notes"/></svg><span class="ja">歌える曲リストを開く</span></a>
       </div>
-      <ul class="songs__list" id="song-list"></ul>
     </div>
   </section>
 
@@ -1487,34 +1485,6 @@
       }).then(function(){ btn.disabled=false; });
     });
     $('msg-again').onclick=function(){ $('msg-done').hidden=true; $('msg-acc').hidden=false; openMsg(true); ta.focus(); };
-  })();
-
-  // ---- 歌える（かも）リスト ----
-  (function(){
-    var all=[], ul=$('song-list'), q=$('song-q');
-    function norm(s){ return String(s||'').toLowerCase().normalize('NFKC').replace(/[\u30a1-\u30f6]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-96); }).replace(/\s+/g,''); }
-    function render(){
-      var k=norm(q.value), list=k?all.filter(function(s){ return s.k.indexOf(k)>=0; }):all;
-      ul.innerHTML=''; $('song-n').textContent=list.length+' songs';
-      if(!list.length){ ul.innerHTML='<li class="songs__empty">見つからなかったよ。リクエストから送ってみてね</li>'; return; }
-      var frag=document.createDocumentFragment();
-      list.forEach(function(s){
-        var li=document.createElement('li'), d=document.createElement('div'), t=document.createElement('p'), b=document.createElement('button');
-        t.className='t'; t.textContent=s.t; d.appendChild(t);
-        if(s.a){ var a=document.createElement('p'); a.className='a'; a.textContent=s.a; d.appendChild(a); }
-        b.type='button'; b.textContent='リクエスト';
-        b.onclick=function(){ $('req-song').value=s.t; $('req-artist').value=s.a||''; $('req-done').hidden=true; if(!$('req-closed').hidden) return;
-          $('req-acc').hidden=false; openReq(true); $('request').scrollIntoView({behavior:reduce?'auto':'smooth'}); setTimeout(function(){ $('req-comment').focus({preventScroll:true}); },500); };
-        li.appendChild(d); li.appendChild(b); frag.appendChild(li);
-      });
-      ul.appendChild(frag);
-    }
-    q.addEventListener('input',render);
-    rpc('mogu_songs_list').then(function(d){
-      all=(d||[]).map(function(s){ return {t:s.t,a:s.a||'',k:norm(s.t+' '+(s.a||''))}; });
-      if(!all.length) return;
-      $('songs').hidden=false; render();
-    }).catch(function(){});
   })();
 
   // ---- 今週の配信予定 ----
