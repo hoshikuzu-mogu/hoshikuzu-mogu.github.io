@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
-<meta name="build" content="20261024133000">
+<meta name="build" content="20261024140000">
 <meta name="theme-color" content="#D6E4F1">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
@@ -426,6 +426,11 @@
         <p class="msg" id="songOneMsg"></p>
       </div>
       <div class="card">
+        <label>UTAEMOの曲をまとめて入れる</label>
+        <p class="hint">UTAEMOで作ったもぐちゃんのリスト（<span id="snapN"></span>曲）を、いまのリストに足します。同じ曲は飛ばすので、何度押しても大丈夫。</p>
+        <div class="row"><button class="primary" id="songSnap" type="button">UTAEMOの曲を入れる</button></div>
+      </div>
+      <div class="card">
         <label for="songPaste">まとめて追加（たくさん足したいとき）</label>
         <textarea id="songPaste" rows="7" style="min-height:160px" placeholder="1行に1曲。&#10;曲名 / 歌手　の形で書くと、歌手も分かれます。&#10;&#10;例）&#10;マリーゴールド / あいみょん&#10;夜に駆ける / YOASOBI"></textarea>
         <p class="hint" id="songPreview">1行に1曲。「曲名 / 歌手」の形で書いてね。</p>
@@ -434,7 +439,8 @@
         <p class="msg" id="songMsg"></p>
       </div>
       <h2>いま載っている曲<span id="songNum"></span></h2>
-      <div class="songFilter"><input id="songQ" type="text" autocomplete="off" placeholder="曲名・歌手で絞り込み"></div>
+      <div class="songFilter"><input id="songQ" type="text" autocomplete="off" placeholder="曲名・歌手・読みで絞り込み">
+        <select id="songG" aria-label="ジャンルで絞り込み" style="margin-top:8px"><option value="">全ジャンル</option><option>J-POP</option><option>アニソン</option><option>ボカロ</option><option>アイドル曲</option><option>洋楽</option><option>演歌</option><option>その他</option></select></div>
       <ul id="songList"><li class="empty">読み込み中…</li></ul>
     </div>
 
@@ -1110,7 +1116,22 @@
   };
 
   // ---- 歌える曲（1曲ずつ追加・まとめて追加・一覧から消す） ----
-  var songs=[];
+  // UTAEMO(mgmgtime)の最初の曲。[曲名,アーティスト]
+  var SNAPS=[["革命道中 - On The Way","アイナ・ジ・エンド"],["アイドルライフスターターパック","iLiFE!"],["くりてぃかる・ぷりちー","iLiFE!"],["新時代 (ウタ from ONE PIECE FILM RED)","Ado"],["レディメイド","Ado"],["踊","Ado"],["私は最強 (ウタ from ONE PIECE FILM RED)","Ado"],["うっせえわ","Ado"],["ギラギラ","Ado"],["逆光 (ウタ from ONE PIECE FILM RED)","Ado"],["にじいろ","絢香"],["Monster","嵐"],["はじめてのチュウ","あんしんパパ"],["帝国少女","R Sound Design"],["ブルーバード","いきものがかり"],["じょいふる","いきものがかり"],["ハイドアンド･シーク","19's Sound Factory"],["Let's go! スマイルプリキュア！","池田彩"],["あの娘シークレット","Eve"],["きゅうくらりん","いよわ feat.可不(KAFU)"],["ハッピーシンセサイザ","EasyPoP"],["海の声","浦島太郎(桐谷健太)"],["366日","HY"],["カタオモイ","Aimer"],["残響散歌","Aimer"],["departure!","小野正利"],["イケナイ太陽","オレンジレンジ"],["アスノヨゾラ哨戒班","Orangestar"],["ベノム","かいりきベア"],["失敗作少女","かいりきベア"],["ないものねだり","KANA-BOON"],["酔いどれ知らず","kanaria"],["エンヴィーベイビー","kanaria"],["あの夏が飽和する","カンザキイオリ"],["生まれてはじめて","神田沙也加、松たか子"],["ずうっといっしょ！","キタニタツヤ"],["倍倍FIGHT!","CANDY TUNE"],["かわいいだけじゃだめですか？","CUTIE STREET"],["ひたむきシンデレラ!","CUTIE STREET"],["劣化上等","ギガP"],["ガツガツ!!","串田アキラ(串田晃)"],["おやすみ泣き声、さよなら歌姫","クリープハイプ"],["キセキ","GReeeeN"],["光るなら","Goose house"],["六兆年と一夜物語","kemu"],["拝啓ドッペルゲンガー","kemu"],["キューティーハニー","倖田來未"],["臨海ダイバー","こじろー"],["チェリボム","Silent Siren"],["シンデレラボーイ","Saucy Dog"],["好-じょし-","坂口有望"],["新宝島","サカナクション"],["melt bitter","さとうもか"],["ルカルカ★ナイトフィーバー","samfree"],["ハッピー･ジャムジャム","しまじろう/とりっぴい/みみりん/らむりん"],["ビターチョコデコレーション","syudou"],["睡蓮花","湘南乃風"],["好きな人がいること","JY"],["スイートマジック","Junky"],["盛れ!ミ・アモーレ","Juice=Juice"],["アンパンマンのマーチ","SUEMITSU&THE SUEMITH KIDS"],["アイロニ","すこっぷ"],["Redo","鈴木このみ"],["God knows…","涼宮ハルヒ(C.V.平野綾)"],["エゴロック","すりぃ"],["テレキャスタービーボーイ","すりぃ"],["ジャンキーナイトタウンオーケストラ","すりぃ"],["ラヴィ","すりぃ"],["ブラック★ロックシューター","supercell"],["ムーンライト伝説","DALI"],["アイのシナリオ","CHiCO with HoneyWorks"],["私、アイドル宣言","CHiCO with HoneyWorks"],["unravel","TK from 凛として時雨"],["ヴィラン","てにをは feat.flower"],["妄想感傷代償連盟","DECO*27"],["妄想税","DECO*27"],["ライアーダンス","DECO*27"],["アニマル","DECO*27"],["ヴァンパイア","DECO*27"],["ボルテッカー","DECO*27"],["モニタリング","DECO*27"],["ラビットホール","DECO*27"],["ジレンマ","DECO*27"],["独りんぼエンヴィー","電ポルP"],["錠剤","TOOBOE"],["エンヴィ キャット ウォーク","トーマ"],["かくしん的☆めたまるふぉ～ぜっ！","土間うまる(CV:田中あいみ)"],["夢をかなえてドラえもん","どらえもん、のび太、しずか、ジャイアン、スネ夫"],["ロミオとシンデレラ","doriko"],["アンパンマンのマーチ","ドリーミング"],["アンパンマンたいそう","ドリーミング"],["ダン・ダン ドゥビ・ズバー!","Dream5+ブリー隊長"],["DESIRE-情熱-","中森明菜"],["ニア","夏代孝明"],["な,なとり,セレナーデ","なとり"],["ダダダダ天使","ナナヲアカリ"],["チューリングラブfeat.Sou","ナナヲアカリ"],["ハロ/ハワユ","ナノウ"],["ウミユリ海底譚","n-buna"],["夜明けと蛍","n-buna"],["エイリアンエイリアン","ナユタン星人"],["太陽系デスコ","ナユタン星人"],["ロケットサイダー","ナユタン星人"],["明星ギャラクティカ","ナユタン星人"],["フラジール","ぬゆり"],["ロウワー","ぬゆり feat.flower"],["自傷無色","ねこぼーろ"],["もぐもぐYUMMY！","猫又おかゆ"],["再教育","Neru"],["東京テディベア","Neru"],["ひとりごつ","ハチワレ(CV:田中誠人)"],["東京サマーセッション","HoneyWorks"],["メイド☆至上主義(feat. かぴ×Hanon×Kotoha)","HoneyWorks"],["M","浜崎あゆみ"],["集結の園へ","林原めぐみ"],["怪獣の花唄","Vaundy"],["瞬き","back number"],["シャルル","バルーン"],["レディーレ","バルーン"],["ラブカ？","柊キライ"],["限界突破×サバイバー","氷川きよし"],["ブリキノダンス","日向電工"],["頓珍漢の宴","ピノキオピー"],["神っぽいな","ピノキオピー"],["シル･ヴ･プレジデント","P丸様。"],["あとひとつ","FUNKY MONKEY BABYS"],["走れマキバオー","F･MAP"],["only my railgun","fripSide"],["おとせサンダー","ぼっちぼろまる"],["やさしさに包まれたなら","松任谷由実"],["ルージュの伝言","松任谷由実"],["おジャ魔女カーニバル!!","MAHO堂"],["ロキ","みきとP"],["少女レイ","みきとP"],["インフェルノ","Mrs. GREEN APPLE"],["#あくあ色ぱれっと","湊あくあ"],["夜空。feat.ハジ→","miwa"],["小悪魔だってかまわない!","めいちゃん"],["ライオン","May'n/中島愛"],["ファンサ","mona(CV:夏川椎菜)"],["栄光の架橋","ゆず"],["夜に駆ける","YOASOBI"],["アイドル","YOASOBI"],["怪物","YOASOBI"],["ピースサイン","米津玄師"],["砂の惑星(＋初音ミク)","米津玄師"],["パプリカ","米津玄師"],["IRIS OUT","米津玄師"],["だから僕は音楽を辞めた","ヨルシカ"],["ただ君に晴れ","ヨルシカ"],["花に亡霊","ヨルシカ"],["からくりピエロ","40mP"],["恋愛裁判","40mP"],["ドレミファロンド","40mP"],["前前前世(movie ver.)","RADWIMPS"],["紅蓮華","LiSA"],["ノンファンタジー","LIP×LIP(勇次郎･愛蔵／CV:内山昂輝･島崎信長)"],["ロメオ","LIP×LIP(勇次郎･愛蔵／CV:内山昂輝･島崎信長)"],["ANIMA","ReoNa"],["神のまにまに","れるりり"],["厨病激発ボーイ","れるりり"],["聖槍爆裂ボーイ","れるりり/もじゃ"],["ヒビカセ","れをる"],["シャンティ","wotaku"],["裏表ラバーズ","wowaka"],["アンノウン･マザーグース","wowaka"],["美少女無罪・パイレーツ","宝鐘マリン"]];
+  function snapList(){ return SNAPS.map(function(x){ return {t:x[0],a:x[1]}; }); }
+  // UTAEMOのマスター（読み・ジャンルの自動判定。しぃHPの管理画面と同じ）
+  var UT={byKey:null,p:null};
+  function utLoad(){
+    if(UT.p) return UT.p;
+    var ctl=window.AbortController?new AbortController():null, tm=ctl?setTimeout(function(){ctl.abort();},12000):0;
+    UT.p=fetch('https://raw.githubusercontent.com/utalis/utalis.github.io/main/index.html',{signal:ctl?ctl.signal:undefined}).then(function(r){ if(!r.ok) throw 0; return r.text(); }).then(function(h){
+      var m=h.match(/const MASTER_SONGS = (\[[^\n]*\]);/); if(!m) throw 0;
+      var d=JSON.parse(m[1]), o=Object.create(null); d.forEach(function(x){ if(x&&x.t) o[(x.a||'')+'\u0001'+x.t]=x; }); UT.byKey=o; renderSongs();
+    }).catch(function(){}).then(function(){ clearTimeout(tm); });
+    return UT.p;
+  }
+  function utInfo(s){ return UT.byKey&&UT.byKey[(s.a||'')+'\u0001'+s.t]||null; }
+  var songs=[], SNAPLIST=null;
   function scall(act,list){ return call('mogu_songs_admin',list?{p_action:act,p_list:list}:{p_action:act}); }
   function songKey(s){ return (String(s.t||'')+'\u0001'+String(s.a||'')).normalize('NFKC').replace(/[\s　]/g,'').toLowerCase(); }
   function songNorm(x){ return String(x||'').normalize('NFKC').toLowerCase().replace(/[\s　]/g,'').replace(/[ァ-ヶ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); }); }
@@ -1129,15 +1150,16 @@
   function renderSongs(){
     var ul=$('songList'); ul.innerHTML='';
     var q=songNorm($('songQ').value);
-    var view=songs.filter(function(s){ return !q||songNorm(s.t+' '+(s.a||'')).indexOf(q)>=0; });
+    var g=$('songG').value;
+    var view=songs.filter(function(s){ var u=utInfo(s); if(g&&!(u&&Array.isArray(u.genres)&&u.genres.indexOf(g)>=0)) return false; return !q||songNorm(s.t+' '+(s.a||'')+' '+(u?(u.ty||'')+' '+(u.y||''):'')).indexOf(q)>=0; });
     $('songNum').textContent=songs.length?'（'+(view.length<songs.length?view.length+' / ':'')+songs.length+'曲）':'';
     $('tlSong').textContent=songs.length?('いま '+songs.length+'曲'):'曲を足す・直す';
-    if(!songs.length){ ul.innerHTML='<li class="empty">まだ曲がありません（HPには出ていません）</li>'; return; }
+    if(!songs.length){ ul.innerHTML='<li class="empty">まだ管理画面のリストは空です（HPにはUTAEMOの最初の'+SNAPS.length+'曲が出ています）。上の「UTAEMOの曲を入れる」を押すと、ここで直せるようになります</li>'; return; }
     if(!view.length){ ul.innerHTML='<li class="empty">条件に合う曲がありません</li>'; return; }
     view.forEach(function(s){
       var li=document.createElement('li'); li.className='song';
       var d=document.createElement('div'); var b=document.createElement('b'); b.textContent=s.t; d.appendChild(b);
-      var sm=document.createElement('small'); sm.textContent=s.a||''; d.appendChild(sm);
+      var u0=utInfo(s), sm=document.createElement('small'); sm.textContent=(s.a||'')+(u0&&u0.genres&&u0.genres.length?' ・'+u0.genres.join(' / '):''); d.appendChild(sm);
       var x=document.createElement('button'); x.className='del'; x.type='button'; x.textContent='消す';
       x.onclick=function(){
         if(!confirm('「'+s.t+'」をリストから外す？')) return; x.disabled=true;
@@ -1150,8 +1172,10 @@
       li.appendChild(d); li.appendChild(x); ul.appendChild(li);
     });
   }
-  function loadSongs(){ return scall('list').then(function(l){ songs=l||[]; renderSongs(); }).catch(function(e){ $('songList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('songMsg')); }); }
+  function loadSongs(){ utLoad(); return scall('list').then(function(l){ songs=l||[]; renderSongs(); }).catch(function(e){ $('songList').innerHTML='<li class="empty">読み込めませんでした</li>'; fail(e,$('songMsg')); }); }
   $('songQ').addEventListener('input',renderSongs);
+  $('songG').addEventListener('change',function(){ utLoad(); renderSongs(); });
+  $('songQ').addEventListener('focus',utLoad);
   $('songPaste').addEventListener('input',function(){
     var p=parseSongs(this.value);
     $('songPreview').textContent=p.length?p.length+'曲を読み取りました（例：'+p.slice(0,3).map(function(s){ return s.t+(s.a?' / '+s.a:''); }).join('、')+'）':'1行に1曲。「曲名 / 歌手」の形で書いてね。';
@@ -1161,6 +1185,7 @@
     btn.disabled=true; say(msgEl,'追加しています…');
     scall('list').then(function(cur){
       cur=cur||[];
+      var seeded=false; if(!cur.length&&p!==SNAPLIST){ cur=snapList(); seeded=true; }
       var seen={}, merged=[], added=0, skipped=0;
       cur.forEach(function(s){ seen[songKey(s)]=1; merged.push({t:s.t,a:s.a||''}); });
       p.forEach(function(s){ var k=songKey(s); if(seen[k]){ skipped++; return; } seen[k]=1; merged.push(s); added++; });
@@ -1168,10 +1193,12 @@
       if(merged.length>1000){ say(msgEl,'1000曲までにしてね',true); return; }
       return scall('set',merged).then(function(l){
         songs=l||[]; renderSongs(); onOk();
-        say(msgEl,added+'曲を追加しました！'+(skipped?'（すでにあった'+skipped+'曲は飛ばしました）':'')+' HPにすぐ出ます');
+        say(msgEl,added+'曲を追加しました！'+(seeded?'（HPに出ていたUTAEMOの最初の曲も一緒に入れました）':'')+(skipped?'（すでにあった'+skipped+'曲は飛ばしました）':'')+' HPにすぐ出ます');
       });
     }).catch(function(e){ fail(e,msgEl); }).then(function(){ btn.disabled=false; });
   }
+  $('snapN').textContent=SNAPS.length;
+  $('songSnap').onclick=function(){ var l=snapList(); SNAPLIST=l; addSongs(l,$('songSnap'),$('songMsg'),function(){}); };
   $('songOneAdd').onclick=function(){
     var title=$('songTitle').value.replace(/　/g,' ').trim();
     if(!title){ say($('songOneMsg'),'曲名を入れてね',true); return; }

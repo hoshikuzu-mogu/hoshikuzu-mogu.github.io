@@ -6,7 +6,7 @@
 <title>星屑もぐの歌える曲リスト｜リクエスト</title>
 <meta name="description" content="星屑もぐの歌える曲リスト。曲名・アーティスト・読みで検索して、リクエスト用コメントをコピーできます。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261024123000">
+<meta name="build" content="20261024140000">
 <link rel="canonical" href="https://hoshikuzu-mogu.github.io/songs.html">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
@@ -195,15 +195,11 @@
 (function(){
   'use strict';
   // ---- データ元 ----
-  // ① UTAEMOの公開ページ（https://utalis.github.io/u/mgmgtime）のデータ
-  // ② 読み込めない・空のときは、これまでの曲リスト（管理画面の「歌える曲」）
-  // ③ それも空のときは、最初に入れた曲リスト（SNAP）
-  var UTAEMO_ID='mgmgtime';
-  var API='https://utaeru-api.manabit.workers.dev/api/public/'+UTAEMO_ID;
+  // ① 管理画面の「歌える曲」(Supabase)
+  // ② まだ空のときは、最初に入れた曲リスト（SNAP＝UTAEMO mgmgtime の曲）
   var MASTER='https://raw.githubusercontent.com/utalis/utalis.github.io/main/index.html';
   var SB='https://uglxilcwbgqoofnzngux.supabase.co/rest/v1/rpc/', KEY='sb_publishable_R83zSq90hslRd5jl04sIPg_hZlLxfRC';
   var LIVE='https://www.mirrativ.com/user/150527689';
-  var CACHE_KEY='mogu_utaemo_songs';
   var GENRES=['J-POP','アニソン','ボカロ','アイドル曲','洋楽','演歌','その他'];
   var MARKS={signature:'おはこ',favorite:'お気に入り',learning:'練習中'};
 
@@ -394,7 +390,6 @@
     opt=opt||{}; opt.signal=ctl?ctl.signal:undefined;
     return fetch(url,opt).then(function(r){clearTimeout(tm); if(!r.ok) throw new Error(r.status); return r.json();});
   }
-  function cached(){try{return fromPublic(JSON.parse(localStorage.getItem(CACHE_KEY)||'null'));}catch(e){return null;}}
   function viaSupabase(){
     return fetchJson(SB+'mogu_songs_list',{method:'POST',headers:{'apikey':KEY,'Content-Type':'application/json'},body:'{}'}).then(fromSupabase).catch(function(){return [];});
   }
@@ -402,16 +397,8 @@
     songs=dedupe(list||[]); enrich(); tagsUI(); render();
     if(songs.length) loadMaster();
   }
-  fetchJson(API,{cache:'no-cache',credentials:'omit'}).then(function(j){
-    var l=fromPublic(j); if(!l) throw new Error('format');
-    try{localStorage.setItem(CACHE_KEY,JSON.stringify(j));}catch(e){}
-    return l;
-  }).catch(function(){ return cached(); }).then(function(l){
-    if(l&&l.length) return l;
-    return viaSupabase();
-  }).then(function(l){
-    start(l&&l.length?l:fromSnap());
-  });
+  // 管理画面の「歌える曲」が元データ。まだ空のときだけ、最初に入れた曲リスト(SNAP)を出す
+  viaSupabase().then(function(l){ start(l&&l.length?l:fromSnap()); });
 
   // ---- 新しい版のお知らせ ----
   (function(){
