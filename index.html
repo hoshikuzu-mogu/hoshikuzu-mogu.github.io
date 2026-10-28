@@ -1470,10 +1470,30 @@
     function say(t,err){ msg.textContent=t; msg.classList.toggle('err',!!err); }
     function closed(){ $('msg-acc').hidden=true; $('msg-done').hidden=true; $('msg-closed').hidden=false; }
     ta.addEventListener('input',function(){ $('msg-count').textContent=ta.value.length+' / 300'; });
+    // 暴言フィルター：あからさまな暴言・誹謗は送れないようにする（記号や空白、カタカナ／ひらがなの言い換えも検出）
+    var BAD=[
+      /(死ね|氏ね|市ね|しね)(?!る|ない|なかっ|ま)/, /死んで(くれ|こい|ください|しまえ)|しんで(くれ|こい|ください|しまえ)/,
+      /殺す|ころす|殺して(やる|くれ)|ころして(やる|くれ)|殺すぞ|ぶっ殺/,
+      /くたばれ|くたばって|消えろ|きえろ|失せろ|うせろ|消えて(くれ|ほしい|欲しい)|きえて(くれ|ほしい)/,
+      /(?<![つふ])ぶす(?!っと|ぶす)|ブサイク|ぶさいく|不細工/, /きもい|きしょい|きっしょ|気持ち悪い|きもちわるい/, /うざい|うぜえ|うぜー|うっざ/,
+      /ガイジ|がいじ|きちがい|気違い|池沼|ちしょう(?!く)|低能|無能|ていのう/, /クソ(ババア|ガキ|女|野郎|やろう)|くそ(ばばあ|がき|おんな|やろう)|ばばあ|ババア/,
+      /fuck|fck|killyourself|kys(?![a-z])|shine(?![a-z])|dieyou/
+    ];
+    function norm(s){
+      s=(s||'').normalize('NFKC').toLowerCase();
+      s=s.replace(/[ァ-ヶ]/g,function(c){ return String.fromCharCode(c.charCodeAt(0)-0x60); });
+      return s.replace(/[^a-z0-9ぁ-ゖ一-鿿]/g,'');
+    }
+    function isBad(s){
+      var n=norm(s), raw=(s||'').normalize('NFKC').toLowerCase();
+      for(var i=0;i<BAD.length;i++){ if(BAD[i].test(n)||BAD[i].test(raw)) return true; }
+      return false;
+    }
     rpc('mogu_msg_status').then(function(o){ if(o===false) closed(); }).catch(function(){});
     form.addEventListener('submit',function(e){
       e.preventDefault();
       var body=ta.value.trim(); if(!body){ say('おてがみを書いてね',true); ta.focus(); return; }
+      if(isBad(body)){ say('きつい言葉が入ってるみたい…やさしい言葉に直してから送ってね',true); ta.focus(); return; }
       var left=WAIT-(Date.now()-(ls('mogu_msg_last')||0));
       if(left>0){ say('続けて送るときは少しあけてね（あと'+Math.ceil(left/1000)+'秒）',true); return; }
       btn.disabled=true; say('送ってるよ…');
