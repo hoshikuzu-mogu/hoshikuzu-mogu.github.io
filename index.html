@@ -6,7 +6,10 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261104002500">
+<meta name="build" content="20261104004500">
+<link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
+<link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
+<link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -327,6 +330,9 @@
   .menu__sns a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .menu .btns .btn{flex:1}
   .menu .btns{padding:6px 14px 14px}
+  /* 羽は、たぬき本体が読み込めてから出す（羽だけ先に見えないように） */
+  .aw{opacity:0;transition:opacity .25s}
+  .aw.on{opacity:1}
   /* ---- メニューの中でかくれんぼするたぬき ---- */
   .peeks{position:fixed;inset:calc(env(safe-area-inset-top,0px) + var(--hh)) 0 0;z-index:20;overflow:hidden;pointer-events:none}
   .peeks[hidden]{display:none}
@@ -744,7 +750,7 @@
   <symbol id="ribbon" viewBox="0 0 48 32"><g fill="#F5C6DA" stroke="#D987A8" stroke-width="1.6" stroke-linejoin="round"><path d="M24 14 6 4C3 3 1 5 2 8l3 12c1 3 4 4 7 2z"/><path d="M24 14 42 4c3-1 5 1 4 4l-3 12c-1 3-4 4-7 2z"/><path d="M22 16l-8 15 5-1 3 3 2-16zM26 16l8 15-5-1-3 3-2-16z"/><rect x="19.5" y="10" width="9" height="9" rx="3"/></g></symbol>
   <symbol id="egg" viewBox="0 0 40 40"><path fill="#FFFDF6" stroke="#B9CBE6" stroke-width="1.2" d="M20 4c6 0 8 4 12 5s6 6 4 11 1 9-3 12-9 4-13 3-9 0-12-4-4-8-3-12 2-9 6-11 3-4 9-4z"/><circle cx="20" cy="20" r="7.2" fill="#FFC83D"/><circle cx="17.6" cy="17.6" r="2.2" fill="#FFF0B8"/></symbol>
   <symbol id="tanu" viewBox="0 0 40 40"><image href="img/tanu.webp" width="40" height="40"/></symbol>
-  <symbol id="atanu" viewBox="0 0 64 60"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/><use href="#tanu" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></symbol>
+  <symbol id="atanu" viewBox="0 0 64 60"><g class="aw" id="aw-sym"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/></g><use href="#tanu" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></symbol>
   <symbol id="wheart" viewBox="0 0 60 36"><image href="img/wing-glow-l.webp" x="-3" y="6" width="24" height="21"/><image href="img/wing-glow.webp" x="39" y="6" width="24" height="21"/><path d="M30 33S14 24 14 14a7 7 0 0 1 16-4 7 7 0 0 1 16 4c0 10-16 19-16 19z" fill="#F5C6DA" stroke="#D987A8" stroke-width="1.6"/><path d="M21 13a4 4 0 0 1 4-3" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"/></symbol>
   <symbol id="heart" viewBox="0 0 24 22"><path fill="currentColor" d="M12 21.5S0 14.2 0 6.6A6.3 6.3 0 0 1 12 3.9 6.3 6.3 0 0 1 24 6.6c0 7.6-12 14.9-12 14.9z"/></symbol>
   <symbol id="feather" viewBox="0 0 20 40"><path d="M10 1C17 9 18 23 10 38 2 23 3 9 10 1z" fill="#fff" stroke="#9DB8DD" stroke-width="1.2"/><path d="M10 6v33" stroke="#9DB8DD" stroke-width="1"/></symbol>
@@ -867,7 +873,7 @@
             <div class="gs__scr gs__line" data-s="line"></div>
             <div class="gs__scr gs__ch gs__ch--pink" data-s="ch1"><p class="gs__osd">CH.01</p><img src="img/pxheart.webp" alt=""><p class="gs__cap">LOVE ♡ LOVE</p></div>
             <div class="gs__scr gs__ch gs__ch--sky" data-s="ch2"><p class="gs__osd">CH.02</p><svg viewBox="0 0 40 40"><use href="#egg"/></svg><p class="gs__cap">GOOD MORNING</p></div>
-            <div class="gs__scr gs__ch gs__ch--lav" data-s="ch3"><p class="gs__osd">CH.03</p><svg viewBox="0 0 64 60"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/><image id="tv-tanu" href="img/tanu-maru.webp" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg><p class="gs__cap">TANUKI TV</p></div>
+            <div class="gs__scr gs__ch gs__ch--lav" data-s="ch3"><p class="gs__osd">CH.03</p><svg viewBox="0 0 64 60"><g class="aw on"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/></g><image id="tv-tanu" href="img/tanu-maru.webp" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg><p class="gs__cap">TANUKI TV</p></div>
             <div class="gs__scr gs__ch gs__ch--err" data-s="err"><p class="gs__osd">CH.??</p><img src="img/err-1.webp" alt=""><p class="gs__cap">ERROR?!</p></div>
             <div class="gs__scr gs__load" data-s="load"><p class="gs__ttl">MOGU<br>ANGEL</p><p class="gs__now">NOW LOADING<span class="gs__dots"></span></p><p class="gs__bar"><i></i></p><p class="gs__press">PRESS ♡ START</p></div>
           </div>
@@ -1176,7 +1182,15 @@
 /* たぬき素材15種：訪問のたびにアイコンのたぬきが変わる */
 window.TANU_FACE={nirami:'L',puri:'L',mi:'L',hanachochin:'R'};
 window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", "maru", "uzumari", "ne", "minaizo", "mi", "tokai", "kagero", "hanachochin"];
-(function(){var l=window.TANU,i=document.querySelector('#tanu image');if(i)i.setAttribute('href','img/tanu-'+l[Math.random()*l.length|0]+'.webp');})();
+(function(){
+  var l=window.TANU, cache=window.TANU_IMGS={};
+  l.forEach(function(n){ var im=new Image(); im.decoding='async'; im.src='img/tanu-'+n+'.webp'; cache[n]=im; });
+  // 羽は、たぬき本体が読み込めてから表示する
+  window.awShow=function(root){ [].forEach.call(root.querySelectorAll('.aw'),function(g){ var im=cache[g.getAttribute('data-v')]; function on(){ g.classList.add('on'); } if(!im||im.complete) on(); else { im.addEventListener('load',on); im.addEventListener('error',on); setTimeout(on,3500); } }); };
+  var i=document.querySelector('#tanu image'), aw=document.getElementById('aw-sym'), n=l[Math.random()*l.length|0], im=cache[n];
+  function on(){ if(i) i.setAttribute('href','img/tanu-'+n+'.webp'); if(aw) aw.classList.add('on'); }
+  if(im.complete) on(); else { im.addEventListener('load',on); im.addEventListener('error',function(){ if(aw) aw.classList.add('on'); }); setTimeout(function(){ if(aw) aw.classList.add('on'); },3500); }
+})();
 /* メニューを開くと、たぬきが画面のふちからのぞく（タップするとかくれんぼ／大きいたぬきは紙ふぶき） */
 (function(){
   var T=window.TANU, layer=null, minis=[], big=null, active=false, amb=false, ambM=null, ambB=null, bigT=null, bigH=null, hap=null, conf=null, confT=null, used={};
@@ -1736,12 +1750,12 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
     if(k==='pxheart') return '<img src="img/pxheart.webp" alt="" width="167" height="148" style="filter:drop-shadow(0 0 1px #4E7FCF) drop-shadow(0 0 1px #4E7FCF)">';
     if(k==='paw') return '<img src="img/paw-1.webp" alt="" width="326" height="284">';
     if(k==='kira') return '<svg viewBox="0 0 20 20" style="color:#4E7FCF"><use href="#kira"/></svg>';
-    if(k==='tanu'){ var v=TANU[(i>>1)%TANU.length]; return '<svg viewBox="0 0 64 60"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/><image href="img/tanu-'+v+'.webp" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg>'; }
+    if(k==='tanu'){ var v=TANU[(i>>1)%TANU.length]; return '<svg viewBox="0 0 64 60"><g class="aw" data-v="'+v+'"><image href="img/wing-glow-l.webp" y="20" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="20" width="26" height="23"/></g><image href="img/tanu-'+v+'.webp" x="7" y="8" width="50" height="50"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg>'; }
     return '<svg viewBox="0 0 40 40"><use href="#egg"/></svg>'; }
   function renderCard(fresh){
     var g=$('st-grid'); g.innerHTML='';
     for(var i=0;i<N;i++){ var li=document.createElement('li'); var on=i<C.days.length;
-      if(on){ li.className='on'+(fresh&&i===C.days.length-1?' new':''); li.innerHTML=stampSvg(i+C.cards); } else li.textContent=i+1;
+      if(on){ li.className='on'+(fresh&&i===C.days.length-1?' new':''); li.innerHTML=stampSvg(i+C.cards); if(window.awShow) awShow(li); } else li.textContent=i+1;
       g.appendChild(li); }
     $('st-no').textContent='No.'+(C.cards+1);
     $('st-foot').textContent=C.days.length>=N?'カードいっぱい！ありがとう。次に来た日に新しいカードになるよ':'あと '+(N-C.days.length)+' 日でいっぱい'+(C.cards?'・これまで '+C.cards+' 枚':'');

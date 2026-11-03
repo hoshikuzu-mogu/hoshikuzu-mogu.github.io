@@ -1,6 +1,6 @@
 // 星屑もぐ：オフラインでも開けるようにするキャッシュ
-const CACHE = 'mogu-20261104002500';
-const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/hero.webp', './img/chibi.webp', './img/tanu.webp'];
+const CACHE = 'mogu-20261104004500';
+const FILES = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './apple-touch-icon.png', './img/hero.webp', './img/chibi.webp', './img/tanu.webp', './img/tanu-omekashi.webp', './img/tanu-nirami.webp', './img/tanu-hasamari.webp', './img/tanu-puri.webp', './img/tanu-almond.webp', './img/tanu-pa.webp', './img/tanu-hyoro.webp', './img/tanu-maru.webp', './img/tanu-uzumari.webp', './img/tanu-ne.webp', './img/tanu-minaizo.webp', './img/tanu-mi.webp', './img/tanu-tokai.webp', './img/tanu-kagero.webp', './img/tanu-hanachochin.webp', './img/wing-glow.webp', './img/wing-glow-l.webp'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(FILES)).then(() => self.skipWaiting()));
