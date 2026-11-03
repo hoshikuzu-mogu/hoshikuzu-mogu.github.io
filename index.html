@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261103230000">
+<meta name="build" content="20261103233000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -327,6 +327,28 @@
   .menu__sns a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
   .menu .btns .btn{flex:1}
   .menu .btns{padding:6px 14px 14px}
+  /* ---- メニューの中でかくれんぼするたぬき ---- */
+  .peeks{position:fixed;inset:calc(env(safe-area-inset-top,0px) + var(--hh)) 0 0;z-index:20;overflow:hidden;pointer-events:none}
+  .peeks[hidden]{display:none}
+  .pk{position:absolute;padding:0;border:0;background:none;cursor:pointer;pointer-events:auto;-webkit-tap-highlight-color:transparent;opacity:0;transition:transform .35s ease-in,opacity .25s}
+  .pk:not(.is-peeking){pointer-events:none}
+  .pk img{display:block;width:100%;height:auto;pointer-events:none;-webkit-user-drag:none;user-select:none}
+  .pk--mini{width:84px;top:var(--y);filter:drop-shadow(0 3px 4px rgba(78,127,207,.28))}
+  .pk--mini[data-side="left"]{left:0;transform:translateX(-115%) rotate(25deg)}
+  .pk--mini[data-side="right"]{right:0;transform:translateX(115%) rotate(-25deg)}
+  .pk--mini.is-peeking[data-side="left"]{opacity:1;transform:translateX(-34%) rotate(25deg);transition:transform .6s cubic-bezier(.2,.8,.3,1),opacity .3s}
+  .pk--mini.is-peeking[data-side="right"]{opacity:1;transform:translateX(34%) rotate(-25deg);transition:transform .6s cubic-bezier(.2,.8,.3,1),opacity .3s}
+  .pk--big{left:var(--x,55%);bottom:0;width:clamp(170px,46vw,230px);transform:translate(-50%,105%);filter:drop-shadow(0 4px 6px rgba(78,127,207,.3))}
+  .pk--big.is-peeking{opacity:1;transform:translate(-50%,8%);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s}
+  .pk--big img{transform-origin:50% 100%}
+  .pk--big.is-happy img{animation:pkHappy 1.8s ease-in-out both}
+  .pk--big.is-leaving{transition:transform .75s cubic-bezier(.55,0,.75,.2),opacity .3s .5s}
+  @keyframes pkHappy{0%{transform:translateY(0) rotate(0)}12%{transform:translateY(-16px) rotate(-7deg) scale(1.04)}26%{transform:translateY(0) rotate(6deg)}40%{transform:translateY(-11px) rotate(-5deg)}54%{transform:translateY(0) rotate(4deg)}70%{transform:translateY(-6px) rotate(-3deg)}100%{transform:translateY(0) rotate(0)}}
+  .pkc{position:fixed;inset:0;z-index:22;pointer-events:none;overflow:hidden}
+  .pkc__p{position:absolute;top:-8%;left:var(--l);width:var(--s);height:var(--s);font-size:var(--s);line-height:1;color:var(--c);opacity:0;animation:pkFall var(--d) ease-in var(--w) forwards}
+  .pkc__p img{display:block;width:100%;height:auto}
+  @keyframes pkFall{0%{opacity:0;transform:translate(0,0) rotate(0)}10%{opacity:1}85%{opacity:1}100%{opacity:0;transform:translate(var(--x),112vh) rotate(var(--r))}}
+  @media (prefers-reduced-motion:reduce){.pk,.pk.is-peeking{transition:opacity .15s}.pk--big.is-happy img{animation:none}.pkc__p{animation-duration:1.2s}}
   body.menu-open{overflow:hidden}
 
   /* ===== ボタン ===== */
@@ -1154,6 +1176,65 @@
 /* たぬき素材15種：訪問のたびにアイコンのたぬきが変わる */
 window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", "maru", "uzumari", "ne", "minaizo", "mi", "tokai", "kagero", "hanachochin"];
 (function(){var l=window.TANU,i=document.querySelector('#tanu image');if(i)i.setAttribute('href','img/tanu-'+l[Math.random()*l.length|0]+'.webp');})();
+/* メニューを開くと、たぬきが画面のふちからのぞく（タップするとかくれんぼ／大きいたぬきは紙ふぶき） */
+(function(){
+  var T=window.TANU, layer=null, minis=[], big=null, active=false, bigT=null, bigH=null, hap=null, conf=null, confT=null, used={};
+  var SLOTS=[['left','14%'],['right','20%'],['left','40%'],['right','48%'],['left','64%'],['right','72%']];
+  function rnd(a){return a[Math.random()*a.length|0];}
+  function src(){return 'img/tanu-'+rnd(T)+'.webp';}
+  function build(){
+    layer=document.createElement('div'); layer.className='peeks'; layer.hidden=true; layer.setAttribute('aria-hidden','true');
+    for(var i=0;i<3;i++){ var b=document.createElement('button'); b.type='button'; b.className='pk pk--mini'; b.tabIndex=-1; b.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(b);
+      (function(m){ m={el:b,slot:-1,t:null}; minis.push(m); b.addEventListener('click',function(){ if(!active||!b.classList.contains('is-peeking')) return; b.classList.remove('is-peeking'); clearTimeout(m.t); m.t=setTimeout(function(){reveal(m);},700); }); })();
+    }
+    big=document.createElement('button'); big.type='button'; big.className='pk pk--big'; big.tabIndex=-1; big.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(big);
+    big.addEventListener('click',function(){ if(!active||big.classList.contains('is-happy')||!big.classList.contains('is-peeking')) return; clearTimeout(bigH); party(); big.classList.add('is-happy'); hap=setTimeout(function(){ big.classList.add('is-leaving'); hideBig(); },1800); });
+    document.body.appendChild(layer);
+  }
+  function reveal(m){
+    if(!active) return;
+    var free=[]; for(var i=0;i<SLOTS.length;i++){ if(i!==m.slot&&!used[i]) free.push(i); }
+    if(m.slot>=0) delete used[m.slot];
+    var s=rnd(free); m.slot=s; used[s]=1;
+    var el=m.el; el.style.transition='none'; el.classList.remove('is-peeking');
+    el.dataset.side=SLOTS[s][0]; el.style.setProperty('--y',SLOTS[s][1]); el.querySelector('img').src=src();
+    void el.offsetWidth; el.style.transition=''; void el.offsetWidth;
+    requestAnimationFrame(function(){ if(active) el.classList.add('is-peeking'); });
+    clearTimeout(m.t); m.t=setTimeout(function(){ el.classList.remove('is-peeking'); m.t=setTimeout(function(){reveal(m);},800+Math.random()*900); },4500+Math.random()*3500);
+  }
+  function hideBig(){ clearTimeout(hap); big.classList.remove('is-peeking','is-happy'); setTimeout(function(){ big.classList.remove('is-leaving'); },800); }
+  function showBig(){
+    if(!active) return;
+    big.style.setProperty('--x',(30+Math.random()*40)+'%'); big.querySelector('img').src=src();
+    big.classList.add('is-peeking'); bigH=setTimeout(hideBig,6500); bigT=setTimeout(showBig,16000+Math.random()*10000);
+  }
+  function clearParty(){ clearTimeout(confT); if(conf){ conf.remove(); conf=null; } }
+  function party(){
+    clearParty(); conf=document.createElement('div'); conf.className='pkc'; conf.setAttribute('aria-hidden','true');
+    var cols=['#4E7FCF','#9DB8DD','#F5C6DA','#B9AEE6','#FFE08A'], n=matchMedia('(max-width:600px)').matches?44:64;
+    for(var i=0;i<n;i++){
+      var p=document.createElement('span'); p.className='pkc__p', k=i%4;
+      if(k===0){ p.innerHTML='<img alt="" src="'+src()+'">'; p.style.setProperty('--s',(30+Math.random()*16)+'px'); }
+      else if(k===1){ p.innerHTML='<img alt="" src="img/paw-1.webp">'; p.style.setProperty('--s',(22+Math.random()*10)+'px'); }
+      else { p.textContent=k===2?'✦':'♥'; p.style.setProperty('--s',(14+Math.random()*12)+'px'); p.style.setProperty('--c',cols[i%cols.length]); }
+      p.style.setProperty('--l',(Math.random()*94)+'%'); p.style.setProperty('--w',(Math.random()*.7)+'s'); p.style.setProperty('--d',(2.2+Math.random()*1.6)+'s');
+      p.style.setProperty('--x',(Math.random()*120-60)+'px'); p.style.setProperty('--r',(Math.random()*500-250)+'deg');
+      conf.appendChild(p);
+    }
+    document.body.appendChild(conf); confT=setTimeout(clearParty,5200);
+  }
+  function stop(){ active=false; minis.forEach(function(m){ clearTimeout(m.t); m.el.classList.remove('is-peeking'); m.slot=-1; }); used={}; clearTimeout(bigT); clearTimeout(bigH); hideBig(); clearParty(); if(layer) layer.hidden=true; }
+  window.mkPeek=function(open){
+    if(!T) return;
+    if(!layer) build();
+    stop();
+    if(!open) return;
+    active=true; layer.hidden=false;
+    minis.forEach(function(m,i){ m.t=setTimeout(function(){reveal(m);},650+i*900); });
+    bigT=setTimeout(showBig,5000);
+  };
+  document.addEventListener('visibilitychange',function(){ if(document.hidden) stop(); });
+})();
 </script>
 <script>
 (function(){
@@ -1375,7 +1456,7 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
   // ---- メニュー ----
   (function(){
     var btn=document.querySelector('.menu-btn'), menu=$('menu');
-    function set(open){ btn.setAttribute('aria-expanded',open); btn.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く'); $('menu-lbl').textContent=open?'CLOSE':'MENU'; menu.classList.toggle('is-open',open); document.body.classList.toggle('menu-open',open); }
+    function set(open){ btn.setAttribute('aria-expanded',open); btn.setAttribute('aria-label',open?'メニューを閉じる':'メニューを開く'); $('menu-lbl').textContent=open?'CLOSE':'MENU'; menu.classList.toggle('is-open',open); document.body.classList.toggle('menu-open',open); if(window.mkPeek) window.mkPeek(open); }
     btn.addEventListener('click',function(){ set(btn.getAttribute('aria-expanded')!=='true'); });
     menu.addEventListener('click',function(e){ if(e.target.closest('a')||e.target===menu||e.target.classList.contains('menu__in')) set(false); });
     document.addEventListener('keydown',function(e){ if(e.key==='Escape') set(false); });
