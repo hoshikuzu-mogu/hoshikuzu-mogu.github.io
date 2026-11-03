@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261103233000">
+<meta name="build" content="20261103235000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -1178,40 +1178,42 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
 (function(){var l=window.TANU,i=document.querySelector('#tanu image');if(i)i.setAttribute('href','img/tanu-'+l[Math.random()*l.length|0]+'.webp');})();
 /* メニューを開くと、たぬきが画面のふちからのぞく（タップするとかくれんぼ／大きいたぬきは紙ふぶき） */
 (function(){
-  var T=window.TANU, layer=null, minis=[], big=null, active=false, bigT=null, bigH=null, hap=null, conf=null, confT=null, used={};
+  var T=window.TANU, layer=null, minis=[], big=null, active=false, amb=false, ambM=null, ambB=null, bigT=null, bigH=null, hap=null, conf=null, confT=null, used={};
   var SLOTS=[['left','14%'],['right','20%'],['left','40%'],['right','48%'],['left','64%'],['right','72%']];
   function rnd(a){return a[Math.random()*a.length|0];}
   function src(){return 'img/tanu-'+rnd(T)+'.webp';}
   function build(){
     layer=document.createElement('div'); layer.className='peeks'; layer.hidden=true; layer.setAttribute('aria-hidden','true');
     for(var i=0;i<3;i++){ var b=document.createElement('button'); b.type='button'; b.className='pk pk--mini'; b.tabIndex=-1; b.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(b);
-      (function(m){ m={el:b,slot:-1,t:null}; minis.push(m); b.addEventListener('click',function(){ if(!active||!b.classList.contains('is-peeking')) return; b.classList.remove('is-peeking'); clearTimeout(m.t); m.t=setTimeout(function(){reveal(m);},700); }); })();
+      (function(m){ m={el:b,slot:-1,t:null}; minis.push(m); b.addEventListener('click',function(){ if(!(active||amb)||!m.el.classList.contains('is-peeking')) return; m.el.classList.remove('is-peeking'); clearTimeout(m.t); if(amb){ party(16); m.t=setTimeout(ambNext,1500); } else m.t=setTimeout(function(){reveal(m);},700); }); })();
     }
     big=document.createElement('button'); big.type='button'; big.className='pk pk--big'; big.tabIndex=-1; big.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(big);
-    big.addEventListener('click',function(){ if(!active||big.classList.contains('is-happy')||!big.classList.contains('is-peeking')) return; clearTimeout(bigH); party(); big.classList.add('is-happy'); hap=setTimeout(function(){ big.classList.add('is-leaving'); hideBig(); },1800); });
+    big.addEventListener('click',function(){ if(!(active||amb)||big.classList.contains('is-happy')||!big.classList.contains('is-peeking')) return; clearTimeout(bigH); party(); big.classList.add('is-happy'); hap=setTimeout(function(){ big.classList.add('is-leaving'); hideBig(); if(amb) ambNext(); },1800); });
     document.body.appendChild(layer);
   }
-  function reveal(m){
-    if(!active) return;
+  function reveal(m,once){
+    if(!active&&!amb) return;
     var free=[]; for(var i=0;i<SLOTS.length;i++){ if(i!==m.slot&&!used[i]) free.push(i); }
     if(m.slot>=0) delete used[m.slot];
     var s=rnd(free); m.slot=s; used[s]=1;
     var el=m.el; el.style.transition='none'; el.classList.remove('is-peeking');
     el.dataset.side=SLOTS[s][0]; el.style.setProperty('--y',SLOTS[s][1]); el.querySelector('img').src=src();
     void el.offsetWidth; el.style.transition=''; void el.offsetWidth;
-    requestAnimationFrame(function(){ if(active) el.classList.add('is-peeking'); });
-    clearTimeout(m.t); m.t=setTimeout(function(){ el.classList.remove('is-peeking'); m.t=setTimeout(function(){reveal(m);},800+Math.random()*900); },4500+Math.random()*3500);
+    requestAnimationFrame(function(){ if(active||amb) el.classList.add('is-peeking'); });
+    clearTimeout(m.t);
+    if(once){ m.t=setTimeout(function(){ el.classList.remove('is-peeking'); delete used[s]; m.slot=-1; ambNext(); },4200+Math.random()*1800); return; }
+    m.t=setTimeout(function(){ el.classList.remove('is-peeking'); m.t=setTimeout(function(){reveal(m);},800+Math.random()*900); },4500+Math.random()*3500);
   }
   function hideBig(){ clearTimeout(hap); big.classList.remove('is-peeking','is-happy'); setTimeout(function(){ big.classList.remove('is-leaving'); },800); }
   function showBig(){
-    if(!active) return;
+    if(!active&&!amb) return;
     big.style.setProperty('--x',(30+Math.random()*40)+'%'); big.querySelector('img').src=src();
-    big.classList.add('is-peeking'); bigH=setTimeout(hideBig,6500); bigT=setTimeout(showBig,16000+Math.random()*10000);
+    big.classList.add('is-peeking'); bigH=setTimeout(function(){ hideBig(); if(amb) ambNext(); },6500); if(!amb) bigT=setTimeout(showBig,16000+Math.random()*10000);
   }
   function clearParty(){ clearTimeout(confT); if(conf){ conf.remove(); conf=null; } }
-  function party(){
+  function party(num){
     clearParty(); conf=document.createElement('div'); conf.className='pkc'; conf.setAttribute('aria-hidden','true');
-    var cols=['#4E7FCF','#9DB8DD','#F5C6DA','#B9AEE6','#FFE08A'], n=matchMedia('(max-width:600px)').matches?44:64;
+    var cols=['#4E7FCF','#9DB8DD','#F5C6DA','#B9AEE6','#FFE08A'], n=num||(matchMedia('(max-width:600px)').matches?44:64);
     for(var i=0;i<n;i++){
       var p=document.createElement('span'); p.className='pkc__p', k=i%4;
       if(k===0){ p.innerHTML='<img alt="" src="'+src()+'">'; p.style.setProperty('--s',(30+Math.random()*16)+'px'); }
@@ -1223,17 +1225,33 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
     }
     document.body.appendChild(conf); confT=setTimeout(clearParty,5200);
   }
-  function stop(){ active=false; minis.forEach(function(m){ clearTimeout(m.t); m.el.classList.remove('is-peeking'); m.slot=-1; }); used={}; clearTimeout(bigT); clearTimeout(bigH); hideBig(); clearParty(); if(layer) layer.hidden=true; }
+  function stop(){ active=false; amb=false; clearTimeout(ambT); minis.forEach(function(m){ clearTimeout(m.t); m.el.classList.remove('is-peeking'); m.slot=-1; }); used={}; clearTimeout(bigT); clearTimeout(bigH); hideBig(); clearParty(); if(layer) layer.hidden=true; }
+  var ambT=null, ready=false;
+  function calm(){
+    var q=function(id){return document.getElementById(id);};
+    var a=document.activeElement, typing=a&&/^(INPUT|TEXTAREA|SELECT)$/.test(a.tagName);
+    return !document.hidden&&!q('op')&&(!q('love')||q('love').hidden)&&(!q('rw')||q('rw').hidden)&&!document.body.classList.contains('menu-open')&&!typing&&!document.querySelector('.pk.is-peeking');
+  }
+  function ambNext(){ clearTimeout(ambT); if(!amb) return; ambT=setTimeout(ambGo,22000+Math.random()*28000); }
+  function ambGo(){
+    if(!amb) return;
+    if(!calm()){ ambT=setTimeout(ambGo,6000); return; }
+    // たいていミニがのぞく。ときどき(約1/5)大きいたぬきが下から出る
+    if(Math.random()<.2){ showBig(); } else { reveal(minis[0],true); }
+  }
+  function ambStart(){ if(!T||active) return; if(!layer) build(); stop(); amb=true; layer.hidden=false; ambT=setTimeout(ambGo,9000+Math.random()*6000); }
+  window.addEventListener('mogu:ready',function(){ ready=true; ambStart(); });
+  if(!document.getElementById('op')) setTimeout(function(){ if(!ready) ambStart(); },1000);
   window.mkPeek=function(open){
     if(!T) return;
     if(!layer) build();
     stop();
-    if(!open) return;
+    if(!open){ ambStart(); return; }
     active=true; layer.hidden=false;
     minis.forEach(function(m,i){ m.t=setTimeout(function(){reveal(m);},650+i*900); });
     bigT=setTimeout(showBig,5000);
   };
-  document.addEventListener('visibilitychange',function(){ if(document.hidden) stop(); });
+  document.addEventListener('visibilitychange',function(){ if(document.hidden){ var was=amb; stop(); if(was) amb=false; } else if(!active&&!document.body.classList.contains('menu-open')) ambStart(); });
 })();
 </script>
 <script>
