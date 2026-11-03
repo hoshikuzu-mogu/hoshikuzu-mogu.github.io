@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261103223000">
+<meta name="build" content="20261103230000">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="星屑もぐ 公式サイト">
 <meta property="og:title" content="星屑もぐ｜公式サイト">
@@ -86,7 +86,7 @@
   .gs__ch--pink{background:#FFD3E6}.gs__ch--sky{background:#CFE3FA}.gs__ch--lav{background:#E4DCFB}.gs__ch--err{background:#2B3A8C}
   .gs__ch img,.gs__ch svg{width:48%;height:auto;aspect-ratio:1;image-rendering:pixelated;animation:chPop .2s steps(3,jump-none)}
   .gs__ch--err img{width:72%;aspect-ratio:auto}
-  .gs__ch--lav svg{width:72%;aspect-ratio:64/56}
+  .gs__ch--lav svg{width:72%;aspect-ratio:64/56;image-rendering:auto}
   @keyframes chPop{0%{transform:scale(.6)}100%{transform:scale(1)}}
   .gs__osd{position:absolute;left:10px;top:28px;margin:0;font-size:22px;color:#7CFF9B;text-shadow:2px 2px 0 rgba(0,0,0,.35)}
   .gs__cap{margin:0;font-size:20px;letter-spacing:.1em;color:#4E7FCF;text-shadow:1px 1px 0 #fff}
@@ -845,7 +845,7 @@
             <div class="gs__scr gs__line" data-s="line"></div>
             <div class="gs__scr gs__ch gs__ch--pink" data-s="ch1"><p class="gs__osd">CH.01</p><img src="img/pxheart.webp" alt=""><p class="gs__cap">LOVE ♡ LOVE</p></div>
             <div class="gs__scr gs__ch gs__ch--sky" data-s="ch2"><p class="gs__osd">CH.02</p><svg viewBox="0 0 40 40"><use href="#egg"/></svg><p class="gs__cap">GOOD MORNING</p></div>
-            <div class="gs__scr gs__ch gs__ch--lav" data-s="ch3"><p class="gs__osd">CH.03</p><svg viewBox="0 0 64 56"><use href="#atanu"/></svg><p class="gs__cap">TANUKI TV</p></div>
+            <div class="gs__scr gs__ch gs__ch--lav" data-s="ch3"><p class="gs__osd">CH.03</p><svg viewBox="0 0 64 56"><image href="img/wing-glow-l.webp" y="16" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="16" width="26" height="23"/><image id="tv-tanu" href="img/tanu-maru.webp" x="12" y="12" width="40" height="40"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg><p class="gs__cap">TANUKI TV</p></div>
             <div class="gs__scr gs__ch gs__ch--err" data-s="err"><p class="gs__osd">CH.??</p><img src="img/err-1.webp" alt=""><p class="gs__cap">ERROR?!</p></div>
             <div class="gs__scr gs__load" data-s="load"><p class="gs__ttl">MOGU<br>ANGEL</p><p class="gs__now">NOW LOADING<span class="gs__dots"></span></p><p class="gs__bar"><i></i></p><p class="gs__press">PRESS ♡ START</p></div>
           </div>
@@ -1141,6 +1141,7 @@
       <ul>
         <li>天使界隈系フリー素材 / <a href="https://booth.pm/ja/items/5543069" target="_blank" rel="noopener">あくむ病院</a></li>
         <li>天使界隈トレカ風素材 / <a href="https://booth.pm/ja/items/6981268" target="_blank" rel="noopener">紺崎イラスト堂</a></li>
+        <li>たぬきのイラスト / <a href="https://booth.pm/ja/items/4996583" target="_blank" rel="noopener">ササミストリート</a></li>
         <li>Font: ISEKAI-grimoire / <a href="https://x.com/shibuyamiam" target="_blank" rel="noopener">Hitomi Shibuya</a></li>
         <li>Font: DotGothic16, VT323, Syncopate, Cormorant Garamond, Zen Kaku Gothic New / <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></li>
       </ul>
@@ -1149,6 +1150,11 @@
   </div>
 </footer>
 
+<script>
+/* たぬき素材15種：訪問のたびにアイコンのたぬきが変わる */
+window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", "maru", "uzumari", "ne", "minaizo", "mi", "tokai", "kagero", "hanachochin"];
+(function(){var l=window.TANU,i=document.querySelector('#tanu image');if(i)i.setAttribute('href','img/tanu-'+l[Math.random()*l.length|0]+'.webp');})();
+</script>
 <script>
 (function(){
   'use strict';
@@ -1213,7 +1219,7 @@
       for(var k=0;k<3;k++){ cx.fillStyle=['rgba(255,95,190,.55)','rgba(90,220,255,.55)','rgba(255,255,255,.5)'][k]; cx.fillRect(0,Math.random()*h|0,w,2+Math.random()*6|0); }
       if(noiseOn) raf=requestAnimationFrame(noise); }
     function setNoise(on){ noiseOn=on; gs.classList.toggle('is-noise',on); if(on){ cancelAnimationFrame(raf); noise(); } }
-    function show(k){ [].forEach.call(gs.querySelectorAll('.gs__scr'),function(el){ el.classList.toggle('is-on',el.dataset.s===k); }); }
+    function show(k){ if(k==='ch3'){ var tv=document.getElementById('tv-tanu'); if(tv&&window.TANU) tv.setAttribute('href','img/tanu-'+TANU[Math.random()*TANU.length|0]+'.webp'); } [].forEach.call(gs.querySelectorAll('.gs__scr'),function(el){ el.classList.toggle('is-on',el.dataset.s===k); }); }
     var full=true; try{ full=!sessionStorage.getItem('mogu_gs'); sessionStorage.setItem('mogu_gs','1'); }catch(e){}
     var T=full?[
       [0,function(){ show('off'); }],[650,function(){ show('line'); }],[950,function(){ show(''); setNoise(true); }],
@@ -1614,13 +1620,13 @@
 
   // ---- スタンプカード（20こで1枚） ----
   var N=20;
-  var KINDS=['kira','egg','atanu','paw','pxheart'];
+  var KINDS=['kira','tanu','egg','tanu','paw','tanu','pxheart','tanu'];
   var C=ls('mogu_stamp')||{days:[],cards:0,last:''};
-  function stampSvg(i){ var k=KINDS[i%5];
+  function stampSvg(i){ var k=KINDS[i%8];
     if(k==='pxheart') return '<img src="img/pxheart.webp" alt="" width="167" height="148" style="filter:drop-shadow(0 0 1px #4E7FCF) drop-shadow(0 0 1px #4E7FCF)">';
     if(k==='paw') return '<img src="img/paw-1.webp" alt="" width="326" height="284">';
     if(k==='kira') return '<svg viewBox="0 0 20 20" style="color:#4E7FCF"><use href="#kira"/></svg>';
-    if(k==='atanu') return '<svg viewBox="0 0 64 56"><use href="#atanu"/></svg>';
+    if(k==='tanu'){ var v=TANU[(i>>1)%TANU.length]; return '<svg viewBox="0 0 64 56"><image href="img/wing-glow-l.webp" y="16" width="26" height="23"/><image href="img/wing-glow.webp" x="38" y="16" width="26" height="23"/><image href="img/tanu-'+v+'.webp" x="12" y="12" width="40" height="40"/><use href="#halo" x="18" y="0" width="28" height="10"/></svg>'; }
     return '<svg viewBox="0 0 40 40"><use href="#egg"/></svg>'; }
   function renderCard(fresh){
     var g=$('st-grid'); g.innerHTML='';
