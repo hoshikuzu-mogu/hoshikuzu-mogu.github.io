@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261104004500">
+<meta name="build" content="20261112120000">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -1895,7 +1895,7 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
   var mine=(document.querySelector('meta[name=build]')||{}).content;
   function check(){
     fetch('version.json?t='+Date.now(),{cache:'no-store'}).then(function(r){ return r.ok?r.json():null; }).then(function(v){
-      if(v&&v.build&&mine&&v.build!==mine) $('upd').hidden=false;
+      var latest=v&&v.pages&&v.pages['index.html']; if(latest&&mine&&latest!==mine) $('upd').hidden=false;
     }).catch(function(){});
   }
   $('upd').onclick=function(){
