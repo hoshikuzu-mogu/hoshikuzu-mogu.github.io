@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261125004500">
+<meta name="build" content="20261125005000">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -752,9 +752,7 @@
     box-shadow:0 0 0 2px #E77FAA,3px 4px 0 rgba(40,52,82,.25);font-family:var(--px);font-size:clamp(15px,4.4vw,22px);line-height:1.05;letter-spacing:.04em;text-align:center;font-weight:400}
   .bday-badge small{display:block;font-family:var(--dot);font-size:10px;letter-spacing:.08em;margin-top:2px;opacity:.95}
   .bday-balloons{position:fixed;inset:0;z-index:16;pointer-events:none;overflow:hidden}
-  .bday-balloons .bl{position:absolute;bottom:-120px;width:44px;height:58px;border-radius:50% 50% 48% 48%;animation:bdUp linear infinite;opacity:.92}
-  .bday-balloons .bl::before{content:"";position:absolute;left:11px;top:9px;width:9px;height:15px;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(20deg)}
-  .bday-balloons .bl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:44px;background:rgba(40,52,82,.35)}
+  .bday-balloons .bl{position:absolute;bottom:-300px;height:auto;animation:bdUp linear infinite;opacity:.95;filter:drop-shadow(1px 2px 1px rgba(40,52,82,.18))}
   @keyframes bdUp{0%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(18px,-60vh) rotate(5deg)}100%{transform:translate(-8px,-125vh) rotate(-3deg)}}
   .bday-ov{position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:20px;background:rgba(214,228,241,.88);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transition:opacity .45s,visibility .45s}
   .bday-ov.is-out{opacity:0;visibility:hidden}
@@ -1213,6 +1211,7 @@
         <li>天使界隈系フリー素材 / <a href="https://booth.pm/ja/items/5543069" target="_blank" rel="noopener">あくむ病院</a></li>
         <li>天使界隈トレカ風素材 / <a href="https://booth.pm/ja/items/6981268" target="_blank" rel="noopener">紺崎イラスト堂</a></li>
         <li>たぬきのイラスト / <a href="https://booth.pm/ja/items/4996583" target="_blank" rel="noopener">ササミストリート</a></li>
+        <li>風船のイラスト / <a href="https://illustimage.com/?dl=6139" target="_blank" rel="noopener">イラストイメージ</a></li>
         <li>Font: ISEKAI-grimoire / <a href="https://x.com/shibuyamiam" target="_blank" rel="noopener">Hitomi Shibuya</a></li>
         <li>Font: DotGothic16, VT323, Syncopate, Cormorant Garamond, Zen Kaku Gothic New / <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></li>
         <li>ホームページ制作 / <a href="https://minatohiro-official.github.io/iroha-minto/" target="_blank" rel="noopener">イロハミント</a>（湊音ヒロ）</li>
@@ -1986,8 +1985,8 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
 
   // 風船
   var bw=doc.createElement('div'); bw.className='bday-balloons'; bw.setAttribute('aria-hidden','true');
-  var NB=14; for(var k=0;k<(RM?0:NB);k++){ var b=doc.createElement('i'); b.className='bl'; b.style.left=((k+.15+Math.random()*.7)/NB*92+2)+'%'; b.style.background=COL[k%COL.length];
-    var sc=.7+Math.random()*.7; b.style.width=44*sc+'px'; b.style.height=58*sc+'px'; b.style.animationDuration=(16+Math.random()*14)+'s'; b.style.animationDelay=(-Math.random()*24)+'s'; bw.appendChild(b); }
+  var NB=14; for(var k=0;k<(RM?0:NB);k++){ var b=doc.createElement('img'); b.className='bl'; b.src='img/balloon-'+(k%8+1)+'.webp'; b.alt=''; b.style.left=((k+.15+Math.random()*.7)/NB*92+2)+'%';
+    var sc=.55+Math.random()*.45; b.style.width=(100*sc)+'px'; b.style.animationDuration=(16+Math.random()*14)+'s'; b.style.animationDelay=(-Math.random()*24)+'s'; bw.appendChild(b); }
   body.appendChild(bw);
 
   // ヒーロー画像に三角帽子＋バッジ
