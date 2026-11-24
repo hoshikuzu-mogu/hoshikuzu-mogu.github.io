@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261125003500">
+<meta name="build" content="20261125004000">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -1969,12 +1969,12 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   var doc=document, body=doc.body, M=window.MOGU||{}, RM=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
   body.classList.add('bday');
   var tc=doc.querySelector('meta[name=theme-color]'); if(tc) tc.content='#F5C6DA';
-  doc.title='🎂 HAPPY BIRTHDAY もぐちゃん｜星屑もぐ';
+  doc.title='🎂 HAPPY 23rd BIRTHDAY もぐちゃん｜星屑もぐ';
   var COL=['#E77FAA','#86CDEE','#FFE08A','#CFC6F2','#F5C6DA','#4E7FCF','#FFC83D'];
 
   // ティッカーを誕生日ばーじょんに
   var tk=doc.querySelector('.ticker__in');
-  if(tk){ var s='<span>🎂 HAPPY BIRTHDAY MOGU 🎂</span><span>♡ もぐちゃん おたんじょうびおめでとう ♡</span><span>✝ 11/25 は もぐの日 ✝</span><span>🎉 みんなでお祝いしよ 🎉</span>'; tk.innerHTML=s+s; }
+  if(tk){ var s='<span>🎂 HAPPY 23rd BIRTHDAY MOGU 🎂</span><span>♡ もぐちゃん 23歳おめでとう ♡</span><span>✝ 11/25 は もぐの日 ✝</span><span>🎉 みんなでお祝いしよ 🎉</span>'; tk.innerHTML=s+s; }
   var lg=doc.querySelector('.logo'); if(lg&&!lg.querySelector('.bd-c')) lg.insertAdjacentHTML('afterbegin','<span class="bd-c">🎂</span>');
 
   // ガーランド（三角はた）
@@ -1997,13 +1997,13 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
       '<svg class="bday-stk bday-hat" viewBox="0 0 60 70" aria-hidden="true"><path d="M30 4 L52 62 Q30 70 8 62 Z" fill="#F5C6DA" stroke="#E77FAA" stroke-width="2.5" stroke-linejoin="round"/>'+
       '<path d="M19 38 L44 34 M14 52 L49 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 22 L37 20" stroke="#86CDEE" stroke-width="4" stroke-linecap="round"/>'+
       '<circle cx="30" cy="5" r="6" fill="#FFE08A" stroke="#FFC83D" stroke-width="2"/></svg>'+
-      '<div class="bday-stk bday-badge" aria-hidden="true"><b>HAPPY<br>BIRTHDAY!<small>11/25 もぐのたんじょうび</small></b></div>');
+      '<div class="bday-stk bday-badge" aria-hidden="true"><b>HAPPY<br>BIRTHDAY!<small>もぐ 23さいになったよ</small></b></div>');
   }
 
   // ひとことを誕生日ばーじょんに
-  var bt=doc.getElementById('bubble-t'); if(bt) bt.textContent='今日たんじょうびなの！おいわいして〜🎂';
+  var bt=doc.getElementById('bubble-t'); if(bt) bt.textContent='今日たんじょうびなの！23歳になったよ〜🎂';
   var bub=doc.getElementById('bubble');
-  var BL=['今日たんじょうびなの！おいわいして〜🎂','ケーキたべたい🍰（記憶力5%だけど今日は忘れないよ）','おめでとうって言ってくれたら喜ぶよ','プレゼントは…ほしいものリストにあるよ👀','またひとつ大人になっちゃった(?)','今日はぽんこつでも許されるよね？','来てくれてありがとう！だいすき♡'];
+  var BL=['今日たんじょうびなの！23歳になったよ〜🎂','ケーキたべたい🍰（記憶力5%だけど今日は忘れないよ）','おめでとうって言ってくれたら喜ぶよ','プレゼントは…ほしいものリストにあるよ👀','23歳になっちゃった(?)','今日はぽんこつでも許されるよね？','来てくれてありがとう！だいすき♡'];
   if(bub){ var bi=0, nx=function(){ bi=(bi+1)%BL.length; if(bt) bt.textContent=BL[bi]; }; bub.addEventListener('click',nx,true); var ht=doc.getElementById('hero-tap'); if(ht) ht.addEventListener('click',nx,true); }
 
   // 紙吹雪
@@ -2033,14 +2033,14 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   var shown=false;
   function party(){
     if(shown) return; shown=true;
-    if(M.toast) setTimeout(function(){ M.toast('🎂 もぐちゃん、おたんじょうびおめでとう！<small>今日はみんなでお祝いしよう</small>'); },700);
+    if(M.toast) setTimeout(function(){ M.toast('🎂 もぐちゃん、23歳おめでとう！<small>今日はみんなでお祝いしよう</small>'); },700);
     cannon(W*.2,H*.95,60); cannon(W*.8,H*.95,60); setTimeout(function(){ rain(70); },400);
     if(seen&&!force) return;
     try{ localStorage.setItem(key,'1'); }catch(e){}
     var ov=doc.createElement('div'); ov.className='bday-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','もぐちゃん誕生日');
     ov.innerHTML='<div class="bday-ov__in"><div class="bday-ov__bar"><span>birthday_party.exe</span><span>×</span></div><div class="bday-ov__body"><div class="bday-ov__cake">🎂</div>'+
-      '<p class="bday-ov__en">HAPPY BIRTHDAY<br>MOGU!!</p><p class="bday-ov__ja">もぐちゃん<br>おたんじょうびおめでとう！</p>'+
-      '<p class="bday-ov__sub">今日は 11/25。<br>みんなでいっぱいお祝いしてね🎉</p><button class="bday-ov__btn" type="button">パーティにはいる ♡</button></div></div>';
+      '<p class="bday-ov__en">HAPPY 23rd BIRTHDAY<br>MOGU!!</p><p class="bday-ov__ja">もぐちゃん 23歳<br>おたんじょうびおめでとう！</p>'+
+      '<p class="bday-ov__sub">今日 11/25 で23歳になりました。<br>みんなでいっぱいお祝いしてね🎉</p><button class="bday-ov__btn" type="button">パーティにはいる ♡</button></div></div>';
     doc.body.appendChild(ov);
     function close(){ ov.classList.add('is-out'); cannon(W/2,H*.6,90); setTimeout(function(){ ov.remove(); },600); }
     ov.querySelector('.bday-ov__btn').onclick=function(e){ e.stopPropagation(); close(); };
