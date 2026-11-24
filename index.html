@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261119143000">
+<meta name="build" content="20261125003500">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -735,6 +735,44 @@
   @media (prefers-reduced-motion: reduce){
     *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   }
+
+  /* ===== 🎂 BIRTHDAY PARTY MODE（11/25 だけ自動で出る。?bday=1 でお試し） ===== */
+  .bday-cv{position:fixed;inset:0;width:100%;height:100%;z-index:57;pointer-events:none}
+  .bday-flags{position:fixed;left:0;right:0;top:calc(env(safe-area-inset-top,0px) + var(--hh) + 24px);height:46px;z-index:17;pointer-events:none;overflow:hidden}
+  .bday-flags svg{display:block;width:100%;height:100%}
+  .bday-flags .fl{transform-origin:50% 0;animation:bdSway 3s ease-in-out infinite}
+  .bday-flags .fl:nth-child(2n){animation-delay:-.8s}.bday-flags .fl:nth-child(3n){animation-delay:-1.6s}
+  @keyframes bdSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+  .bday-stk{position:absolute;z-index:6;pointer-events:none}
+  .bday-hat{right:2%;top:-9%;width:34%;transform:rotate(14deg);filter:drop-shadow(0 2px 0 rgba(78,127,207,.35));animation:bdHat 2.4s ease-in-out infinite}
+  @keyframes bdHat{0%,100%{transform:rotate(14deg) translateY(0)}50%{transform:rotate(10deg) translateY(-4px)}}
+  .bday-badge{left:-14px;bottom:8%;width:46%;transform:rotate(-8deg);animation:bdBadge 1.6s steps(2) infinite}
+  @keyframes bdBadge{0%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(-5deg) scale(1.06)}100%{transform:rotate(-8deg) scale(1)}}
+  .bday-badge b{display:block;padding:7px 10px 6px;background:linear-gradient(90deg,#E77FAA,#F5A3C4);color:#fff;border:2px solid #fff;border-radius:10px;
+    box-shadow:0 0 0 2px #E77FAA,3px 4px 0 rgba(40,52,82,.25);font-family:var(--px);font-size:clamp(15px,4.4vw,22px);line-height:1.05;letter-spacing:.04em;text-align:center;font-weight:400}
+  .bday-badge small{display:block;font-family:var(--dot);font-size:10px;letter-spacing:.08em;margin-top:2px;opacity:.95}
+  .bday-balloons{position:fixed;inset:0;z-index:16;pointer-events:none;overflow:hidden}
+  .bday-balloons .bl{position:absolute;bottom:-120px;width:44px;height:58px;border-radius:50% 50% 48% 48%;animation:bdUp linear infinite;opacity:.92}
+  .bday-balloons .bl::before{content:"";position:absolute;left:11px;top:9px;width:9px;height:15px;border-radius:50%;background:rgba(255,255,255,.55);transform:rotate(20deg)}
+  .bday-balloons .bl::after{content:"";position:absolute;left:50%;top:100%;width:1.5px;height:44px;background:rgba(40,52,82,.35)}
+  @keyframes bdUp{0%{transform:translate(0,0) rotate(-4deg)}50%{transform:translate(18px,-60vh) rotate(5deg)}100%{transform:translate(-8px,-125vh) rotate(-3deg)}}
+  .bday-ov{position:fixed;inset:0;z-index:99;display:grid;place-items:center;padding:20px;background:rgba(214,228,241,.88);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);transition:opacity .45s,visibility .45s}
+  .bday-ov.is-out{opacity:0;visibility:hidden}
+  .bday-ov__in{width:min(360px,100%);text-align:center;background:#fff;border:2px solid var(--blue);border-radius:14px;box-shadow:6px 6px 0 rgba(78,127,207,.3);overflow:hidden;animation:bdPop .6s cubic-bezier(.2,1.5,.4,1)}
+  @keyframes bdPop{0%{transform:scale(.6) rotate(-4deg);opacity:0}100%{transform:scale(1) rotate(0);opacity:1}}
+  .bday-ov__bar{display:flex;justify-content:space-between;align-items:center;padding:5px 10px;background:linear-gradient(90deg,var(--blue),#6C8FE0);color:#fff;font-family:var(--px);font-size:17px;letter-spacing:.05em}
+  .bday-ov__body{padding:18px 16px 20px;background:
+    radial-gradient(circle at 20% 15%,#FCE3EE 0 22%,transparent 23%),radial-gradient(circle at 85% 80%,#EAE5FB 0 20%,transparent 21%),#fff}
+  .bday-ov__cake{font-size:54px;line-height:1;animation:bdHat 1.8s ease-in-out infinite;display:inline-block}
+  .bday-ov__en{margin-top:6px;font-family:var(--wide);font-size:clamp(17px,5.4vw,22px);color:var(--rose);letter-spacing:.02em;line-height:1.2;text-shadow:2px 2px 0 #fff,3px 3px 0 var(--pink)}
+  .bday-ov__ja{margin-top:8px;font-weight:900;font-size:19px;color:var(--ink);line-height:1.5}
+  .bday-ov__sub{margin-top:6px;font-size:13px;color:var(--sub);line-height:1.7}
+  .bday-ov__btn{margin-top:14px;appearance:none;border:2px solid #fff;outline:2px solid var(--rose);border-radius:999px;padding:10px 26px;background:linear-gradient(90deg,#E77FAA,#F5A3C4);color:#fff;font:900 15px var(--jp);cursor:pointer;box-shadow:3px 4px 0 rgba(40,52,82,.25)}
+  .bday-ov__btn:active{transform:translateY(2px)}
+  body.bday .ticker{background:linear-gradient(90deg,#E77FAA,#F5A3C4,#FFE08A,#86CDEE,#CFC6F2)!important;color:#fff!important}
+  body.bday .logo small{color:var(--rose)}
+  body.bday .hl:not(.s){background:linear-gradient(90deg,#E77FAA,#F29AC0)}
+  @media (prefers-reduced-motion:reduce){.bday-balloons .bl,.bday-flags .fl,.bday-hat,.bday-badge,.bday-ov__cake{animation:none}}
 </style>
 </head>
 <body>
@@ -1921,6 +1959,95 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
   setTimeout(function(){ M.toast('ホーム画面に追加するとアプリみたいに開けるよ<small>'+(ios?'共有ボタン →「ホーム画面に追加」':'メニュー →「ホーム画面に追加」')+'</small>'); },9000);
 })();
 document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('.desk-tn'); if(a) e.preventDefault(); });
+</script>
+<script>
+// ===== 🎂 誕生日パーティ仕様：11/25（日本時間）だけ自動で出る。?bday=1 でいつでもお試し =====
+(function(){
+  var jst=new Date(Date.now()+9*3600*1000), md=(jst.getUTCMonth()+1)+'/'+jst.getUTCDate();
+  var force=/[?&]bday=1/.test(location.search);
+  if(md!=='11/25' && !force) return;
+  var doc=document, body=doc.body, M=window.MOGU||{}, RM=window.matchMedia&&matchMedia('(prefers-reduced-motion:reduce)').matches;
+  body.classList.add('bday');
+  var tc=doc.querySelector('meta[name=theme-color]'); if(tc) tc.content='#F5C6DA';
+  doc.title='🎂 HAPPY BIRTHDAY もぐちゃん｜星屑もぐ';
+  var COL=['#E77FAA','#86CDEE','#FFE08A','#CFC6F2','#F5C6DA','#4E7FCF','#FFC83D'];
+
+  // ティッカーを誕生日ばーじょんに
+  var tk=doc.querySelector('.ticker__in');
+  if(tk){ var s='<span>🎂 HAPPY BIRTHDAY MOGU 🎂</span><span>♡ もぐちゃん おたんじょうびおめでとう ♡</span><span>✝ 11/25 は もぐの日 ✝</span><span>🎉 みんなでお祝いしよ 🎉</span>'; tk.innerHTML=s+s; }
+  var lg=doc.querySelector('.logo'); if(lg&&!lg.querySelector('.bd-c')) lg.insertAdjacentHTML('afterbegin','<span class="bd-c">🎂</span>');
+
+  // ガーランド（三角はた）
+  var fl=''; var n=14, w=100/n;
+  for(var i=0;i<n;i++){ var x=i*w+w/2; fl+='<g class="fl" style="transform-origin:'+x+'% 0"><path d="M'+(x-w*.4)+' 0 L'+(x+w*.4)+' 0 L'+x+' 36 Z" fill="'+COL[i%COL.length]+'" stroke="#fff" stroke-width=".5"/></g>'; }
+  var gar=doc.createElement('div'); gar.className='bday-flags'; gar.setAttribute('aria-hidden','true');
+  gar.innerHTML='<svg viewBox="0 0 100 40" preserveAspectRatio="none"><path d="M0 1 Q50 7 100 1" fill="none" stroke="#33599B" stroke-width=".6" vector-effect="non-scaling-stroke"/>'+fl+'</svg>';
+  body.appendChild(gar);
+
+  // 風船
+  var bw=doc.createElement('div'); bw.className='bday-balloons'; bw.setAttribute('aria-hidden','true');
+  for(var k=0;k<(RM?0:9);k++){ var b=doc.createElement('i'); b.className='bl'; b.style.left=(4+Math.random()*92)+'%'; b.style.background=COL[k%COL.length];
+    var sc=.7+Math.random()*.7; b.style.width=44*sc+'px'; b.style.height=58*sc+'px'; b.style.animationDuration=(16+Math.random()*14)+'s'; b.style.animationDelay=(-Math.random()*24)+'s'; bw.appendChild(b); }
+  body.appendChild(bw);
+
+  // ヒーロー画像に三角帽子＋バッジ
+  var hv=doc.querySelector('.hero__vis');
+  if(hv){
+    hv.insertAdjacentHTML('beforeend',
+      '<svg class="bday-stk bday-hat" viewBox="0 0 60 70" aria-hidden="true"><path d="M30 4 L52 62 Q30 70 8 62 Z" fill="#F5C6DA" stroke="#E77FAA" stroke-width="2.5" stroke-linejoin="round"/>'+
+      '<path d="M19 38 L44 34 M14 52 L49 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 22 L37 20" stroke="#86CDEE" stroke-width="4" stroke-linecap="round"/>'+
+      '<circle cx="30" cy="5" r="6" fill="#FFE08A" stroke="#FFC83D" stroke-width="2"/></svg>'+
+      '<div class="bday-stk bday-badge" aria-hidden="true"><b>HAPPY<br>BIRTHDAY!<small>11/25 もぐのたんじょうび</small></b></div>');
+  }
+
+  // ひとことを誕生日ばーじょんに
+  var bt=doc.getElementById('bubble-t'); if(bt) bt.textContent='今日たんじょうびなの！おいわいして〜🎂';
+  var bub=doc.getElementById('bubble');
+  var BL=['今日たんじょうびなの！おいわいして〜🎂','ケーキたべたい🍰（記憶力5%だけど今日は忘れないよ）','おめでとうって言ってくれたら喜ぶよ','プレゼントは…ほしいものリストにあるよ👀','またひとつ大人になっちゃった(?)','今日はぽんこつでも許されるよね？','来てくれてありがとう！だいすき♡'];
+  if(bub){ var bi=0, nx=function(){ bi=(bi+1)%BL.length; if(bt) bt.textContent=BL[bi]; }; bub.addEventListener('click',nx,true); var ht=doc.getElementById('hero-tap'); if(ht) ht.addEventListener('click',nx,true); }
+
+  // 紙吹雪
+  var cv=doc.createElement('canvas'); cv.className='bday-cv'; cv.setAttribute('aria-hidden','true'); body.appendChild(cv);
+  var cx=cv.getContext('2d'), P=[], W=0, H=0, dpr=Math.min(window.devicePixelRatio||1,2);
+  function rs(){ W=innerWidth; H=innerHeight; cv.width=W*dpr; cv.height=H*dpr; cx.setTransform(dpr,0,0,dpr,0,0); }
+  rs(); addEventListener('resize',rs);
+  function add(x,y,vx,vy){ P.push({x:x,y:y,vx:vx,vy:vy,r:Math.random()*6.28,vr:(Math.random()-.5)*.3,w:5+Math.random()*6,h:3+Math.random()*4,c:COL[(Math.random()*COL.length)|0],t:0,life:260+Math.random()*120,sw:Math.random()*6.28}); }
+  function cannon(x,y,nn){ if(RM) nn=Math.ceil(nn/4); for(var i=0;i<nn;i++){ var a=-Math.PI/2+(Math.random()-.5)*1.7, sp=6+Math.random()*9; add(x,y,Math.cos(a)*sp,Math.sin(a)*sp); } kick(); }
+  function rain(nn){ if(RM) nn=Math.ceil(nn/4); for(var i=0;i<nn;i++) add(Math.random()*W,-10-Math.random()*H*.4,(Math.random()-.5)*1.4,1.2+Math.random()*2); kick(); }
+  var run=false; function kick(){ if(!run){ run=true; requestAnimationFrame(tick); } }
+  function tick(){
+    cx.clearRect(0,0,W,H);
+    for(var i=P.length-1;i>=0;i--){ var p=P[i]; p.t++; p.vy+=.16; p.vx*=.985; p.vy*=.985; p.sw+=.08; p.x+=p.vx+Math.sin(p.sw)*.6; p.y+=p.vy; p.r+=p.vr;
+      if(p.y>H+20||p.t>p.life){ P.splice(i,1); continue; }
+      cx.save(); cx.translate(p.x,p.y); cx.rotate(p.r); cx.globalAlpha=Math.min(1,(p.life-p.t)/40); cx.fillStyle=p.c; cx.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.sw))+1); cx.restore(); }
+    if(P.length) requestAnimationFrame(tick); else { run=false; cx.clearRect(0,0,W,H); }
+  }
+  // タップでもクラッカー
+  doc.addEventListener('click',function(e){ if(e.target.closest&&e.target.closest('.bday-ov')) return; cannon(e.clientX,e.clientY,34); },true);
+  // ときどき紙吹雪が降る
+  var rt=setInterval(function(){ if(!doc.hidden) rain(24); },14000);
+
+  // オープニング（1日1回）
+  var key='mogu_bday_'+(jst.getUTCFullYear())+'_'+md, seen=false;
+  try{ seen=!!localStorage.getItem(key); }catch(e){}
+  var shown=false;
+  function party(){
+    if(shown) return; shown=true;
+    if(M.toast) setTimeout(function(){ M.toast('🎂 もぐちゃん、おたんじょうびおめでとう！<small>今日はみんなでお祝いしよう</small>'); },700);
+    cannon(W*.2,H*.95,60); cannon(W*.8,H*.95,60); setTimeout(function(){ rain(70); },400);
+    if(seen&&!force) return;
+    try{ localStorage.setItem(key,'1'); }catch(e){}
+    var ov=doc.createElement('div'); ov.className='bday-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','もぐちゃん誕生日');
+    ov.innerHTML='<div class="bday-ov__in"><div class="bday-ov__bar"><span>birthday_party.exe</span><span>×</span></div><div class="bday-ov__body"><div class="bday-ov__cake">🎂</div>'+
+      '<p class="bday-ov__en">HAPPY BIRTHDAY<br>MOGU!!</p><p class="bday-ov__ja">もぐちゃん<br>おたんじょうびおめでとう！</p>'+
+      '<p class="bday-ov__sub">今日は 11/25。<br>みんなでいっぱいお祝いしてね🎉</p><button class="bday-ov__btn" type="button">パーティにはいる ♡</button></div></div>';
+    doc.body.appendChild(ov);
+    function close(){ ov.classList.add('is-out'); cannon(W/2,H*.6,90); setTimeout(function(){ ov.remove(); },600); }
+    ov.querySelector('.bday-ov__btn').onclick=function(e){ e.stopPropagation(); close(); };
+    setTimeout(function(){ cannon(W/2,H*.55,70); },350);
+  }
+  if(doc.getElementById('op')){ addEventListener('mogu:ready',function(){ setTimeout(party,300); }); setTimeout(party,9000); } else setTimeout(party,500);
+})();
 </script>
 </body>
 </html>
