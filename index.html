@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261125004000">
+<meta name="build" content="20261125004500">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -1986,7 +1986,7 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
 
   // 風船
   var bw=doc.createElement('div'); bw.className='bday-balloons'; bw.setAttribute('aria-hidden','true');
-  for(var k=0;k<(RM?0:9);k++){ var b=doc.createElement('i'); b.className='bl'; b.style.left=(4+Math.random()*92)+'%'; b.style.background=COL[k%COL.length];
+  var NB=14; for(var k=0;k<(RM?0:NB);k++){ var b=doc.createElement('i'); b.className='bl'; b.style.left=((k+.15+Math.random()*.7)/NB*92+2)+'%'; b.style.background=COL[k%COL.length];
     var sc=.7+Math.random()*.7; b.style.width=44*sc+'px'; b.style.height=58*sc+'px'; b.style.animationDuration=(16+Math.random()*14)+'s'; b.style.animationDelay=(-Math.random()*24)+'s'; bw.appendChild(b); }
   body.appendChild(bw);
 
