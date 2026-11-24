@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261125012500">
+<meta name="build" content="20261125013000">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -744,8 +744,11 @@
   .bday-flags .fl:nth-child(2n){animation-delay:-.8s}.bday-flags .fl:nth-child(3n){animation-delay:-1.6s}
   @keyframes bdSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
   .bday-stk{position:absolute;z-index:6;pointer-events:none}
-  .bday-hat{left:33%;top:3%;width:27%;transform:rotate(-12deg);transform-origin:50% 90%;filter:drop-shadow(0 2px 0 rgba(78,127,207,.35));animation:bdHat2 2.4s ease-in-out infinite}
+  .bday-hat{left:38%;top:-1%;width:27%;transform:rotate(-12deg);transform-origin:50% 90%;filter:drop-shadow(0 2px 0 rgba(78,127,207,.35));animation:bdHat2 2.4s ease-in-out infinite}
   @keyframes bdHat2{0%,100%{transform:rotate(-12deg)}50%{transform:rotate(-8deg)}}
+  .bday-hat.is-wait{opacity:0;animation:none}
+  .bday-hat.is-drop{animation:bdDrop 1.2s cubic-bezier(.25,.6,.35,1) both,bdHat2 2.4s ease-in-out 1.2s infinite}
+  @keyframes bdDrop{0%{opacity:1;transform:translateY(-110vh) rotate(-70deg)}55%{opacity:1;transform:translateY(0) rotate(-12deg)}70%{opacity:1;transform:translateY(-14%) rotate(-6deg)}85%{opacity:1;transform:translateY(0) rotate(-14deg)}100%{opacity:1;transform:translateY(0) rotate(-12deg)}}
   @keyframes bdHat{0%,100%{transform:rotate(14deg) translateY(0)}50%{transform:rotate(10deg) translateY(-4px)}}
   .bday-badge{left:-14px;bottom:8%;width:46%;transform:rotate(-8deg);animation:bdBadge 1.6s steps(2) infinite}
   @keyframes bdBadge{0%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(-5deg) scale(1.06)}100%{transform:rotate(-8deg) scale(1)}}
@@ -771,7 +774,7 @@
   body.bday .ticker{background:linear-gradient(90deg,#E77FAA,#F5A3C4,#FFE08A,#86CDEE,#CFC6F2)!important;color:#fff!important}
   body.bday .logo small{color:var(--rose)}
   body.bday .hl:not(.s){background:linear-gradient(90deg,#E77FAA,#F29AC0)}
-  @media (prefers-reduced-motion:reduce){.bday-balloons .bl,.bday-flags .fl,.bday-hat,.bday-badge,.bday-ov__cake{animation:none}}
+  @media (prefers-reduced-motion:reduce){.bday-hat.is-drop{animation:none;opacity:1}.bday-balloons .bl,.bday-flags .fl,.bday-hat,.bday-badge,.bday-ov__cake{animation:none}}
 </style>
 </head>
 <body>
@@ -1995,7 +1998,7 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   var hv=doc.querySelector('.hero__vis');
   if(hv){
     hv.insertAdjacentHTML('beforeend',
-      '<img class="bday-stk bday-hat" src="img/party-hat.webp" alt="" width="175" height="240" aria-hidden="true">'+
+      '<img class="bday-stk bday-hat is-wait" src="img/party-hat.webp" alt="" width="175" height="240" aria-hidden="true">'+
       '<div class="bday-stk bday-badge" aria-hidden="true"><b>HAPPY<br>BIRTHDAY!<small>もぐ 23さいになったよ</small></b></div>');
   }
 
@@ -2029,19 +2032,20 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   // オープニング（1日1回）
   var key='mogu_bday_'+(jst.getUTCFullYear())+'_'+md, seen=false;
   try{ seen=!!localStorage.getItem(key); }catch(e){}
-  var shown=false;
+  var shown=false, dropped=false;
+  function dropHat(){ if(dropped) return; dropped=true; var h=doc.querySelector('.bday-hat'); if(!h) return; setTimeout(function(){ h.classList.remove('is-wait'); h.classList.add('is-drop'); },250); }
   function party(){
     if(shown) return; shown=true;
     if(M.toast) setTimeout(function(){ M.toast('🎂 もぐちゃん、23歳おめでとう！<small>今日はみんなでお祝いしよう</small>'); },700);
     cannon(W*.2,H*.95,60); cannon(W*.8,H*.95,60); setTimeout(function(){ rain(70); },400);
-    if(seen&&!force) return;
+    if(seen&&!force){ dropHat(); return; }
     try{ localStorage.setItem(key,'1'); }catch(e){}
     var ov=doc.createElement('div'); ov.className='bday-ov'; ov.setAttribute('role','dialog'); ov.setAttribute('aria-label','もぐちゃん誕生日');
     ov.innerHTML='<div class="bday-ov__in"><div class="bday-ov__bar"><span>birthday_party.exe</span><span>×</span></div><div class="bday-ov__body"><div class="bday-ov__cake">🎂</div>'+
       '<p class="bday-ov__en">HAPPY 23rd BIRTHDAY<br>MOGU!!</p><p class="bday-ov__ja">もぐちゃん 23歳<br>おたんじょうびおめでとう！</p>'+
       '<p class="bday-ov__sub">今日 11/25 で23歳になりました。<br>みんなでいっぱいお祝いしてね🎉</p><button class="bday-ov__btn" type="button">パーティにはいる ♡</button></div></div>';
     doc.body.appendChild(ov);
-    function close(){ ov.classList.add('is-out'); cannon(W/2,H*.6,90); setTimeout(function(){ ov.remove(); },600); }
+    function close(){ ov.classList.add('is-out'); dropHat(); cannon(W/2,H*.6,90); setTimeout(function(){ ov.remove(); },600); }
     ov.querySelector('.bday-ov__btn').onclick=function(e){ e.stopPropagation(); close(); };
     setTimeout(function(){ cannon(W/2,H*.55,70); },350);
   }
