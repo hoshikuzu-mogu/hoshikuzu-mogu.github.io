@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261125010500">
+<meta name="build" content="20261125011500">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -744,7 +744,7 @@
   .bday-flags .fl:nth-child(2n){animation-delay:-.8s}.bday-flags .fl:nth-child(3n){animation-delay:-1.6s}
   @keyframes bdSway{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
   .bday-stk{position:absolute;z-index:6;pointer-events:none}
-  .bday-hat{right:2%;top:-9%;width:34%;transform:rotate(14deg);filter:drop-shadow(0 2px 0 rgba(78,127,207,.35));animation:bdHat 2.4s ease-in-out infinite}
+  .bday-hat{right:0;top:-6%;width:28%;transform:rotate(14deg);filter:drop-shadow(0 2px 0 rgba(78,127,207,.35));animation:bdHat 2.4s ease-in-out infinite}
   @keyframes bdHat{0%,100%{transform:rotate(14deg) translateY(0)}50%{transform:rotate(10deg) translateY(-4px)}}
   .bday-badge{left:-14px;bottom:8%;width:46%;transform:rotate(-8deg);animation:bdBadge 1.6s steps(2) infinite}
   @keyframes bdBadge{0%{transform:rotate(-8deg) scale(1)}50%{transform:rotate(-5deg) scale(1.06)}100%{transform:rotate(-8deg) scale(1)}}
@@ -1212,6 +1212,7 @@
         <li>天使界隈トレカ風素材 / <a href="https://booth.pm/ja/items/6981268" target="_blank" rel="noopener">紺崎イラスト堂</a></li>
         <li>たぬきのイラスト / <a href="https://booth.pm/ja/items/4996583" target="_blank" rel="noopener">ササミストリート</a></li>
         <li>風船のイラスト / <a href="https://illustimage.com/?dl=6139" target="_blank" rel="noopener">イラストイメージ</a></li>
+        <li>パーティーハットのイラスト / <a href="https://tsukatte.com/party-hat/" target="_blank" rel="noopener">ツカッテ</a></li>
         <li>Font: ISEKAI-grimoire / <a href="https://x.com/shibuyamiam" target="_blank" rel="noopener">Hitomi Shibuya</a></li>
         <li>Font: DotGothic16, VT323, Syncopate, Cormorant Garamond, Zen Kaku Gothic New / <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a></li>
         <li>ホームページ制作 / <a href="https://minatohiro-official.github.io/iroha-minto/" target="_blank" rel="noopener">イロハミント</a>（湊音ヒロ）</li>
@@ -1993,9 +1994,7 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   var hv=doc.querySelector('.hero__vis');
   if(hv){
     hv.insertAdjacentHTML('beforeend',
-      '<svg class="bday-stk bday-hat" viewBox="0 0 60 70" aria-hidden="true"><path d="M30 4 L52 62 Q30 70 8 62 Z" fill="#F5C6DA" stroke="#E77FAA" stroke-width="2.5" stroke-linejoin="round"/>'+
-      '<path d="M19 38 L44 34 M14 52 L49 47" stroke="#fff" stroke-width="4" stroke-linecap="round"/><path d="M24 22 L37 20" stroke="#86CDEE" stroke-width="4" stroke-linecap="round"/>'+
-      '<circle cx="30" cy="5" r="6" fill="#FFE08A" stroke="#FFC83D" stroke-width="2"/></svg>'+
+      '<img class="bday-stk bday-hat" src="img/party-hat.webp" alt="" width="175" height="240" aria-hidden="true">'+
       '<div class="bday-stk bday-badge" aria-hidden="true"><b>HAPPY<br>BIRTHDAY!<small>もぐ 23さいになったよ</small></b></div>');
   }
 
