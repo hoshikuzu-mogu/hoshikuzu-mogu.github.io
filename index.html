@@ -2055,5 +2055,15 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
   if(doc.getElementById('op')){ addEventListener('mogu:ready',function(){ setTimeout(party,300); }); setTimeout(party,9000); } else setTimeout(party,500);
 })();
 </script>
+<script>
+/* ショップ(BASE)のリンクとON/OFFは管理画面(HP更新ページ)から変えられる。取れなかったときは埋め込みの値のまま */
+(function(){
+  var a=document.getElementById('menu-shop'); if(!a||!window.MOGU) return;
+  var li=a.closest('li');
+  try{ var c=JSON.parse(localStorage.getItem('mogu_shop')||'null'); if(c) apply(c); }catch(e){}
+  function apply(d){ if(!d) return; if(d.url&&/^https:\/\//.test(d.url)) a.href=d.url; var off=d.on===false; if(li) li.hidden=off; if(off) a.removeAttribute('id'); else a.id='menu-shop'; }
+  MOGU.rpc('mogu_shop_get').then(function(d){ if(!d) return; apply(d); try{ localStorage.setItem('mogu_shop',JSON.stringify(d)); }catch(e){} }).catch(function(){});
+})();
+</script>
 </body>
 </html>

@@ -217,6 +217,7 @@
       <button type="button" data-t="post"><span class="ic">✕</span><span class="lb">Xのポスト</span><span class="st">HPにのせる</span></button>
       <button type="button" data-t="sch"><span class="ic">◷</span><span class="lb">予定表</span><span class="st">画像をつくる</span></button>
       <button type="button" data-t="wall"><span class="ic">✿</span><span class="lb">ごほうび壁紙</span><span class="st">スタンプの壁紙</span></button>
+      <button type="button" data-t="shop"><span class="ic">★</span><span class="lb">ショップ</span><span class="st" id="tlShop">BASEのリンク</span></button>
       <button type="button" data-t="ev" class="wide"><span class="ic">✦</span><span class="lb">カウントダウン</span><span class="st">デビュー記念日・イベント</span></button>
     </div>
     <div class="backbar" id="backbar" hidden><button type="button" id="backBtn">‹ もどる</button><b id="backTitle"></b></div>
@@ -417,6 +418,17 @@
       <p class="msg" id="evMsg"></p>
       <h2>登録しているもの</h2>
       <ul id="evList"><li class="empty">読み込み中…</li></ul>
+    </div>
+
+    <div data-view="shop" hidden>
+      <p class="help" style="margin-top:20px">メニューと、のぞいてくるたぬきの「SHOP」からBASEのショップに行けるようになります。</p>
+      <div class="card">
+        <label for="shopUrl">ショップのリンク</label>
+        <input id="shopUrl" type="url" inputmode="url" placeholder="https://〇〇.base.shop/">
+        <label class="chk"><input type="checkbox" id="shopOn">HPにショップを出す</label>
+      </div>
+      <div class="row"><button class="primary" id="shopSave" type="button">保存する</button></div>
+      <p class="msg" id="shopMsg"></p>
     </div>
 
     <!-- 歌リスト -->
@@ -1126,6 +1138,17 @@
       .catch(function(e){ fail(e,$('evMsg')); }).then(function(){ btn.disabled=false; });
   };
 
+  // ---- ショップ（BASEのリンクとON/OFF） ----
+  function fillShop(d){ if(!d) return; $('shopUrl').value=d.url||''; $('shopOn').checked=d.on!==false; $('tlShop').textContent=d.on===false?'いまはお休み中':'BASEのリンク'; }
+  function loadShop(){ return call('mogu_shop_admin',{p_action:'get'}).then(fillShop).catch(function(e){ fail(e,$('shopMsg')); }); }
+  $('shopSave').onclick=function(){
+    var url=$('shopUrl').value.trim();
+    if(!/^https:\/\//.test(url)){ say($('shopMsg'),'リンクは https:// からはじまる形にしてね',true); return; }
+    var btn=this; btn.disabled=true;
+    call('mogu_shop_admin',{p_action:'set',p_url:url,p_on:$('shopOn').checked}).then(function(d){ fillShop(d); say($('shopMsg'),'保存したよ。HPには数十秒で反映されます'); })
+      .catch(function(e){ fail(e,$('shopMsg')); }).then(function(){ btn.disabled=false; });
+  };
+
   // ---- 歌える曲（1曲ずつ追加・まとめて追加・一覧から消す） ----
   // UTAEMO(mgmgtime)の最初の曲。[曲名,アーティスト]
   var SNAPS=[["革命道中 - On The Way","アイナ・ジ・エンド"],["アイドルライフスターターパック","iLiFE!"],["くりてぃかる・ぷりちー","iLiFE!"],["新時代 (ウタ from ONE PIECE FILM RED)","Ado"],["レディメイド","Ado"],["踊","Ado"],["私は最強 (ウタ from ONE PIECE FILM RED)","Ado"],["うっせえわ","Ado"],["ギラギラ","Ado"],["逆光 (ウタ from ONE PIECE FILM RED)","Ado"],["にじいろ","絢香"],["Monster","嵐"],["はじめてのチュウ","あんしんパパ"],["帝国少女","R Sound Design"],["ブルーバード","いきものがかり"],["じょいふる","いきものがかり"],["ハイドアンド･シーク","19's Sound Factory"],["Let's go! スマイルプリキュア！","池田彩"],["あの娘シークレット","Eve"],["きゅうくらりん","いよわ feat.可不(KAFU)"],["ハッピーシンセサイザ","EasyPoP"],["海の声","浦島太郎(桐谷健太)"],["366日","HY"],["カタオモイ","Aimer"],["残響散歌","Aimer"],["departure!","小野正利"],["イケナイ太陽","オレンジレンジ"],["アスノヨゾラ哨戒班","Orangestar"],["ベノム","かいりきベア"],["失敗作少女","かいりきベア"],["ないものねだり","KANA-BOON"],["酔いどれ知らず","kanaria"],["エンヴィーベイビー","kanaria"],["あの夏が飽和する","カンザキイオリ"],["生まれてはじめて","神田沙也加、松たか子"],["ずうっといっしょ！","キタニタツヤ"],["倍倍FIGHT!","CANDY TUNE"],["かわいいだけじゃだめですか？","CUTIE STREET"],["ひたむきシンデレラ!","CUTIE STREET"],["劣化上等","ギガP"],["ガツガツ!!","串田アキラ(串田晃)"],["おやすみ泣き声、さよなら歌姫","クリープハイプ"],["キセキ","GReeeeN"],["光るなら","Goose house"],["六兆年と一夜物語","kemu"],["拝啓ドッペルゲンガー","kemu"],["キューティーハニー","倖田來未"],["臨海ダイバー","こじろー"],["チェリボム","Silent Siren"],["シンデレラボーイ","Saucy Dog"],["好-じょし-","坂口有望"],["新宝島","サカナクション"],["melt bitter","さとうもか"],["ルカルカ★ナイトフィーバー","samfree"],["ハッピー･ジャムジャム","しまじろう/とりっぴい/みみりん/らむりん"],["ビターチョコデコレーション","syudou"],["睡蓮花","湘南乃風"],["好きな人がいること","JY"],["スイートマジック","Junky"],["盛れ!ミ・アモーレ","Juice=Juice"],["アンパンマンのマーチ","SUEMITSU&THE SUEMITH KIDS"],["アイロニ","すこっぷ"],["Redo","鈴木このみ"],["God knows…","涼宮ハルヒ(C.V.平野綾)"],["エゴロック","すりぃ"],["テレキャスタービーボーイ","すりぃ"],["ジャンキーナイトタウンオーケストラ","すりぃ"],["ラヴィ","すりぃ"],["ブラック★ロックシューター","supercell"],["ムーンライト伝説","DALI"],["アイのシナリオ","CHiCO with HoneyWorks"],["私、アイドル宣言","CHiCO with HoneyWorks"],["unravel","TK from 凛として時雨"],["ヴィラン","てにをは feat.flower"],["妄想感傷代償連盟","DECO*27"],["妄想税","DECO*27"],["ライアーダンス","DECO*27"],["アニマル","DECO*27"],["ヴァンパイア","DECO*27"],["ボルテッカー","DECO*27"],["モニタリング","DECO*27"],["ラビットホール","DECO*27"],["ジレンマ","DECO*27"],["独りんぼエンヴィー","電ポルP"],["錠剤","TOOBOE"],["エンヴィ キャット ウォーク","トーマ"],["かくしん的☆めたまるふぉ～ぜっ！","土間うまる(CV:田中あいみ)"],["夢をかなえてドラえもん","どらえもん、のび太、しずか、ジャイアン、スネ夫"],["ロミオとシンデレラ","doriko"],["アンパンマンのマーチ","ドリーミング"],["アンパンマンたいそう","ドリーミング"],["ダン・ダン ドゥビ・ズバー!","Dream5+ブリー隊長"],["DESIRE-情熱-","中森明菜"],["ニア","夏代孝明"],["な,なとり,セレナーデ","なとり"],["ダダダダ天使","ナナヲアカリ"],["チューリングラブfeat.Sou","ナナヲアカリ"],["ハロ/ハワユ","ナノウ"],["ウミユリ海底譚","n-buna"],["夜明けと蛍","n-buna"],["エイリアンエイリアン","ナユタン星人"],["太陽系デスコ","ナユタン星人"],["ロケットサイダー","ナユタン星人"],["明星ギャラクティカ","ナユタン星人"],["フラジール","ぬゆり"],["ロウワー","ぬゆり feat.flower"],["自傷無色","ねこぼーろ"],["もぐもぐYUMMY！","猫又おかゆ"],["再教育","Neru"],["東京テディベア","Neru"],["ひとりごつ","ハチワレ(CV:田中誠人)"],["東京サマーセッション","HoneyWorks"],["メイド☆至上主義(feat. かぴ×Hanon×Kotoha)","HoneyWorks"],["M","浜崎あゆみ"],["集結の園へ","林原めぐみ"],["怪獣の花唄","Vaundy"],["瞬き","back number"],["シャルル","バルーン"],["レディーレ","バルーン"],["ラブカ？","柊キライ"],["限界突破×サバイバー","氷川きよし"],["ブリキノダンス","日向電工"],["頓珍漢の宴","ピノキオピー"],["神っぽいな","ピノキオピー"],["シル･ヴ･プレジデント","P丸様。"],["あとひとつ","FUNKY MONKEY BABYS"],["走れマキバオー","F･MAP"],["only my railgun","fripSide"],["おとせサンダー","ぼっちぼろまる"],["やさしさに包まれたなら","松任谷由実"],["ルージュの伝言","松任谷由実"],["おジャ魔女カーニバル!!","MAHO堂"],["ロキ","みきとP"],["少女レイ","みきとP"],["インフェルノ","Mrs. GREEN APPLE"],["#あくあ色ぱれっと","湊あくあ"],["夜空。feat.ハジ→","miwa"],["小悪魔だってかまわない!","めいちゃん"],["ライオン","May'n/中島愛"],["ファンサ","mona(CV:夏川椎菜)"],["栄光の架橋","ゆず"],["夜に駆ける","YOASOBI"],["アイドル","YOASOBI"],["怪物","YOASOBI"],["ピースサイン","米津玄師"],["砂の惑星(＋初音ミク)","米津玄師"],["パプリカ","米津玄師"],["IRIS OUT","米津玄師"],["だから僕は音楽を辞めた","ヨルシカ"],["ただ君に晴れ","ヨルシカ"],["花に亡霊","ヨルシカ"],["からくりピエロ","40mP"],["恋愛裁判","40mP"],["ドレミファロンド","40mP"],["前前前世(movie ver.)","RADWIMPS"],["紅蓮華","LiSA"],["ノンファンタジー","LIP×LIP(勇次郎･愛蔵／CV:内山昂輝･島崎信長)"],["ロメオ","LIP×LIP(勇次郎･愛蔵／CV:内山昂輝･島崎信長)"],["ANIMA","ReoNa"],["神のまにまに","れるりり"],["厨病激発ボーイ","れるりり"],["聖槍爆裂ボーイ","れるりり/もじゃ"],["ヒビカセ","れをる"],["シャンティ","wotaku"],["裏表ラバーズ","wowaka"],["アンノウン･マザーグース","wowaka"],["美少女無罪・パイレーツ","宝鐘マリン"]];
@@ -1231,7 +1254,7 @@
   };
 
   // ---- タブ ----
-  var LOAD={req:loadReq,msg:loadMsg,sch:function(){ return window.loadSch(); },wall:function(){ return window.loadWall(); },ev:loadEv,song:loadSongs,post:loadPosts};
+  var LOAD={req:loadReq,msg:loadMsg,sch:function(){ return window.loadSch(); },wall:function(){ return window.loadWall(); },ev:loadEv,shop:loadShop,song:loadSongs,post:loadPosts};
   function showTab(name){
     document.querySelectorAll('.tab').forEach(function(t){ t.setAttribute('aria-selected',t.dataset.tab===name?'true':'false'); });
     document.querySelectorAll('[data-view]').forEach(function(v){ v.hidden=v.dataset.view!==name; });
@@ -1241,7 +1264,7 @@
   document.querySelectorAll('.tab').forEach(function(t){ t.onclick=function(){ showTab(t.dataset.tab); }; });
 
   // ---- タッチパネル方式：トップは大きなボタン、えらぶと中身が開く ----
-  var TILE={song:'歌える曲',req:'リクエスト',msg:'おてがみ',post:'Xのポスト',sch:'予定表',wall:'ごほうび壁紙',ev:'カウントダウン'};
+  var TILE={song:'歌える曲',req:'リクエスト',msg:'おてがみ',post:'Xのポスト',sch:'予定表',wall:'ごほうび壁紙',ev:'カウントダウン',shop:'ショップ'};
   function openPanel(){
     document.querySelectorAll('[data-view]').forEach(function(v){ v.hidden=true; });
     $('panel').hidden=false; $('backbar').hidden=true; window.scrollTo(0,0);
