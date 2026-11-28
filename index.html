@@ -6,7 +6,7 @@
 <title>星屑もぐ｜公式サイト</title>
 <meta name="description" content="Mirrativ配信者・星屑もぐの公式サイト。朝6時と夜22時に配信中。歌のリクエスト、匿名のおてがみ、もぐみくじもあるよ。">
 <meta name="theme-color" content="#D6E4F1">
-<meta name="build" content="20261129015753">
+<meta name="build" content="20261129020102">
 <link rel="preload" as="image" href="img/tanu.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow.webp" type="image/webp">
 <link rel="preload" as="image" href="img/wing-glow-l.webp" type="image/webp">
@@ -955,8 +955,9 @@
     <a href="#omikuji"><span class="icn"><svg viewBox="0 0 40 40"><use href="#egg"/></svg></span><span>omikuji.exe</span></a>
     <a href="#stamp"><span class="icn"><svg viewBox="0 0 64 60" style="width:60px"><use href="#atanu"/></svg></span><span>stamp.dat</span></a>
     <a href="https://www.amazon.jp/hz/wishlist/ls/22LWDGI431OWW?ref_=wl_share" target="_blank" rel="noopener"><span class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="9" width="17" height="11.5"/><rect x="2.5" y="6" width="19" height="3.5"/><path d="M12 6v14.5"/><path d="M12 6C10 6 7.5 5.2 7.5 3.6S10 2.2 12 6c2-3.8 4.5-2.4 4.5-.8S14 6 12 6z"/></svg></span><span>wishlist.lnk</span></a>
-    <a href="#" class="desk-tn" role="button"><span class="icn"><img src="img/tanu-pa.webp" alt="" width="44" height="44" loading="lazy"></span><span>tanuki.exe</span></a>
+    <a href="https://hoshikuzmgmg.base.shop/" target="_blank" rel="noopener" id="desk-shop"><span class="icn"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 8.5h14l-1.1 11.5H6.1z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/></svg></span><span>shop.lnk</span></a>
     <a href="#" class="desk-tn" role="button"><span class="icn"><img src="img/tanu-puri.webp" alt="" width="44" height="44" loading="lazy"></span><span>tanupo.exe</span></a>
+    <a href="#" class="desk-tn" role="button" id="desk-tanuki" hidden><span class="icn"><img src="img/tanu-pa.webp" alt="" width="44" height="44" loading="lazy"></span><span>tanuki.exe</span></a>
   </nav>
 
   <section class="sec" id="profile">
@@ -2059,9 +2060,9 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
 /* ショップ(BASE)のリンクとON/OFFは管理画面(HP更新ページ)から変えられる。取れなかったときは埋め込みの値のまま */
 (function(){
   var a=document.getElementById('menu-shop'); if(!a||!window.MOGU) return;
-  var li=a.closest('li');
+  var li=a.closest('li'), ds=document.getElementById('desk-shop'), dt=document.getElementById('desk-tanuki');
   try{ var c=JSON.parse(localStorage.getItem('mogu_shop')||'null'); if(c) apply(c); }catch(e){}
-  function apply(d){ if(!d) return; if(d.url&&/^https:\/\//.test(d.url)) a.href=d.url; var off=d.on===false; if(li) li.hidden=off; if(off) a.removeAttribute('id'); else a.id='menu-shop'; }
+  function apply(d){ if(!d) return; if(d.url&&/^https:\/\//.test(d.url)){ a.href=d.url; if(ds) ds.href=d.url; } var off=d.on===false; if(li) li.hidden=off; if(ds) ds.hidden=off; if(dt) dt.hidden=!off; if(off) a.removeAttribute('id'); else a.id='menu-shop'; }
   MOGU.rpc('mogu_shop_get').then(function(d){ if(!d) return; apply(d); try{ localStorage.setItem('mogu_shop',JSON.stringify(d)); }catch(e){} }).catch(function(){});
 })();
 </script>
