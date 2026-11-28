@@ -344,6 +344,7 @@
   .pk--mini[data-side="right"]{right:0;transform:translateX(115%) rotate(-15deg)}
   .pk--mini.is-peeking[data-side="left"]{opacity:1;transform:translateX(-14%) rotate(15deg);transition:transform .6s cubic-bezier(.2,.8,.3,1),opacity .3s}
   .pk--mini.is-peeking[data-side="right"]{opacity:1;transform:translateX(14%) rotate(-15deg);transition:transform .6s cubic-bezier(.2,.8,.3,1),opacity .3s}
+  .pk--shop::after{content:"SHOP ↗";position:absolute;left:50%;bottom:-6px;transform:translateX(-50%);white-space:nowrap;padding:1px 7px 2px;background:var(--blue);color:#fff;border:1.5px solid var(--frame);font-family:var(--px);font-size:15px;line-height:1.2;box-shadow:2px 2px 0 rgba(78,127,207,.25)}
   .pk--big{left:var(--x,55%);bottom:0;width:clamp(170px,46vw,230px);transform:translate(-50%,105%);filter:drop-shadow(0 4px 6px rgba(78,127,207,.3))}
   .pk--big.is-peeking{opacity:1;transform:translate(-50%,8%);transition:transform .65s cubic-bezier(.2,.8,.3,1),opacity .3s}
   .pk--big img{transform-origin:50% 100%}
@@ -849,6 +850,7 @@
         <li><a href="#stamp">stamp<span class="ja">てんしすたんぷ</span></a></li>
         <li><a href="#about">about<span class="ja">はいしんのこと</span></a></li>
         <li><a href="#link">link<span class="ja">りんく</span></a></li>
+        <li><a href="https://hoshikuzmgmg.base.shop/" target="_blank" rel="noopener" id="menu-shop">shop<span class="ja">ぐっずしょっぷ ↗</span></a></li>
         <li><a href="https://www.amazon.jp/hz/wishlist/ls/22LWDGI431OWW?ref_=wl_share" target="_blank" rel="noopener">wish list<span class="ja">ほしいものりすと ↗</span></a></li>
       </ul>
       <ul class="menu__sns">
@@ -1254,7 +1256,7 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
   function build(){
     layer=document.createElement('div'); layer.className='peeks'; layer.hidden=true; layer.setAttribute('aria-hidden','true');
     for(var i=0;i<1;i++){ var b=document.createElement('button'); b.type='button'; b.className='pk pk--mini'; b.tabIndex=-1; b.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(b);
-      (function(m){ m={el:b,slot:-1,t:null}; minis.push(m); b.addEventListener('click',function(){ if(!(active||amb)||!m.el.classList.contains('is-peeking')) return; m.el.classList.remove('is-peeking'); clearTimeout(m.t); if(amb){ party(16); m.t=setTimeout(ambNext,1500); } else m.t=setTimeout(function(){reveal(m);},5000+Math.random()*4000); }); })();
+      (function(m){ m={el:b,slot:-1,t:null}; minis.push(m); b.addEventListener('click',function(){ if(!(active||amb)||!m.el.classList.contains('is-peeking')) return; if(m.el.classList.contains('pk--shop')){ var sa=document.getElementById('menu-shop'); if(sa&&sa.href){ window.open(sa.href,'_blank','noopener'); } } m.el.classList.remove('is-peeking'); clearTimeout(m.t); if(amb){ party(16); m.t=setTimeout(ambNext,1500); } else m.t=setTimeout(function(){reveal(m);},5000+Math.random()*4000); }); })();
     }
     big=document.createElement('button'); big.type='button'; big.className='pk pk--big'; big.tabIndex=-1; big.innerHTML='<img alt="" width="200" height="200">'; layer.appendChild(big);
     big.addEventListener('click',function(){ if(!(active||amb)||big.classList.contains('is-happy')||!big.classList.contains('is-peeking')) return; clearTimeout(bigH); party(); big.classList.add('is-happy'); hap=setTimeout(function(){ big.classList.add('is-leaving'); hideBig(); if(amb) ambNext(); },1800); });
@@ -1267,6 +1269,7 @@ window.TANU=["omekashi", "nirami", "hasamari", "puri", "almond", "pa", "hyoro", 
     var s=rnd(free); m.slot=s; used[s]=1;
     var el=m.el; el.style.transition='none'; el.classList.remove('is-peeking');
     el.dataset.side=SLOTS[s][0]; el.style.setProperty('--y',SLOTS[s][1]);
+    el.classList.toggle('pk--shop',!!active&&!amb&&!!document.getElementById('menu-shop'));   // メニューを開いているときののぞきたぬきはショップ案内
     var nm=pick(), fc=(window.TANU_FACE||{})[nm], im=el.querySelector('img'); im.src='img/tanu-'+nm+'.webp';
     // 顔が横向きのたぬきは、顔が見える側(画面の内側)を向くように反転する
     im.style.transform=((fc==='L'&&SLOTS[s][0]==='left')||(fc==='R'&&SLOTS[s][0]==='right'))?'scaleX(-1)':'';
